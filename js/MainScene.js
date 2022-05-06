@@ -13,9 +13,17 @@ export default class MainScene extends Phaser.Scene {
         this.load.tilemapTiledJSON('map','assets/images/map.json');
         this.load.atlas('enemies', 'assets/images/enemies.png', 'assets/images/enemies_atlas.json');
         this.load.animation('enemies_anims', 'assets/images/enemies_anims.json');
+        //Added in rain.png
+        this.load.image('rain', 'assets/images/rain.png');
+        this.load.image('cursor', 'assets/images/cursor.png');
+        //Added in lightning.png
+        this.load.image('lightning', 'assets/images/lightning.png');
     };
 
     create(){
+        //Added in custom cursor
+        this.input.setDefaultCursor('url(assets/images/cursor.png), pointer')
+
         const map = this.make.tilemap({key: 'map'});
         this.map = map;
         const tileset = map.addTilesetImage('RPG Nature Tileset', 'tiles', 32, 32, 0, 2);
@@ -86,6 +94,35 @@ export default class MainScene extends Phaser.Scene {
         }
         */
 
+        //Added in rain particles
+        this.particles = this.add.particles('rain');
+        this.emitter = this.particles.createEmitter({
+            x: { min:0, max: 800},
+            y: 0,
+            lifespan: 5000,
+            speedY: {min: 150, max: 200},
+            speedX: {min: -50, max: -30},
+            scale: 0.14,
+            quantity: 5,
+            maxParticles: 0,
+            frequency: 0, 
+            blendMode: 0
+        });
+
+        //Added in lightning particles
+        this.particles = this.add.particles('lightning');
+        this.emitter = this.particles.createEmitter({
+            x: { min:0, max: 800},
+            y: 0,
+            lifespan: 100,
+            speedY: {min: 0, max: 0},
+            speedX: {min: 0, max: 0},
+            scale: 2,
+            quantity: 1,
+            maxParticles: 0,
+            frequency: 3000, 
+            blendMode: 0
+        });
 
 
         const villainGroup = this.add.group({ key: 'hero', frame:'hero_idle_5', frameQuantity: 4 });

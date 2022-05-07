@@ -1,4 +1,6 @@
 import DropItem from "./DropItem.js";
+//imported items to matterentity.js
+import items from "./Items.js";
 
 export default class MatterEntity extends Phaser.Physics.Matter.Sprite {
     constructor(data){
@@ -35,9 +37,11 @@ export default class MatterEntity extends Phaser.Physics.Matter.Sprite {
         if(this.sound) this.sound.play();
         this.health--;
         console.log(`Hitting: ${this.name} Health: ${this.health}`);
-
         if(this.dead){
-            this.drops.forEach(drop => new DropItem({scene:this.scene, x:this.x, y:this.y, frame:drop}));
+            this.drops.forEach(drop => {
+                const name = Object.keys(items).find(item => items[item].frame == drop);
+                return new DropItem({ scene: this.scene, x: this.x, y: this.y, frame: drop, name: name })
+            });
         }
     };
 }

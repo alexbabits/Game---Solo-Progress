@@ -137,7 +137,7 @@ So then we move on to frame 6 and so on being false again. (We also just set the
 38. Added custom cursor to mainscene, added custom cursor.
 ------------------------------------------Commit 2------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-------------------------------------------Commit 3------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------Commit 3 (Inventory Branch)------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 39. Created InventoryScene.js, added it to configs. Launched it in MainScene.
     -made it's constructor which contained properties about the columns, rows, spacing, margin, tile size, and an empty inventory array.
     -sent InventoryScene the mainScene data with our init(data) method.
@@ -145,4 +145,12 @@ So then we move on to frame 6 and so on being false again. (We also just set the
     -made the refresh method which actually shows the UI. (Deals with iteration, placement, sprite, scale, and wrapping of inventory squares)
     -called the refresh method in create().
     Summary: We have squares now, but no functionality yet.
-------------------------------------------Commit 3------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------Commit 3 (Inventory Branch)------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------Commit 4 (Inventory2 Branch)------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+40. Created Inventory.js, tweaked MainScene launch to include it.
+41. Created Items.js to store some of the items we wanted to have at hand.
+42. Built upon InventoryScene.js to be able to add items to inventory slots.
+43. Imported inventory to the player, and made it a class via the 'new' keyword.
+44. Added the ability to add items to our inventory. Refactored max columns and max rows.
+------------------------------------------Commit 4 (Inventory2 Branch)------------------------------------------------------------------------------------------------------------------------------------------------------------------------

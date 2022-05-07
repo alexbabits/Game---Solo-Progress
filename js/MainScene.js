@@ -142,7 +142,8 @@ export default class MainScene extends Phaser.Scene {
         camera.setLerp(0.1,0.1);
         camera.setBounds(0,0,this.game.config.width,this.game.config.heigth);
         //Here we launch our inventory scene.
-        this.scene.launch('InventoryScene');
+        //We also now pass in the mainscene, which gets passed into the "let {mainScene} = data;" part in InventoryScene in the init(data) method.
+        this.scene.launch('InventoryScene', {mainScene:this});
 
         this.player.inputKeys = this.input.keyboard.addKeys({
             up: Phaser.Input.Keyboard.KeyCodes.W,

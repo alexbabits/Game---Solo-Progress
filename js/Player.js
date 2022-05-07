@@ -1,3 +1,5 @@
+//Imported inventory to the player with "this.inventory = new Inventory();"
+import Inventory from "./Inventory.js";
 import MatterEntity from "./MatterEntity.js";
 
 export default class Player extends MatterEntity {
@@ -6,7 +8,9 @@ export default class Player extends MatterEntity {
 
         super({...data, health: 20, drops:[], name:'player'});
         this.touching = [];
-        //Here we set our default value of our flag associated with our whackStuff method to false.
+        //Now we need to make sure the player has an inventory as it relates to InventoryScene.js init() method of "this.inventory = mainScene.player.inventory;"
+        this.inventory = new Inventory();
+
         this.attack_frame = false;
         const {Body,Bodies} = Phaser.Physics.Matter.Matter;
         let playerCollider = Bodies.rectangle(this.x, this.y, 22, 32, {chamfer: {radius: 10}, isSensor:false, label:'playerCollider'});

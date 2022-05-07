@@ -1,3 +1,4 @@
+import InventoryScene from "./InventoryScene.js";
 import MainScene from "./MainScene.js";
 import map2 from "./map2.js";
 import StartScene from "./StartScene.js";
@@ -8,8 +9,8 @@ const config = {
   backgroundColor: '#999999',
   type: Phaser.AUTO,
   parent: 'configs',
-  //Added StartScene here:
-  scene:[StartScene, MainScene, map2],
+  //Added InventoryScene here:
+  scene:[StartScene, MainScene, map2, InventoryScene],
   scale: {
     zoom:1.4,
   },

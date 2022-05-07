@@ -13,7 +13,6 @@ export default class SecondScene extends Phaser.Scene {
         this.load.tilemapTiledJSON('map2','assets/images/map2.json');
         this.load.atlas('enemies', 'assets/images/enemies.png', 'assets/images/enemies_atlas.json');
         this.load.animation('enemies_anims', 'assets/images/enemies_anims.json');
-        //moved cursor image to MainScene.js, added ash image.
         this.load.image('ash', 'assets/images/ash.png');
     };
 

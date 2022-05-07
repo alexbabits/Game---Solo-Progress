@@ -162,3 +162,11 @@ So then we move on to frame 6 and so on being false again. (We also just set the
     -Implemented dragstart and dragend logic so that the UI and model can physically move the sprites and snap them to an inventory slot.
     -Created toggle to show x rows or y maxRows.
 ------------------------------------------Commit 5 (Inventory3 Branch)------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------Commit 6 (Inventory4 Branch)------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+47. In Inventory.js, created 'selected' property in constructor to set initial tint of slot 0.
+    -Added a getter to get the selected item.
+    -Added a method to get the selected items frame. 
+48. In InventoryScene.js, created method to tint the selected inventory slot.
+    -In create, made a method to select a slot index with our scroll wheel and properly highlight and wrap around.
+------------------------------------------Commit 6 (Inventory4 Branch)------------------------------------------------------------------------------------------------------------------------------------------------------------------------

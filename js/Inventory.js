@@ -1,7 +1,11 @@
+import items from "./Items.js";
+
 export default class Inventory {
     constructor(){
         this.maxColumns = 4;
         this.maxRows = 4;
+        //this defaults selected to the zero index in our inventory.
+        this.selected = 0;
         this.items = {
             0: {name: "pickaxe", quantity: 1},
             2: {name: "stone", quantity: 3}
@@ -29,18 +33,24 @@ export default class Inventory {
         return this.items[index];
     };
 
-    //method to move a clicked item's index.
     moveItem(start, end){
-    //We just want to handle the case where our start and end are equal, or drag into a slot that already has an item.
-    //In both cases, we don't want to do anything, just return
     if(start === end || this.items[end]) return;
-    //simply assigning the item's end index to the items start.
         this.items[end] = this.items[start];
-    //and make sure we delete the item at the start so only the end remains.
-    delete this.items[start];
+        delete this.items[start];
+        console.log(`start${start} end${end}`);
+    }
 
-    //console log the start and end to see what's going on.
-    console.log(`start${start} end${end}`);
+    //getter to get the selected item, no use now but could be used to equip things in the future.
+    get SelectedItem() {
+    //this 'items' refers to everything in our inventory
+        return this.items[this.selected];
+    }
+
+    //method to get the item's frame, no use now, but could be used to show the item equipped.
+    getItemFrame(item) {
+    //this returns the frame based on the items name.
+    //this 'items' refers to ALL items that are listed in items.js
+        return items[item.name].frame;
     }
 
 };

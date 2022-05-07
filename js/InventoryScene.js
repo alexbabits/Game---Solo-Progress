@@ -1,4 +1,3 @@
-//imported items.js
 import items from "./Items.js";
 
 export default class InventoryScene extends Phaser.Scene {
@@ -12,7 +11,6 @@ export default class InventoryScene extends Phaser.Scene {
         this.inventorySlots = [];
     }
 
-    //this method allows us to send the scene some data. We send it the MainScene's data.
     init(data){
         let { mainScene } = data;
         this.mainScene = mainScene;
@@ -25,34 +23,25 @@ export default class InventoryScene extends Phaser.Scene {
         return this._tileSize * this.uiScale;
     };
 
-    //method to destroy invy slot
     destroyInventorySlot(inventorySlot) {
-        //if there's an item sprite, then destroy it.
         if(inventorySlot.item) inventorySlot.item.destroy();
-        //if there's quantity text, then destroy it.
         if(inventorySlot.quantityText) inventorySlot.quantityText.destroy();
-        //Destroy the inventory slot itself.
         inventorySlot.destroy();
     }
 
     refresh() {
-        //Kill every inventory slot everytime we do a refresh.
         this.inventorySlots.forEach( slots => this.destroyInventorySlot(slots));
-        //Make sure out inventory slots array is empty. We want to keep an array of inventory slots.
         this.inventorySlots = [];
         for (let index = 0; index < this.maxColumns * this.rows; index++) {
             let x = (640 - (this.maxColumns * (this.tileSize + this.margin))) + ((index % this.maxColumns) * (this.tileSize + this.gridSpacing));
             let y = (640 - (this.rows * (this.tileSize + this.margin))) + (Math.floor(index/this.maxColumns) * (this.tileSize + this.gridSpacing));
             let inventorySlot = this.add.sprite(x, y, "items", 11);
             inventorySlot.setScale(this.uiScale);
-            //Keeps inventory tiles slots stay in the background.
             inventorySlot.depth = -1;
-            //Set inventory slots interactive.
             inventorySlot.setInteractive();
-            //What inventory slot index has our mouse hovered over?
+
             inventorySlot.on("pointerover", pointer => {
                 console.log(`pointerover: ${index}`);
-            //Have a hover index and set it to the particular inventory slot index that's been hovered over.
                 this.hoverIndex = index;
             });
 
@@ -63,47 +52,58 @@ export default class InventoryScene extends Phaser.Scene {
                     font: "11px Arial",
                     fill: "#111"  
                 }).setOrigin(0.5, 0);
-            //inside our if statement where we add the item
-            //We need to tell phaser we want to handle draggable events, and we want to drag the item sprite.
                 inventorySlot.item.setInteractive();
-            //we also need to set it draggable and pass in the thing (our sprite) we want to drag.
                 this.input.setDraggable(inventorySlot.item);
             };
-            //To keep track of every inventory slot we create so we can destroy them above. 
-            //This just adds the newly created inventory slot in the for loop into our inventory slots array, and allows us to destroy it on refresh.
             this.inventorySlots.push(inventorySlot);
         };
+        //calls update selected to make sure we are doing an initial highlight of selected item.
+        this.updateSelected();
+    };
+
+    //method to update (tint) the selected slot.
+    updateSelected() {
+    //go through each slot
+        for (let index = 0; index < this.maxColumns; index++) {
+    //tint unselected white, tint selected yellow.
+            this.inventorySlots[index].tint = this.inventory.selected === index ? 0xffff00 : 0xffffff;
+        }
     };
 
     create() {
-        //toggles between showing one line on inventory or all the rows.
+
+        //Ability to select items
+        this.input.on("wheel", (pointer, gameObject, deltaX, deltaY, deltaZ) => {
+        //constrain it to between zero and maximum number of columns
+        //inside inventory, we created 'selected' in our inventory.js model, which is just the index of our selected item.
+        //And we want that at most to be the maximum columns.
+        //If we are scrolling up (deltaY is positive) then we want to add 1, and if we scroll down, remove 1.
+        //But we can't just keep adding 1 forever, so again we use modulus as a repeating limiter so it never goes above max columns. 
+            this.inventory.selected = Math.max(0, this.inventory.selected + (deltaY > 0 ? 1 : -1)) % this.maxColumns;
+        //We call update selected to tint the slot index we currently have selected.
+        this.updateSelected();
+        });
+
         this.input.keyboard.on("keydown-I", ()=> {
-        //if our rows = 1, then make them equal to max rows, otherwise set back to 1.
             this.rows = this.rows === 1 ? this.maxRows : 1;
             this.refresh();
         });
-        //Tell phaser we are not just interested in the events on top (fixes items not snapping back to previous slots they occupied.)
+
         this.input.setTopOnly(false);
-        //Dragging code. 'dragstart' is a specific keyword to physically start a dragging event.
+
         this.input.on("dragstart", () => {
             console.log("dragstart");
-            //Set our start index (where we start hovering over) equal to the current hover index.
             this.startIndex = this.hoverIndex;
-            //remove the text while dragging.
             this.inventorySlots[this.startIndex].quantityText.destroy();
         });
-        //Handle the drag event, it will send over the game object that's getting dragged around
-        //dragX and dragY are just the current mouse position. (You want the object to follow the mouse as you drag.)
+
         this.input.on("drag", (pointer, gameObject, dragX, dragY) => {
-        //This gets the game object following the mouse location.
             gameObject.x = dragX;
             gameObject.y = dragY;
         });
-        //Getting the item sprite to snap into an inventory slot by handling the drag end event.
+
         this.input.on("dragend", () => {
-        //We use method moveItem in inventory.js, to move it from the start index to the current hover index.
             this.inventory.moveItem(this.startIndex, this.hoverIndex);
-        //call refresh to see current state of our inventory reflected in the UI.
             this.refresh();
         });
 

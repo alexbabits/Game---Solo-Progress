@@ -13,10 +13,8 @@ export default class MainScene extends Phaser.Scene {
         this.load.tilemapTiledJSON('map','assets/images/map.json');
         this.load.atlas('enemies', 'assets/images/enemies.png', 'assets/images/enemies_atlas.json');
         this.load.animation('enemies_anims', 'assets/images/enemies_anims.json');
-        //Added in rain.png
         this.load.image('rain', 'assets/images/rain.png');
         this.load.image('cursor', 'assets/images/cursor.png');
-        //Added in lightning.png
         this.load.image('lightning', 'assets/images/lightning.png');
     };
 
@@ -94,7 +92,6 @@ export default class MainScene extends Phaser.Scene {
         }
         */
 
-        //Added in rain particles
         this.particles = this.add.particles('rain');
         this.emitter = this.particles.createEmitter({
             x: { min:0, max: 800},
@@ -109,7 +106,6 @@ export default class MainScene extends Phaser.Scene {
             blendMode: 0
         });
 
-        //Added in lightning particles
         this.particles = this.add.particles('lightning');
         this.emitter = this.particles.createEmitter({
             x: { min:0, max: 800},

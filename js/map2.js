@@ -58,7 +58,6 @@ export default class SecondScene extends Phaser.Scene {
         this.dragon.setFixedRotation();
         this.dragon.setStatic(true);
 
-        //created ash particles
         this.particles = this.add.particles('ash');
         this.emitter = this.particles.createEmitter({
             x: { min:0, max: 800},

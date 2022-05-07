@@ -17,6 +17,8 @@ export default class InventoryScene extends Phaser.Scene {
         this.inventory = mainScene.player.inventory;
         this.maxColumns = this.inventory.maxColumns;
         this.maxRows = this.inventory.maxRows;
+        //We can now subscribe to our inventory.js. We will send in arrow function that calls our refresh method.
+        this.inventory.subscribe(() => this.refresh());
     };
 
     get tileSize() {
@@ -57,38 +59,24 @@ export default class InventoryScene extends Phaser.Scene {
             };
             this.inventorySlots.push(inventorySlot);
         };
-        //calls update selected to make sure we are doing an initial highlight of selected item.
         this.updateSelected();
     };
 
-    //method to update (tint) the selected slot.
     updateSelected() {
-    //go through each slot
         for (let index = 0; index < this.maxColumns; index++) {
-    //tint unselected white, tint selected yellow.
             this.inventorySlots[index].tint = this.inventory.selected === index ? 0xffff00 : 0xffffff;
         }
     };
 
     create() {
-
-        //Ability to select items
         this.input.on("wheel", (pointer, gameObject, deltaX, deltaY, deltaZ) => {
-        //constrain it to between zero and maximum number of columns
-        //inside inventory, we created 'selected' in our inventory.js model, which is just the index of our selected item.
-        //And we want that at most to be the maximum columns.
-        //If we are scrolling up (deltaY is positive) then we want to add 1, and if we scroll down, remove 1.
-        //But we can't just keep adding 1 forever, so again we use modulus as a repeating limiter so it never goes above max columns. 
             this.inventory.selected = Math.max(0, this.inventory.selected + (deltaY > 0 ? 1 : -1)) % this.maxColumns;
-        //We call update selected to tint the slot index we currently have selected.
-        this.updateSelected();
+            this.updateSelected();
         });
-
         this.input.keyboard.on("keydown-I", ()=> {
             this.rows = this.rows === 1 ? this.maxRows : 1;
             this.refresh();
         });
-
         this.input.setTopOnly(false);
 
         this.input.on("dragstart", () => {
@@ -96,17 +84,14 @@ export default class InventoryScene extends Phaser.Scene {
             this.startIndex = this.hoverIndex;
             this.inventorySlots[this.startIndex].quantityText.destroy();
         });
-
         this.input.on("drag", (pointer, gameObject, dragX, dragY) => {
             gameObject.x = dragX;
             gameObject.y = dragY;
         });
-
         this.input.on("dragend", () => {
             this.inventory.moveItem(this.startIndex, this.hoverIndex);
             this.refresh();
         });
-
         this.refresh();
     };
 

@@ -102,15 +102,19 @@ export default class Player extends MatterEntity {
         this.scene.matterCollision.addOnCollideStart({
             objectA: [playerCollider],
             callback: other => {
-                if(other.gameObjectB && other.gameObjectB.pickup) other.gameObjectB.pickup();
+                if(other.gameObjectB && other.gameObjectB.pickup) 
+        //adding in logic to be able to pick up items: and if we successfully picked up the item,
+        //then add the item to our inventory.
+                    if(other.gameObjectB.pickup()) this.inventory.addItem({name:other.gameObjectB.name, quantity: 1});
                 },
             context: this.scene, 
         });
-
+        //we copy that new logic above and input it in the same place here:
         this.scene.matterCollision.addOnCollideActive({
             objectA:[playerCollider],
             callback: other => {  
-                if(other.gameObjectB && other.gameObjectB.pickup) other.gameObjectB.pickup();
+                if(other.gameObjectB && other.gameObjectB.pickup) 
+                    if(other.gameObjectB.pickup()) this.inventory.addItem({name:other.gameObjectB.name, quantity: 1});
                 },
             context: this.scene,
         });

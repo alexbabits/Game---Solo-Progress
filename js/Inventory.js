@@ -9,7 +9,7 @@ export default class Inventory {
             0: {name: "pickaxe", quantity: 1},
             2: {name: "stone", quantity: 3}
         }
-    //temporarily adding a few pickaxes to start with
+        //temporarily adding a few pickaxes to start with
         this.addItem({name: "pickaxe", quantity: 68});
     };
 
@@ -48,7 +48,6 @@ export default class Inventory {
             }
         }
         //calling broadcast because this changes our inventory.
-        //If you comment out 'this.broadcast();' You can pickup items, but they don't go into inventory, and toggle "I" on inventory doesn't work anymore.
         this.broadcast();
     }
 
@@ -64,5 +63,20 @@ export default class Inventory {
         //calling broadcast because this changes our inventory.
         this.broadcast();
     }
+
+    /*
+    //selectedItem and getItemFrame have no use now, but could be used in the future for equipping items and getting their sprite.
+
+    get selectedItem() {
+    //This 'items' is the object in our constructor in Inventory.js (all our current items)
+        return this.items[this.selected];
+    }
+    //pass it in the item, does a look up in items, looks up the name and returns the frame.
+    //This 'items' is ALL the items found in items.js
+    //If using this method, will need to import items.js!
+    getItemFrame(item) {
+        return items[item.name].frame;
+    }
+    */
 
 };

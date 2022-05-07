@@ -172,5 +172,5 @@ So then we move on to frame 6 and so on being false again. (We also just set the
 ------------------------------------------Commit 6 (Inventory4 Branch)------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ------------------------------------------Commit 7 (Inventory5 Branch)------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-49. NOT WORKING YET (Trying to get items to actually go into inventory slots when picked up)
+49. Fixed the frame bug with picking up items by modifying the hit method code in MatterEntity, and including 'this.name = data.name' in DropItem constructor.
 ------------------------------------------Commit 7 (Inventory5 Branch)------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -131,8 +131,18 @@ So then we move on to frame 6 and so on being false again. (We also just set the
 ------------------------------------------V2.4------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ------------------------------------------Commit 2------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-33. Added ash.png, used this as particles in map2 instead.
-34. Added rain.png, used this as particles in mainscene.
-35. Added lightning.png, used this as particles in mainscene.
-36. Added custom cursor to mainscene, added custom cursor.
+35. Added ash.png, used this as particles in map2 instead.
+36. Added rain.png, used this as particles in mainscene.
+37. Added lightning.png, used this as particles in mainscene.
+38. Added custom cursor to mainscene, added custom cursor.
 ------------------------------------------Commit 2------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------Commit 3------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+39. Created InventoryScene.js, added it to configs. Launched it in MainScene.
+    -made it's constructor which contained properties about the columns, rows, spacing, margin, tile size, and an empty inventory array.
+    -sent InventoryScene the mainScene data with our init(data) method.
+    -made a getter method to get the tile size and UI information to scale properly.
+    -made the refresh method which actually shows the UI. (Deals with iteration, placement, sprite, scale, and wrapping of inventory squares)
+    -called the refresh method in create().
+    Summary: We have squares now, but no functionality yet.
+------------------------------------------Commit 3------------------------------------------------------------------------------------------------------------------------------------------------------------------------

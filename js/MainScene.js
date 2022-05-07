@@ -21,7 +21,7 @@ export default class MainScene extends Phaser.Scene {
     };
 
     create(){
-        //Added in custom cursor
+
         this.input.setDefaultCursor('url(assets/images/cursor.png), pointer')
 
         const map = this.make.tilemap({key: 'map'});
@@ -141,8 +141,7 @@ export default class MainScene extends Phaser.Scene {
         camera.startFollow(this.player);
         camera.setLerp(0.1,0.1);
         camera.setBounds(0,0,this.game.config.width,this.game.config.heigth);
-        //Here we launch our inventory scene.
-        //We also now pass in the mainscene, which gets passed into the "let {mainScene} = data;" part in InventoryScene in the init(data) method.
+
         this.scene.launch('InventoryScene', {mainScene:this});
 
         this.player.inputKeys = this.input.keyboard.addKeys({

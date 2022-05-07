@@ -154,3 +154,11 @@ So then we move on to frame 6 and so on being false again. (We also just set the
 43. Imported inventory to the player, and made it a class via the 'new' keyword.
 44. Added the ability to add items to our inventory. Refactored max columns and max rows.
 ------------------------------------------Commit 4 (Inventory2 Branch)------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------Commit 5 (Inventory3 Branch)------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+45. In Inventory.js, created method to move a selected item sprites index 
+46. In InventoryScene.js, created method to destroy inventory slots.
+    -Implemented hover logic and pointer on logic to be able to drag objects.
+    -Implemented dragstart and dragend logic so that the UI and model can physically move the sprites and snap them to an inventory slot.
+    -Created toggle to show x rows or y maxRows.
+------------------------------------------Commit 5 (Inventory3 Branch)------------------------------------------------------------------------------------------------------------------------------------------------------------------------

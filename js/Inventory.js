@@ -1,5 +1,3 @@
-import items from "./Items.js";
-
 export default class Inventory {
     constructor(){
         this.maxColumns = 4;
@@ -11,7 +9,7 @@ export default class Inventory {
             0: {name: "pickaxe", quantity: 1},
             2: {name: "stone", quantity: 3}
         }
-    //temporary attempt to add a few pickaxes.
+    //temporarily adding a few pickaxes to start with
         this.addItem({name: "pickaxe", quantity: 68});
     };
 
@@ -50,6 +48,7 @@ export default class Inventory {
             }
         }
         //calling broadcast because this changes our inventory.
+        //If you comment out 'this.broadcast();' You can pickup items, but they don't go into inventory, and toggle "I" on inventory doesn't work anymore.
         this.broadcast();
     }
 
@@ -65,15 +64,5 @@ export default class Inventory {
         //calling broadcast because this changes our inventory.
         this.broadcast();
     }
-
-    /*
-    get SelectedItem() {
-        return this.items[this.selected];
-    }
-
-    getItemFrame(item) {
-        return items[item.name].frame;
-    }
-    */
 
 };

@@ -140,9 +140,19 @@ export default class MainScene extends Phaser.Scene {
         camera.setBounds(0,0,this.game.config.width,this.game.config.heigth);
 
         this.scene.launch('InventoryScene', {mainScene:this});
-        //We need to assign crafting here in our mainScene.
         this.crafting = new Crafting({ mainScene:this});
-        this.scene.launch('CraftingScene', {mainScene:this});
+        //keyboard toggle for crafting menu.
+        this.input.keyboard.on('keydown-C', () => {
+        //if crafting scene is already active, close it. Otherwise, open it.
+            if(this.scene.isActive("CraftingScene")){
+                this.scene.stop('CraftingScene')
+            } else {
+                this.scene.launch('CraftingScene', {mainScene:this});
+            }
+        });
+
+        //moved the crafting scene launch into the 'else' statement above.
+
 
 
         this.player.inputKeys = this.input.keyboard.addKeys({

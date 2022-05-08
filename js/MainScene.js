@@ -139,6 +139,8 @@ export default class MainScene extends Phaser.Scene {
         camera.setBounds(0,0,this.game.config.width,this.game.config.heigth);
 
         this.scene.launch('InventoryScene', {mainScene:this});
+        //To show the crafting UI scene, launch it here, for now it will just always be shown:
+        this.scene.launch('CraftingScene', {mainScene:this});
 
         this.player.inputKeys = this.input.keyboard.addKeys({
             up: Phaser.Input.Keyboard.KeyCodes.W,

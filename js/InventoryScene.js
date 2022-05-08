@@ -1,13 +1,12 @@
 import items from "./Items.js";
-
-export default class InventoryScene extends Phaser.Scene {
+import UIBaseScene from "./UIBaseScene.js";
+//Can now just extend the base scene.
+export default class InventoryScene extends UIBaseScene {
     constructor(){
+        //deleted the commonalities between inventory and crafting - put them in UIBaseScene instead.
         super("InventoryScene");
         this.rows = 1;
-        this.uiScale = 1.5;
         this.gridSpacing = 4;
-        this.margin = 2;
-        this._tileSize = 32;
         this.inventorySlots = [];
     }
 
@@ -17,13 +16,9 @@ export default class InventoryScene extends Phaser.Scene {
         this.inventory = mainScene.player.inventory;
         this.maxColumns = this.inventory.maxColumns;
         this.maxRows = this.inventory.maxRows;
-        //We can now subscribe to our inventory.js. We will send in arrow function that calls our refresh method.
         this.inventory.subscribe(() => this.refresh());
     };
-
-    get tileSize() {
-        return this._tileSize * this.uiScale;
-    };
+    //removed getter, put in base scene instead.
 
     destroyInventorySlot(inventorySlot) {
         if(inventorySlot.item) inventorySlot.item.destroy();
@@ -35,8 +30,9 @@ export default class InventoryScene extends Phaser.Scene {
         this.inventorySlots.forEach( slots => this.destroyInventorySlot(slots));
         this.inventorySlots = [];
         for (let index = 0; index < this.maxColumns * this.rows; index++) {
-            let x = (640 - (this.maxColumns * (this.tileSize + this.margin))) + ((index % this.maxColumns) * (this.tileSize + this.gridSpacing));
-            let y = (640 - (this.rows * (this.tileSize + this.margin))) + (Math.floor(index/this.maxColumns) * (this.tileSize + this.gridSpacing));
+            //changed 640 hard coded number to instead be configs width and height.
+            let x = (this.game.config.width - (this.maxColumns * (this.tileSize + this.margin))) + ((index % this.maxColumns) * (this.tileSize + this.gridSpacing));
+            let y = (this.game.config.height - (this.rows * (this.tileSize + this.margin))) + (Math.floor(index/this.maxColumns) * (this.tileSize + this.gridSpacing));
             let inventorySlot = this.add.sprite(x, y, "items", 11);
             inventorySlot.setScale(this.uiScale);
             inventorySlot.depth = -1;

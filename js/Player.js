@@ -103,13 +103,11 @@ export default class Player extends MatterEntity {
             objectA: [playerCollider],
             callback: other => {
                 if(other.gameObjectB && other.gameObjectB.pickup) 
-        //adding in logic to be able to pick up items: and if we successfully picked up the item,
-        //then add the item to our inventory.
                     if(other.gameObjectB.pickup()) this.inventory.addItem({name:other.gameObjectB.name, quantity: 1});
                 },
             context: this.scene, 
         });
-        //we copy that new logic above and input it in the same place here:
+
         this.scene.matterCollision.addOnCollideActive({
             objectA:[playerCollider],
             callback: other => {  
@@ -138,7 +136,6 @@ export default class Player extends MatterEntity {
             } else if (this.anims.currentFrame.textureFrame === 'hero_attack_6') {
                 this.attack_frame = false
             }         
-
                 if(gameObject.dead) gameObject.destroy();
         });
         //console.log(this.anims) to see what's going on with all things related to our animation state.

@@ -6,10 +6,12 @@ export default class Inventory {
         this.observers = [];
         this.items = {
             0: {name: "pickaxe", quantity: 1},
-            2: {name: "stone", quantity: 3}
+            2: {name: "stone", quantity: 1}
         }
 
         this.addItem({name: "pickaxe", quantity: 68});
+        //added wood to test crafting.js logic.
+        this.addItem({name: "wood", quantity: 1});
     };
 
 
@@ -50,6 +52,14 @@ export default class Inventory {
         this.items[end] = this.items[start];
         delete this.items[start];
         this.broadcast();
+    }
+    //adding this method from Crafting.js to our inventory.js here.
+    //We could have 3 wood in 1 slot and 5 wood in another slot, so we have to add them via an accumulator.
+    getItemQuantity(itemName) {
+    //If we are passing in wood, we need to filter all our items in our invy for just wood.
+    //This passes us all the wood items, for example, and we want to add them together.
+    //We can map these filtered items to a new array! And then use reduce method with accumulators to add. The zero at the end means if there's no wood, it defaults to zero.
+        return Object.values(this.items).filter(i => i.name === itemName).map(i => i.quantity).reduce((accumulater, currentValue) => accumulater + currentValue, 0);
     }
 
     /*

@@ -1,9 +1,8 @@
 import items from "./Items.js";
 import UIBaseScene from "./UIBaseScene.js";
-//Can now just extend the base scene.
+
 export default class InventoryScene extends UIBaseScene {
     constructor(){
-        //deleted the commonalities between inventory and crafting - put them in UIBaseScene instead.
         super("InventoryScene");
         this.rows = 1;
         this.gridSpacing = 4;
@@ -18,7 +17,6 @@ export default class InventoryScene extends UIBaseScene {
         this.maxRows = this.inventory.maxRows;
         this.inventory.subscribe(() => this.refresh());
     };
-    //removed getter, put in base scene instead.
 
     destroyInventorySlot(inventorySlot) {
         if(inventorySlot.item) inventorySlot.item.destroy();
@@ -30,7 +28,6 @@ export default class InventoryScene extends UIBaseScene {
         this.inventorySlots.forEach( slots => this.destroyInventorySlot(slots));
         this.inventorySlots = [];
         for (let index = 0; index < this.maxColumns * this.rows; index++) {
-            //changed 640 hard coded number to instead be configs width and height.
             let x = (this.game.config.width - (this.maxColumns * (this.tileSize + this.margin))) + ((index % this.maxColumns) * (this.tileSize + this.gridSpacing));
             let y = (this.game.config.height - (this.rows * (this.tileSize + this.margin))) + (Math.floor(index/this.maxColumns) * (this.tileSize + this.gridSpacing));
             let inventorySlot = this.add.sprite(x, y, "items", 11);

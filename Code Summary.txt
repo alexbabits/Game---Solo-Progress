@@ -188,3 +188,11 @@ So then we move on to frame 6 and so on being false again. (We also just set the
     -Created multiple crafting slots in our updateCraftableSlots method, positioned and iterated them, added ability to destroy them.
 52. Defined mats for craftable materials in items.js
 ------------------------------------------Crafting1 Branch)------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------Crafting2 Branch)------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+53. Created Crafting.js the crafting model.
+    -created updateItems method and put it in the updateCraftableSlots method in CraftingScene.
+    -Assigned crafting to mainScene.
+    -created getItemQuantity in inventory.js
+    -In CraftingScene in updateCraftableSlots method, put tints and corresponding frames to crafting mats and craftable items.
+------------------------------------------Crafting2 Branch)------------------------------------------------------------------------------------------------------------------------------------------------------------------------

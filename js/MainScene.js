@@ -1,3 +1,4 @@
+import Crafting from "./Crafting.js";
 import Player from "./Player.js";
 import Resource from "./Resource.js";
 
@@ -130,8 +131,8 @@ export default class MainScene extends Phaser.Scene {
         let a;
         for (a=0;a<5;a++) {
         this.player = new Player({scene:this, x:Phaser.Math.Between(150,400), y:Phaser.Math.Between(150, 350), texture:'hero', frame:'hero_idle_1'});
-        
         }
+
         let camera = this.cameras.main;
         camera.zoom = 1.4;
         camera.startFollow(this.player);
@@ -139,8 +140,10 @@ export default class MainScene extends Phaser.Scene {
         camera.setBounds(0,0,this.game.config.width,this.game.config.heigth);
 
         this.scene.launch('InventoryScene', {mainScene:this});
-        //To show the crafting UI scene, launch it here, for now it will just always be shown:
+        //We need to assign crafting here in our mainScene.
+        this.crafting = new Crafting({ mainScene:this});
         this.scene.launch('CraftingScene', {mainScene:this});
+
 
         this.player.inputKeys = this.input.keyboard.addKeys({
             up: Phaser.Input.Keyboard.KeyCodes.W,

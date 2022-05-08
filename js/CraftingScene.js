@@ -2,57 +2,60 @@ import UIBaseScene from "./UIBaseScene.js";
 
 export default class CraftingScene extends UIBaseScene {
     constructor(){
-        //call super with crafting scene which will call constructor of ui base scene, then pass it again to phaser.scene.
         super("CraftingScene");
         this.craftingSlots = [];
         this.uiScale = 1.0;
     }
 
     init(data){
-        //let { mainScene } = data;
-        //this.mainScene = mainScene;
+        let { mainScene } = data;
+        this.mainScene = mainScene;
         //this.crafting will be our crafting.js model.
-        //this.crafting = mainScene.crafting;
+        this.crafting = mainScene.crafting;
         //subscribing crafting model to inventory, which then calls a method we created called updateCraftableSlots.
-        //this.crafting.inventory.subscribe( () => this.updateCraftableSlots() );
+        this.crafting.inventory.subscribe( () => this.updateCraftableSlots() );
     }
 
     create() {
         this.updateCraftableSlots();
     }
 
-    //method to destroy crafting slot when needed.
     destroyCraftingSlot(craftingSlot) {
-    //Go through our crafting slot mats and for each mat, destroy all sprites.
         craftingSlot.matItems.forEach(m => m.destroy());
-    //destroy the item sprite
         craftingSlot.item.destroy();
-    //destroy the crafting slot itself.
         craftingSlot.destroy();
     }
 
-    //method to update the crafting slots.
     updateCraftableSlots(){
-        for (let index = 0; index < 3; index++) {
-    //call the destroy method. If there's an existing slot at this index, then destroy it.
-    if(this.craftingSlots[index]) this.destroyCraftingSlot(this.craftingSlots[index]);
-    //crafting slots iterated position.
+        //We need to call the updateItems method here.
+        this.crafting.updateItems();
+        //we changed the hardcoded index < 3 to be versatile, instead getting the maximum iterations for the crafting slots from the crafting model.
+        for (let index = 0; index < this.crafting.items.length; index++) {
+            if(this.craftingSlots[index]) this.destroyCraftingSlot(this.craftingSlots[index]);
+        //assign the current craftable item we are iterating over. (Looking into our model and looking at the index).
+            const craftableItem = this.crafting.items[index];
             let x = this.margin + this.tileSize / 2;
             let y = index * this.tileSize + this.game.config.height / 2;
-    //We could push them on array like with inventoryScene, or we could do it like this:
+
             this.craftingSlots[index] = this.add.sprite(x,y,"items",11);
-    //Show the craftable item inside the slot. Taking the item property which will be the item sprite
-            this.craftingSlots[index].item = this.add.sprite(x, y, "items", 162);
-    //Created an array of mats.
+        //instead of hard coding a frame number, we can just use the craftable items frame.
+            this.craftingSlots[index].item = this.add.sprite(x, y, "items", craftableItem.frame);
+        //tint craftable item sprite based on canCraft boolean we setup in crafting model. (sprite is: this.craftingSlots[index].item)
+            this.craftingSlots[index].item.tint = craftableItem.canCraft ? 0xffffff : 0x555555;
+
             this.craftingSlots[index].matItems = [];
-    //Materials shown next to craftable items (items needed to craft the item shown above).
-        for (let matIndex = 0; matIndex < 4; matIndex++) {
-    //local scale variable to scale sprite.
+        //get rid of the hardcoded 4, and instead going through the mats of the craftable item to see how many iterations need to be done.
+        //Which is found in the matDetails array.
+        for (let matIndex = 0; matIndex < craftableItem.matDetails.length; matIndex++) {
             let scale = 0.75;
-    //We have an array of mat items, assigning it a sprite to the right of our craftable item. The position gets it to march to the right.
-            this.craftingSlots[index].matItems[matIndex] = this.add.sprite(x + this.tileSize + matIndex * this.tileSize * scale, y, "items", 69);
-    //sets local scale of our sprite.
+        //get our mat from the array.
+            const matItem = craftableItem.matDetails[matIndex];
+        //at the end, instead of hardcoding a frame, we want to show the correct mat frame.
+            this.craftingSlots[index].matItems[matIndex] = this.add.sprite(x + this.tileSize + matIndex * this.tileSize * scale, y, "items", matItem.frame);
             this.craftingSlots[index].matItems[matIndex].setScale(scale);
+        //tinting the mat sprite if available or not using available boolean we setup in crafting model. (sprite is: this.craftingSlots[index].matItems[matIndex]).
+            this.craftingSlots[index].matItems[matIndex].tint = matItem.available ? 0xffffff : 0x555555;
+
             }
             
         }

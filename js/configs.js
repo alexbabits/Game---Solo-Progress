@@ -10,7 +10,6 @@ const config = {
   backgroundColor: '#999999',
   type: Phaser.AUTO,
   parent: 'configs',
-  //add crafting scene
   scene:[StartScene, MainScene, map2, InventoryScene, CraftingScene],
   scale: {
     zoom:1.4,

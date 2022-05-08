@@ -1,5 +1,4 @@
 let items = {
-    //defined mats for craftable materials.
     pickaxe: {frame:162, mats:['wood','wood','stone']},
     shovel: {frame:163, mats:['wood','stone','stone']},
     wood: {frame:272},

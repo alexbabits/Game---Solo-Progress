@@ -9,7 +9,6 @@ export default class DropItem extends Phaser.Physics.Matter.Sprite {
     this.setFrictionAir(1);
     this.setScale(0.5);
     this.sound = this.scene.sound.add('pickup');
-    //Added this to drop item constructor to fix the missing name associated with the frame error.
     this.name = data.name
         }
 

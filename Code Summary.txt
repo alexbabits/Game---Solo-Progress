@@ -174,3 +174,17 @@ So then we move on to frame 6 and so on being false again. (We also just set the
 ------------------------------------------Commit 7 (Inventory5 Branch)------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 49. Fixed the frame bug with picking up items by modifying the hit method code in MatterEntity, and including 'this.name = data.name' in DropItem constructor.
 ------------------------------------------Commit 7 (Inventory5 Branch)------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------Crafting1 Branch)------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+50. Created UIBaseScene.js to handle our crafting and inventory scene similarities.
+    -passed 'name' into constructor and super, and some similar properties. And the tile scale getter.
+    -extend the base scene instead of phaser scene for inventoryScene and CraftingScene. Imported UIBaseScene into InventoryScene.
+51. Created CraftingScene.js, which extends UIBaseScene.
+    -passing in CraftingScene to super will call the constructor of our UIBaseScene, which will in turn call the Phaser.Scene.
+    -created empty array of crafting slots.
+    -initialized some data we wanted.
+    -launched crafting scene in MainScene.
+    -Added craftingScene to configs.
+    -Created multiple crafting slots in our updateCraftableSlots method, positioned and iterated them, added ability to destroy them.
+52. Defined mats for craftable materials in items.js
+------------------------------------------Crafting1 Branch)------------------------------------------------------------------------------------------------------------------------------------------------------------------------

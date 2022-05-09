@@ -10,16 +10,11 @@ export default class Crafting {
     this.selected = 0;
     this.items = [];
     }
-    //craft method to actually craft items.
+
     craft(){
-    //we want to craft the currently selected item, so let's find the selected item first.
         let item = this.items[this.selected];
-    //for the item, only craft items that we can craft. 
         if(item.canCraft) {
-    //If we craft it, drop it on the floor infront of player.
             new DropItem({ name:item.name, scene:this.mainScene, x:this.player.x + 32, y:this.player.y, frame:item.frame});
-    //Now to actually remove mats when you craft an item.
-    //Go through them and use removeItem method we made in inventory.js to remove the mat from our inventory.
             item.matDetails.forEach(matDetail => this.inventory.removeItem(matDetail.name));
         }
     }

@@ -41,19 +41,12 @@ export default class Inventory {
         this.broadcast();
     }
 
-    //remove item method relating to crafting.js to help remove items while crafting.
     removeItem(itemName){
-    //go through inventory and find slot that has this item in, and decrement the quantity, and if decremented to zero, clear the slot completely.
-    //Find a slot with an item in it, so we want to find a key such that the item in that inventory slot's name equals the itemName we are passing in.
         let existingKey = Object.keys(this.items).find(key => this.items[key].name === itemName);
-    //If we do find an existing item
         if(existingKey){
-    //decrement the quantity of that material
             this.items[existingKey].quantity--;
-    //if items quantity has gone down to zero or less, then delete the material frame from the inventory slot.
             if(this.items[existingKey].quantity <= 0) delete this.items[existingKey];
         }
-    //since this is a change to our inventory, broadcast it to all observers.
         this.broadcast();
     }
 

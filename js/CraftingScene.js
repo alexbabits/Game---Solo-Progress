@@ -16,23 +16,17 @@ export default class CraftingScene extends UIBaseScene {
 
     create() {
         this.updateCraftableSlots();
-    //mousewheel functionality to select craftable items, and tinting. Very similiar to inventory scrolling.
         this.input.on("wheel",(pointer, gameObjects, deltaX, deltaY, deltaZ) => {
             this.crafting.selected = Math.max(0, this.crafting.selected+ (deltaY > 0 ? 1 : -1)) % this.crafting.items.length;
             this.updateSelected();
         });
-    //handles the key 'E' to craft an item.
         this.input.keyboard.on('keydown-E', () => {
-    //calls the craft method we made in crafting.js
             this.crafting.craft();
         });
     }
 
-    //creating the updateSelected method for our mousewheel.
         updateSelected(){
-    //go through all our craftable items, and tint the slot.
             for (let index = 0; index < this.crafting.items.length; index++){
-    // if the selected matches the index, tint gold, otherwise no tint (white).
                 this.craftingSlots[index].tint = this.crafting.selected === index ? 0xffff00 : 0xffffff;
             }
         }

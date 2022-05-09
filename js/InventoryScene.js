@@ -63,7 +63,6 @@ export default class InventoryScene extends UIBaseScene {
 
     create() {
         this.input.on("wheel", (pointer, gameObject, deltaX, deltaY, deltaZ) => {
-        //if the crafting scene is active, then return right away, and don't scroll for the inventory. Stops the dual scrolling.
             if(this.scene.isActive('CraftingScene')) return;
             this.inventory.selected = Math.max(0, this.inventory.selected + (deltaY > 0 ? 1 : -1)) % this.maxColumns;
             this.updateSelected();

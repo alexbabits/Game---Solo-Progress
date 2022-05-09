@@ -43,7 +43,8 @@ export default class CraftingScene extends UIBaseScene {
             if(this.craftingSlots[index]) this.destroyCraftingSlot(this.craftingSlots[index]);
             const craftableItem = this.crafting.items[index];
             let x = this.margin + this.tileSize / 2;
-            let y = index * this.tileSize + this.game.config.height / 2;
+            //moved crafting slots to the bottom left corner of the screen.
+            let y = this.game.config.height - this.tileSize + this.margin - (index * this.tileSize) ;
 
             this.craftingSlots[index] = this.add.sprite(x,y,"items",11);
             this.craftingSlots[index].item = this.add.sprite(x, y, "items", craftableItem.frame);

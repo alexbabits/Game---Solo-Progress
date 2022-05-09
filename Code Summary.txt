@@ -208,4 +208,7 @@ So then we move on to frame 6 and so on being false again. (We also just set the
 
 ------------------------------------------Master Branch------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 60. Cleaned up some comments.
+61. Added ControlsScene.js to show the player the controls for now. Imported where necessary. (Added controls.png image as well).
+62. Moved Crafting Slots UI to bottom left of the screen.
+63. Added craftable health potions in Items.js
 ------------------------------------------Master Branch------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -109,7 +109,7 @@ export default class MainScene extends Phaser.Scene {
 
         this.particles = this.add.particles('lightning');
         this.emitter = this.particles.createEmitter({
-            x: { min:0, max: 800},
+            x: { min:0, max: 700},
             y: 0,
             lifespan: 100,
             speedY: {min: 0, max: 0},
@@ -120,6 +120,9 @@ export default class MainScene extends Phaser.Scene {
             frequency: 3000, 
             blendMode: 0
         });
+
+        
+        //isAlive() method to check to see if particle is alive and updating. True if alive and updating, otherwise false.
 
 
         const villainGroup = this.add.group({ key: 'hero', frame:'hero_idle_5', frameQuantity: 4 });

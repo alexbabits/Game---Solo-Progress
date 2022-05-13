@@ -1,14 +1,19 @@
 import Crafting from "./Crafting.js";
+import Enemy from "./Enemy.js";
 import Player from "./Player.js";
 import Resource from "./Resource.js";
 
 export default class MainScene extends Phaser.Scene {
     constructor() {
         super("MainScene");
+        //created blank enemies array.
+        this.enemies = [];
     }
 
     preload() {
         Player.preload(this);
+        //Insert our Enemy in preload.
+        Enemy.preload(this);
         Resource.preload(this);
         this.load.image('tiles', 'assets/images/RPG Nature Tileset.png');
         this.load.tilemapTiledJSON('map','assets/images/map.json');
@@ -31,7 +36,15 @@ export default class MainScene extends Phaser.Scene {
         this.matter.world.convertTilemapLayer(background);
     
         this.map.getObjectLayer('Resources').objects.forEach(resource =>  new Resource({scene:this, resource}));
-        
+        //Where our enemies spawn, very similar to how resources is done by putting them in Tiled and calling them as such:
+        //We passed scene and enemy in the constructor of Enemy.js so we pass it in here too.
+        //We want to push enemies to an array, because like the player, we will call update on the enemy because it 
+        //wants to do things every frame like chase and attack the player.
+        //So we push the new Enemies onto our empty 'enemies' array in mainScene.
+        this.map.getObjectLayer('Enemies').objects.forEach(enemy =>  this.enemies.push(new Enemy({scene:this, enemy})));
+
+
+        /*
         //This loads the object layer, and you get access to all the objects in that layer.
         const boundaryLayer = map.getObjectLayer('Boundary');
         //If it exists, and it has objects:  
@@ -57,7 +70,7 @@ export default class MainScene extends Phaser.Scene {
                 }
             );
         }
-
+        */
 
         /*
         These are notes for me previously trying to implement object layers and their objects+properties.
@@ -122,16 +135,19 @@ export default class MainScene extends Phaser.Scene {
         });
 
 
+        /*
         const villainGroup = this.add.group({ key: 'hero', frame:'hero_idle_5', frameQuantity: 4 });
         const villainSpawnArea = new Phaser.Geom.Rectangle(300, 300, 300, 300);
         Phaser.Actions.RandomRectangle(villainGroup.getChildren(), villainSpawnArea);
+        */
 
-
+        /*
         //Attempt to make multiple fully functional player objects - testing for spawning future enemy object groups...
         let a;
         for (a=0;a<5;a++) {
+        */
         this.player = new Player({scene:this, x:Phaser.Math.Between(150,400), y:Phaser.Math.Between(150, 350), texture:'hero', frame:'hero_idle_1'});
-        }
+        //}
 
         let camera = this.cameras.main;
         camera.zoom = 1.4;
@@ -160,13 +176,17 @@ export default class MainScene extends Phaser.Scene {
             shift: Phaser.Input.Keyboard.KeyCodes.SHIFT,
         });
 
+        /*
         this.dragon = new Phaser.Physics.Matter.Sprite(this.matter.world, Phaser.Math.Between(320,540), Phaser.Math.Between(40, 160), 'enemies', 'dragon_idle_1');
         this.add.existing(this.dragon);
         this.dragon.setFixedRotation();
         this.dragon.setStatic(true);
+        */
     };
     
     update(){
+        //We call update on each of our enemies in the enemies array.
+        this.enemies.forEach(enemy => enemy.update());
         this.player.update();
 
         if (this.player.x > 500) {

@@ -93,6 +93,9 @@ export default class MainScene extends Phaser.Scene {
         }
         */
 
+        //I want to make 'rainfall' sound not for each particle, but for whenever the 'rain' particles are active and being emitted.
+        //If they are not being emitted, stop the sound, as long as they are being emitted, play the rain sound.
+        
         this.particles = this.add.particles('rain');
         this.emitter = this.particles.createEmitter({
             x: { min:0, max: 800},
@@ -121,6 +124,16 @@ export default class MainScene extends Phaser.Scene {
             blendMode: 0
         });
 
+        //I want to make a thunder sound everytime a lightning bolt particle is emitted.
+
+        /*if(this.particles2.isAlive()) {
+            this.play.sound('bear');
+        }*/
+
+        
+        //isAlive() method to check to see if particle is alive and updating. True if alive and updating, otherwise false.
+        //onParticleEmit(callback [, context]) sets a function to call for each newly emitted particle.
+        //emitCallback: Phaser.Types.GameObjects.Particles.ParticleEmitterCallback. A function to call when a particle is emitted.
 
         const villainGroup = this.add.group({ key: 'hero', frame:'hero_idle_5', frameQuantity: 4 });
         const villainSpawnArea = new Phaser.Geom.Rectangle(300, 300, 300, 300);

@@ -219,3 +219,11 @@ So then we move on to frame 6 and so on being false again. (We also just set the
 65. Commented out our old attempts to generate multiple enemies.
 66. Imported enemy.js into MainScene, made empty enemies array, inserted our preload, added enemy spawns to that array.
 ------------------------------------------Enemies-Branch-1------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------Enemies-Branch-1 (Movement and Attacks) ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+67. Added colliders and sensors to enemies.
+68. Attack method, movement via subtracting vectors between player and enemy, movement animations, flipx, attack timer.
+69. Called the onDeath method in MatterEntity when you die. Use this in Player.js to show a death sprite or change scenes.
+    -Notice it's kept blank in MatterEntity, but filled with what we want in Player.js
+70. Added rudimentary restart transition in MainScene, but doesn't really work yet.
+------------------------------------------Enemies-Branch-1 (Movement and Attacks) ------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -6,13 +6,11 @@ import Resource from "./Resource.js";
 export default class MainScene extends Phaser.Scene {
     constructor() {
         super("MainScene");
-        //created blank enemies array.
         this.enemies = [];
     }
 
     preload() {
         Player.preload(this);
-        //Insert our Enemy in preload.
         Enemy.preload(this);
         Resource.preload(this);
         this.load.image('tiles', 'assets/images/RPG Nature Tileset.png');
@@ -36,11 +34,6 @@ export default class MainScene extends Phaser.Scene {
         this.matter.world.convertTilemapLayer(background);
     
         this.map.getObjectLayer('Resources').objects.forEach(resource =>  new Resource({scene:this, resource}));
-        //Where our enemies spawn, very similar to how resources is done by putting them in Tiled and calling them as such:
-        //We passed scene and enemy in the constructor of Enemy.js so we pass it in here too.
-        //We want to push enemies to an array, because like the player, we will call update on the enemy because it 
-        //wants to do things every frame like chase and attack the player.
-        //So we push the new Enemies onto our empty 'enemies' array in mainScene.
         this.map.getObjectLayer('Enemies').objects.forEach(enemy =>  this.enemies.push(new Enemy({scene:this, enemy})));
 
 
@@ -185,7 +178,6 @@ export default class MainScene extends Phaser.Scene {
     };
     
     update(){
-        //We call update on each of our enemies in the enemies array.
         this.enemies.forEach(enemy => enemy.update());
         this.player.update();
 
@@ -206,6 +198,15 @@ export default class MainScene extends Phaser.Scene {
                     });
 
         }
+        //Doesn't fully allow for a restart, inventory is still there, can't play again.
+        if (this.player.dead) {
+            this.cameras.main.fade(400, 0, 0, 0, false, function(camera, progress) {
+                if (progress > .99) {
+                    this.scene.stop('MainScene')
+                    this.scene.start('StartScene')
+                }
+            });
+}
         
     };
 

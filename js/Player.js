@@ -5,7 +5,7 @@ export default class Player extends MatterEntity {
     constructor(data){
         let {scene, x , y, texture, frame} = data;
 
-        super({...data, health: 20, drops:[], name:'player'});
+        super({...data, health: 2, drops:[], name:'player'});
         this.touching = [];
         this.inventory = new Inventory();
 
@@ -31,8 +31,19 @@ export default class Player extends MatterEntity {
         scene.load.audio('player', 'assets/audio/player.mp3');
     }
 
+    onDeath = () => {
+        this.anims.stop();
+        this.setTexture('items', 0 );
+        this.setOrigin(0.5);
+        
+    }
+
+
 
     update(){
+    //if dead, don't do anything in the update method.
+        if(this.dead) return;
+
         let speed = 4;
         let playerVelocity = new Phaser.Math.Vector2();
         if(this.inputKeys.left.isDown) {

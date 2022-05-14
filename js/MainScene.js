@@ -17,6 +17,8 @@ export default class MainScene extends Phaser.Scene {
         this.load.image('rain', 'assets/images/rain.png');
         this.load.image('cursor', 'assets/images/cursor.png');
         this.load.image('lightning', 'assets/images/lightning.png');
+        //load in the lightning sound
+        this.load.audio('lightning', 'assets/audio/lightning.mp3');
     };
 
     create(){
@@ -32,6 +34,7 @@ export default class MainScene extends Phaser.Scene {
     
         this.map.getObjectLayer('Resources').objects.forEach(resource =>  new Resource({scene:this, resource}));
         
+        /*
         //This loads the object layer, and you get access to all the objects in that layer.
         const boundaryLayer = map.getObjectLayer('Boundary');
         //If it exists, and it has objects:  
@@ -57,7 +60,7 @@ export default class MainScene extends Phaser.Scene {
                 }
             );
         }
-
+        */
 
         /*
         These are notes for me previously trying to implement object layers and their objects+properties.
@@ -95,7 +98,10 @@ export default class MainScene extends Phaser.Scene {
 
         //I want to make 'rainfall' sound not for each particle, but for whenever the 'rain' particles are active and being emitted.
         //If they are not being emitted, stop the sound, as long as they are being emitted, play the rain sound.
-        
+
+        //Perhaps have a 'weather' or 'storm' handler that handles both rain and lightning particle emitters.
+
+
         this.particles = this.add.particles('rain');
         this.emitter = this.particles.createEmitter({
             x: { min:0, max: 800},
@@ -124,11 +130,14 @@ export default class MainScene extends Phaser.Scene {
             blendMode: 0
         });
 
-        //I want to make a thunder sound everytime a lightning bolt particle is emitted.
 
-        /*if(this.particles2.isAlive()) {
-            this.play.sound('bear');
-        }*/
+        const lightningSound = () => {
+            this.audio.play('lightning');
+          }
+
+        this.emitter2.onParticleEmit(lightningSound, this);
+
+        //I want to make a thunder sound everytime a lightning bolt particle is emitted.
 
         
         //isAlive() method to check to see if particle is alive and updating. True if alive and updating, otherwise false.

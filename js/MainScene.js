@@ -101,6 +101,7 @@ export default class MainScene extends Phaser.Scene {
 
         //Perhaps have a 'weather' or 'storm' handler that handles both rain and lightning particle emitters.
 
+        this.lightningSound = this.sound.add('lightning')
 
         this.particles = this.add.particles('rain');
         this.emitter = this.particles.createEmitter({
@@ -126,19 +127,15 @@ export default class MainScene extends Phaser.Scene {
             scale: 2,
             quantity: 1,
             maxParticles: 0,
-            frequency: 3000, 
+            frequency: Phaser.Math.Between(10000,60000), 
             blendMode: 0
         });
 
-
-        const lightningSound = () => {
-            this.audio.play('lightning');
+        function lightningSound() {
+            this.lightningSound.play()
           }
 
         this.emitter2.onParticleEmit(lightningSound, this);
-
-        //I want to make a thunder sound everytime a lightning bolt particle is emitted.
-
         
         //isAlive() method to check to see if particle is alive and updating. True if alive and updating, otherwise false.
         //onParticleEmit(callback [, context]) sets a function to call for each newly emitted particle.
@@ -187,6 +184,22 @@ export default class MainScene extends Phaser.Scene {
         this.dragon.setFixedRotation();
         this.dragon.setStatic(true);
     };
+
+    //outside of create, try making a startRain and stopRain function/handler that controls the particle emitter and sounds for the rain.
+    /*
+        this.rainSound = this.sound.add('rain')
+        
+        startRain() {
+            this.particles.start();
+            this.rainSound.play();
+        }
+
+        stopRain() {
+            this.particles.stop();
+            this.rainSound.sound.stop();
+        }
+
+    */
     
     update(){
         this.player.update();

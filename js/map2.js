@@ -84,10 +84,6 @@ export default class SecondScene extends Phaser.Scene {
         this.enemies.forEach(enemy => enemy.update());
         this.player.update();
 
-        if (this.player.x > 400) {
-            this.player.setTint(0xff0000);
-        }
-
         if (this.player.x < 40) {
             this.cameras.main.fade(400, 0, 0, 0, false, function(camera, progress) {
                 if (progress > .99) {

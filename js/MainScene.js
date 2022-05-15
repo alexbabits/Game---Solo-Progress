@@ -270,10 +270,6 @@ export default class MainScene extends Phaser.Scene {
         this.enemies.forEach(enemy => enemy.update());
         this.player.update();
 
-        if (this.player.x > 500) {
-            this.player.setTint(0xff0000);
-        }
-        
         //Finally, we test to see if our Object in our Object Layer is interactable by changing the player's velocity when stepped on.
         //I can't figure out how to extract the object from our object layer, and use it's position to do something.
         

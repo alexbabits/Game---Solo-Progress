@@ -37,6 +37,7 @@ export default class MatterEntity extends Phaser.Physics.Matter.Sprite {
         this.health--;
         console.log(`Hitting: ${this.name} Health: ${this.health}`);
         if(this.dead){
+            this.onDeath();
             this.drops.forEach(drop => { //This was part of the tweaked inventory stuff to fix the error so Player could pick up items into inventory successfully.
                 const name = Object.keys(items).find(item => items[item].frame == drop);
                 return new DropItem({ scene: this.scene, x: this.x, y: this.y, frame: drop, name: name })

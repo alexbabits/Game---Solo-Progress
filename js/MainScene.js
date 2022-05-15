@@ -188,7 +188,7 @@ export default class MainScene extends Phaser.Scene {
 
         this.particles2 = this.add.particles('lightning');
         this.emitter2 = this.particles2.createEmitter({
-            x: { min:0, max: 700},
+            x: { min:0, max: 640},
             y: 0,
             lifespan: 100,
             speedY: {min: 0, max: 0},
@@ -196,7 +196,7 @@ export default class MainScene extends Phaser.Scene {
             scale: 2,
             quantity: 1,
             maxParticles: 0,
-            frequency: Phaser.Math.Between(10000,60000), 
+            frequency: Phaser.Math.Between(6000,30000), 
             blendMode: 0
         });
 
@@ -296,7 +296,7 @@ export default class MainScene extends Phaser.Scene {
             });
 
         }
-        
+
         //Doesn't fully allow for a restart, inventory is still there, can't play again.
         if (this.player.dead) {
             this.cameras.main.fade(400, 0, 0, 0, false, function(camera, progress) {

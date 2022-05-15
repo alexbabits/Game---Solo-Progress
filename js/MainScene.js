@@ -90,7 +90,7 @@ export default class MainScene extends Phaser.Scene {
             assetText.destroy();
         });
 
-        //Just iterating the image 500 times to take time to load so loading bar has a purpose.
+        //Just iterating the image 500 times to take time to load so loading bar has a purpose. zenvalogo doesn't exist but it doesn't matter it seems.
         this.load.image('logo', 'zenvalogo.png');
         for (let i = 0; i < 500; i++) {
             this.load.image('logo'+i, 'zenvalogo.png');

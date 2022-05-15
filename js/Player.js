@@ -5,7 +5,7 @@ export default class Player extends MatterEntity {
     constructor(data){
         let {scene, x , y, texture, frame} = data;
 
-        super({...data, health: 2, drops:[], name:'player'});
+        super({...data, health: 20, drops:[], name:'player'});
         this.touching = [];
         this.inventory = new Inventory();
 
@@ -35,7 +35,6 @@ export default class Player extends MatterEntity {
         this.anims.stop();
         this.setTexture('items', 0 );
         this.setOrigin(0.5);
-        
     }
 
 

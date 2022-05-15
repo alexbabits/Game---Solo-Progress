@@ -39,8 +39,14 @@ export default class Enemy extends MatterEntity {
         });
     }   
 
+    //function to set the tint back to normal.
+    setBackToNormalColor(target){
+        target.setTint(0xffffff);
+    }
+
     //the 'target' is 'this.attacking', which refers to gameObjectB, which is the player.
     attack = (target) => {
+
     //if either the player or enemy is dead,
         if(target.dead || this.dead) {
     //clear the attack timer and do nothing.
@@ -49,7 +55,13 @@ export default class Enemy extends MatterEntity {
         }
     //otherwise, hit our player with the 'hit' method in MatterEntity.js
         target.hit();
+    //sets player tint to red
+        target.setTint(0xff0000);
+    //timer to set tint of player back to normal after 200 ms.
+        setTimeout(()=> this.setBackToNormalColor(target), 200);
     }
+
+
 
     update(){
         //check if dead, if true, do nothing.

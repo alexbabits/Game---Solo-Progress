@@ -17,8 +17,9 @@ export default class MainScene extends Phaser.Scene {
         this.load.image('rain', 'assets/images/rain.png');
         this.load.image('cursor', 'assets/images/cursor.png');
         this.load.image('lightning', 'assets/images/lightning.png');
-        //load in the lightning sound
+        //load in the lightning and rain sounds
         this.load.audio('lightning', 'assets/audio/lightning.mp3');
+        this.load.audio('rain', 'assets/audio/rain.mp3');
     };
 
     create(){
@@ -100,7 +101,9 @@ export default class MainScene extends Phaser.Scene {
         //If they are not being emitted, stop the sound, as long as they are being emitted, play the rain sound.
 
         //Perhaps have a 'weather' or 'storm' handler that handles both rain and lightning particle emitters.
-
+        
+        //creating our sound objects, rain and lightning:
+        this.rainSound = this.sound.add('rain')
         this.lightningSound = this.sound.add('lightning')
 
         this.particles = this.add.particles('rain');
@@ -114,8 +117,78 @@ export default class MainScene extends Phaser.Scene {
             quantity: 5,
             maxParticles: 0,
             frequency: 0, 
-            blendMode: 0
-        });
+            blendMode: 0,
+            on: true
+        });         
+
+        /*
+
+        'this.emitter.start()' turns it's 'on' property to true. Rain will be emitted.
+        'this.emitter.stop()' turns it's 'on' property to false. Rain will not be emitted.
+
+        So we could say something like:
+
+        if(rainStartFlag is triggered){
+            this.emitter.start()
+        }
+        
+        if(this.emitter.on === true){
+            this.rainSound.play()
+        }
+
+        if(rainStopFlag is triggered){
+            this.emitter.stop()
+        }
+
+        if(this.emitter.on === false){
+            this.rainSound.stop()
+        }
+
+        We could also default lightning emitter to 'on: false' and then switch it true whenever rain is on, so lightning also starts striking when rainfall begins.
+
+        Adding rain and lightning together and condensing could look like this (btw: emitter refers to rain, emitter2 refers to lightning):
+        (We don't need to play lightningSound or stop lightningSound here, because it only plays when a lightning particle is emitted anyway.
+         It's sound is taken care of via the 'onParticleEmit' method)
+
+        if(stormStartFlag === true){
+            this.emitter.start()
+            this.emitter2.start()
+            this.rainSound.play()
+        } else return
+
+        if(stormStopFlag === true){
+            this.emitter.stop()
+            this.emitter2.stop()
+            this.rainSound.stop()
+        } else return
+
+        (where the flags will oppose eachother, being true/false or false/true)
+
+        default stormStartFlag to false, and stormStopFlag to true in the constructor.
+
+        if(stormStartTimer === 12345){
+            stormStartFlag = true
+        } else {
+            stormStartFlag = false
+        }
+
+        if(stormStopTimer === 12345){
+            stormStopFlag = true
+        } else {
+            stormStopFlag = false
+        }
+
+        Math.random(0,100)
+        setTimerEvent(1000ms);
+
+        Say, if every 1 second we have a function that spits out a number from 1 to 100
+        and we have our flag change if that number is 69. Then on average, every 100 seconds our flag will be triggered.
+        Or, start the timer, and anytime it gets above a minimum value, but below a maximum value, randomly from those min to max, trigger the storm flag.
+
+        */
+
+        //added rainsound, plays 24/7 for now.
+        this.rainSound.play()
 
         this.particles2 = this.add.particles('lightning');
         this.emitter2 = this.particles2.createEmitter({
@@ -131,15 +204,14 @@ export default class MainScene extends Phaser.Scene {
             blendMode: 0
         });
 
+        //function that plays the lightning sound.
         function lightningSound() {
             this.lightningSound.play()
           }
 
+        //when a lightning particle is emitted, plays the lightning sound function which plays the lightning sound.
         this.emitter2.onParticleEmit(lightningSound, this);
         
-        //isAlive() method to check to see if particle is alive and updating. True if alive and updating, otherwise false.
-        //onParticleEmit(callback [, context]) sets a function to call for each newly emitted particle.
-        //emitCallback: Phaser.Types.GameObjects.Particles.ParticleEmitterCallback. A function to call when a particle is emitted.
 
         const villainGroup = this.add.group({ key: 'hero', frame:'hero_idle_5', frameQuantity: 4 });
         const villainSpawnArea = new Phaser.Geom.Rectangle(300, 300, 300, 300);
@@ -184,22 +256,6 @@ export default class MainScene extends Phaser.Scene {
         this.dragon.setFixedRotation();
         this.dragon.setStatic(true);
     };
-
-    //outside of create, try making a startRain and stopRain function/handler that controls the particle emitter and sounds for the rain.
-    /*
-        this.rainSound = this.sound.add('rain')
-        
-        startRain() {
-            this.particles.start();
-            this.rainSound.play();
-        }
-
-        stopRain() {
-            this.particles.stop();
-            this.rainSound.sound.stop();
-        }
-
-    */
     
     update(){
         this.player.update();

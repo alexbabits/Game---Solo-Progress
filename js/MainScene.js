@@ -1,14 +1,17 @@
 import Crafting from "./Crafting.js";
+import Enemy from "./Enemy.js";
 import Player from "./Player.js";
 import Resource from "./Resource.js";
 
 export default class MainScene extends Phaser.Scene {
     constructor() {
         super("MainScene");
+        this.enemies = [];
     }
 
     preload() {
         Player.preload(this);
+        Enemy.preload(this);
         Resource.preload(this);
         this.load.image('tiles', 'assets/images/RPG Nature Tileset.png');
         this.load.tilemapTiledJSON('map','assets/images/map.json');
@@ -34,7 +37,8 @@ export default class MainScene extends Phaser.Scene {
         this.matter.world.convertTilemapLayer(background);
     
         this.map.getObjectLayer('Resources').objects.forEach(resource =>  new Resource({scene:this, resource}));
-        
+        this.map.getObjectLayer('Enemies').objects.forEach(enemy =>  this.enemies.push(new Enemy({scene:this, enemy})));
+      
         /*
         //This loads the object layer, and you get access to all the objects in that layer.
         const boundaryLayer = map.getObjectLayer('Boundary');
@@ -213,16 +217,19 @@ export default class MainScene extends Phaser.Scene {
         this.emitter2.onParticleEmit(lightningSound, this);
         
 
+        /*
         const villainGroup = this.add.group({ key: 'hero', frame:'hero_idle_5', frameQuantity: 4 });
         const villainSpawnArea = new Phaser.Geom.Rectangle(300, 300, 300, 300);
         Phaser.Actions.RandomRectangle(villainGroup.getChildren(), villainSpawnArea);
+        */
 
-
+        /*
         //Attempt to make multiple fully functional player objects - testing for spawning future enemy object groups...
         let a;
         for (a=0;a<5;a++) {
+        */
         this.player = new Player({scene:this, x:Phaser.Math.Between(150,400), y:Phaser.Math.Between(150, 350), texture:'hero', frame:'hero_idle_1'});
-        }
+        //}
 
         let camera = this.cameras.main;
         camera.zoom = 1.4;
@@ -251,13 +258,16 @@ export default class MainScene extends Phaser.Scene {
             shift: Phaser.Input.Keyboard.KeyCodes.SHIFT,
         });
 
+        /*
         this.dragon = new Phaser.Physics.Matter.Sprite(this.matter.world, Phaser.Math.Between(320,540), Phaser.Math.Between(40, 160), 'enemies', 'dragon_idle_1');
         this.add.existing(this.dragon);
         this.dragon.setFixedRotation();
         this.dragon.setStatic(true);
+        */
     };
     
     update(){
+        this.enemies.forEach(enemy => enemy.update());
         this.player.update();
 
         if (this.player.x > 500) {
@@ -276,6 +286,15 @@ export default class MainScene extends Phaser.Scene {
                         }
                     });
 
+        }
+        //Doesn't fully allow for a restart, inventory is still there, can't play again.
+        if (this.player.dead) {
+            this.cameras.main.fade(400, 0, 0, 0, false, function(camera, progress) {
+                if (progress > .99) {
+                    this.scene.stop('SecondScene')
+                    this.scene.start('StartScene')
+                }
+            });
         }
         
     };

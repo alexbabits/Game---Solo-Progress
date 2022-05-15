@@ -1,22 +1,30 @@
+import Crafting from "./Crafting.js";
+import Enemy from "./Enemy.js";
 import Player from "./Player.js";
 import Resource from "./Resource.js";
 
 export default class SecondScene extends Phaser.Scene {
     constructor() {
         super("SecondScene");
+        this.enemies = [];
     }
 
     preload() {
         Player.preload(this);
+        Enemy.preload(this);
         Resource.preload(this);
         this.load.image('tiles', 'assets/images/RPG Nature Tileset.png');
-        this.load.tilemapTiledJSON('map2','assets/images/map2.json');
+        this.load.tilemapTiledJSON('map','assets/images/map.json');
         this.load.atlas('enemies', 'assets/images/enemies.png', 'assets/images/enemies_atlas.json');
         this.load.animation('enemies_anims', 'assets/images/enemies_anims.json');
+        this.load.image('cursor', 'assets/images/cursor.png');
         this.load.image('ash', 'assets/images/ash.png');
     };
 
     create(){
+
+        this.input.setDefaultCursor('url(assets/images/cursor.png), pointer')
+
         const map2 = this.make.tilemap({key: 'map2'});
         this.map2 = map2;
         const tileset = map2.addTilesetImage('RPG Nature Tileset', 'tiles', 32, 32, 0, 2);
@@ -24,25 +32,27 @@ export default class SecondScene extends Phaser.Scene {
         background.setCollisionByProperty({collides:true});
         this.matter.world.convertTilemapLayer(background);
     
-        //UNCOMMENT WHEN I ADD RESOURCES: this.map2.getObjectLayer('Resources').objects.forEach(resource =>  new Resource({scene:this, resource}));
-        
-        const villainGroup = this.add.group({ key: 'hero', frame:'hero_idle_5', frameQuantity: 4 });
-        const villainSpawnArea = new Phaser.Geom.Rectangle(300, 300, 300, 300);
-        Phaser.Actions.RandomRectangle(villainGroup.getChildren(), villainSpawnArea);
+        this.map.getObjectLayer('Resources').objects.forEach(resource =>  new Resource({scene:this, resource}));
+        this.map.getObjectLayer('Enemies').objects.forEach(enemy =>  this.enemies.push(new Enemy({scene:this, enemy})));
 
-
-        //Attempt to make multiple fully functional player objects - testing for spawning future enemy object groups.
-        let a;
-        for (a=0;a<5;a++) {
         this.player = new Player({scene:this, x:Phaser.Math.Between(150,400), y:Phaser.Math.Between(150, 350), texture:'hero', frame:'hero_idle_1'});
-        
-        }
 
         let camera = this.cameras.main;
         camera.zoom = 1.4;
         camera.startFollow(this.player);
         camera.setLerp(0.1,0.1);
         camera.setBounds(0,0,this.game.config.width,this.game.config.heigth);
+
+        this.scene.launch('InventoryScene', {mainScene:this});
+        this.crafting = new Crafting({ mainScene:this});
+
+        this.input.keyboard.on('keydown-C', () => {
+            if(this.scene.isActive("CraftingScene")){
+                this.scene.stop('CraftingScene')
+            } else {
+                this.scene.launch('CraftingScene', {mainScene:this});
+            }
+        });
 
         this.player.inputKeys = this.input.keyboard.addKeys({
             up: Phaser.Input.Keyboard.KeyCodes.W,
@@ -52,11 +62,6 @@ export default class SecondScene extends Phaser.Scene {
             space: Phaser.Input.Keyboard.KeyCodes.SPACE,
             shift: Phaser.Input.Keyboard.KeyCodes.SHIFT,
         });
-
-        this.dragon = new Phaser.Physics.Matter.Sprite(this.matter.world, Phaser.Math.Between(320,540), Phaser.Math.Between(40, 160), 'enemies', 'dragon_idle_1');
-        this.add.existing(this.dragon);
-        this.dragon.setFixedRotation();
-        this.dragon.setStatic(true);
 
         this.particles = this.add.particles('ash');
         this.emitter = this.particles.createEmitter({
@@ -76,6 +81,7 @@ export default class SecondScene extends Phaser.Scene {
     };
     
     update(){
+        this.enemies.forEach(enemy => enemy.update());
         this.player.update();
 
         if (this.player.x > 400) {
@@ -89,8 +95,16 @@ export default class SecondScene extends Phaser.Scene {
                     this.scene.start('MainScene')
                 }
             });
-
 }
+
+        if (this.player.dead) {
+            this.cameras.main.fade(400, 0, 0, 0, false, function(camera, progress) {
+                if (progress > .99) {
+                    this.scene.stop('MainScene')
+                    this.scene.start('StartScene')
+                }
+            });
+        }
         //Finally, we test to see if our Object in our Object Layer is interactable by changing the player's velocity when stepped on.
         //I can't figure out how to extract the object from our object layer, and use it's position to do something.
                 //if (this.player.x > this.boundaries.x) {

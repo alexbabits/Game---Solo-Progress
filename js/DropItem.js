@@ -8,7 +8,7 @@ export default class DropItem extends Phaser.Physics.Matter.Sprite {
     this.setExistingBody(circleCollider);
     this.setFrictionAir(1);
     this.setScale(0.5);
-    this.sound = this.scene.sound.add('pickup');
+    this.sound = this.scene.sound.add('pickup', {volume: 0.3});
     this.name = data.name
         }
 

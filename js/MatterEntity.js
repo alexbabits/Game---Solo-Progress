@@ -13,7 +13,7 @@ export default class MatterEntity extends Phaser.Physics.Matter.Sprite {
         this.drops = drops;
         this._position = new Phaser.Math.Vector2(this.x, this.y);
 
-        if(this.name) this.sound = this.scene.sound.add(this.name);
+        if(this.name) this.sound = this.scene.sound.add(this.name, {volume: .3});
         this.scene.add.existing(this);
     }
 

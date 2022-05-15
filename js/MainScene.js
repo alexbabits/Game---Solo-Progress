@@ -100,15 +100,10 @@ export default class MainScene extends Phaser.Scene {
             this.scene.start('map2');
         }
         */
-
-        //I want to make 'rainfall' sound not for each particle, but for whenever the 'rain' particles are active and being emitted.
-        //If they are not being emitted, stop the sound, as long as they are being emitted, play the rain sound.
-
-        //Perhaps have a 'weather' or 'storm' handler that handles both rain and lightning particle emitters.
         
         //creating our sound objects, rain and lightning:
-        this.rainSound = this.sound.add('rain')
-        this.lightningSound = this.sound.add('lightning')
+        this.rainSound = this.sound.add('rain', {volume: 0.2})
+        this.lightningSound = this.sound.add('lightning', {volume: 0.2})
 
         this.particles = this.add.particles('rain');
         this.emitter = this.particles.createEmitter({
@@ -182,9 +177,6 @@ export default class MainScene extends Phaser.Scene {
             stormStopFlag = false
         }
 
-        Math.random(0,100)
-        setTimerEvent(1000ms);
-
         Say, if every 1 second we have a function that spits out a number from 1 to 100
         and we have our flag change if that number is 69. Then on average, every 100 seconds our flag will be triggered.
         Or, start the timer, and anytime it gets above a minimum value, but below a maximum value, randomly from those min to max, trigger the storm flag.
@@ -207,6 +199,26 @@ export default class MainScene extends Phaser.Scene {
             frequency: Phaser.Math.Between(10000,60000), 
             blendMode: 0
         });
+
+            /* Attempt to make a storm handler
+
+                //This function starts a storm. Both emitters have to be 'on: false' initially.
+                function stormStart(){
+                    this.emitter.start()
+                    this.emitter2.start()
+                    this.rainSound.play()
+                    setTimeout( () => this.stormStop(), Phaser.Math.Between(10000,60000) );
+            }
+        
+                //This function stops a storm. Both emitters have to be 'on: true'. 
+                function stormStop(){
+                    this.emitter.stop()
+                    this.emitter2.stop()
+                    this.rainSound.stop()
+                    setTimeout( () => this.stormStart(), Phaser.Math.Between(10000,60000) );
+            }
+            */
+                
 
         //function that plays the lightning sound.
         function lightningSound() {
@@ -265,6 +277,7 @@ export default class MainScene extends Phaser.Scene {
         this.dragon.setStatic(true);
         */
     };
+
     
     update(){
         this.enemies.forEach(enemy => enemy.update());
@@ -274,15 +287,16 @@ export default class MainScene extends Phaser.Scene {
         //I can't figure out how to extract the object from our object layer, and use it's position to do something.
         
         //Can walk to second scene now (lots of bugs and fixes needed, but works kinda).
-                if (this.player.x > 600) {
-                    this.cameras.main.fade(400, 0, 0, 0, false, function(camera, progress) {
-                        if (progress > .99) {
-                            this.scene.stop('MainScene')
-                            this.scene.start('SecondScene')
-                        }
-                    });
+        if (this.player.x > 600) {
+            this.cameras.main.fade(400, 0, 0, 0, false, function(camera, progress) {
+                if (progress > .99) {
+                     this.scene.stop('MainScene')
+                    this.scene.start('SecondScene')
+                }
+            });
 
         }
+        
         //Doesn't fully allow for a restart, inventory is still there, can't play again.
         if (this.player.dead) {
             this.cameras.main.fade(400, 0, 0, 0, false, function(camera, progress) {

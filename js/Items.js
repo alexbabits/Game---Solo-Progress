@@ -6,7 +6,6 @@ let items = {
     berries: {frame:228},
     meat: {frame:241},
     fur: {frame:280},
-    //added craftable health potions.
     health_potion: {frame:144, mats:['berries','berries']},
     wand_fire: {frame:105},
 };

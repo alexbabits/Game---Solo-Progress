@@ -202,11 +202,11 @@ export default class MainScene extends Phaser.Scene {
         if (this.player.dead) {
             this.cameras.main.fade(400, 0, 0, 0, false, function(camera, progress) {
                 if (progress > .99) {
-                    this.scene.stop('MainScene')
+                    this.scene.stop('SecondScene')
                     this.scene.start('StartScene')
                 }
             });
-}
+        }
         
     };
 

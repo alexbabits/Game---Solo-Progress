@@ -8,7 +8,7 @@ import StartScene from "./StartScene.js";
 const config = {
   width:640,
   height:640,
-  backgroundColor: '#999999',
+  backgroundColor: '#70491d',
   type: Phaser.AUTO,
   parent: 'configs',
   scene:[StartScene, ControlsScene, MainScene, map2, InventoryScene, CraftingScene],

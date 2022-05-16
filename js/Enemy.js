@@ -12,10 +12,15 @@ export default class Enemy extends MatterEntity {
 
 
     constructor(data){
+
         let {scene, enemy} = data;
         let drops = JSON.parse(enemy.properties.find(p => p.name== 'drops').value);
         let health = enemy.properties.find(p => p.name== 'health').value;
-        super({scene, x:enemy.x, y:enemy.y, texture:'enemies', frame:`${enemy.name}_idle_1`, drops, health, name:enemy.name});
+        //Attempts to add in the tintable boolean property. First via Tiled then via assignment.
+        let tintable = enemy.properties.find(p => p.name== 'tintable').value;
+        //let tintable = true;
+        //added in tintable to super.
+        super({scene, x:enemy.x, y:enemy.y, texture:'enemies', frame:`${enemy.name}_idle_1`, drops, health, tintable, name:enemy.name});
         //create colliders/sensors for enemy. Very similar to player.
         const {Body,Bodies} = Phaser.Physics.Matter.Matter;
         let enemyCollider = Bodies.circle(this.x,this.y,12,{isSensor:false,label:'enemyCollider'});

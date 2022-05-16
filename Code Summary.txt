@@ -227,3 +227,14 @@ So then we move on to frame 6 and so on being false again. (We also just set the
     -Notice it's kept blank in MatterEntity, but filled with what we want in Player.js
 70. Added rudimentary restart transition in MainScene, but doesn't really work yet.
 ------------------------------------------Enemies-Branch-1 (Movement and Attacks) ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------Misc Additions from Various ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+71. Added rain and lightning sounds via Particle Sounds branch.
+72. Centered Screen by adding canvas code to index.html
+73. Changed lightning sound frequency
+74. Added pre-made progress bar in MainScene, tweaked it, and tried to make 'PreloadScene.js' for it. Still need to have to load based on actual game assets, and not images that I don't have.
+75. Added 'tintable' custom property to Tiled Objects (Enemys and Resources). Declared it in MatterEntity.js constructor, loaded them in to Enemy and Resource constructor and super.
+    -Added logic to player.js whackStuff method, so that when the player hits a gameObject, only objects with tintable set to true will be tinted. (Used simple function to set tint and a timer so the tint lasts 200ms).
+76. In Enemy's 'hit' method, allowed the player to be tinted when he is hit by an enemy.
+77. Added volume setting for sounds.
+------------------------------------------Misc Additions from Various ------------------------------------------------------------------------------------------------------------------------------------------------------------------------

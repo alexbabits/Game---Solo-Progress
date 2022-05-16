@@ -149,11 +149,11 @@ export default class Player extends MatterEntity {
             if (this.anims.currentFrame.textureFrame === 'hero_attack_5'  && this.attack_frame === false) {
                 this.attack_frame = true
                 gameObject.hit()
-                //sets gameObject tint to red
-                gameObject.setTint(0xff0000);
-                //timer to set tint of gameObject back to normal after 200 ms.
-            setTimeout(()=> this.setBackToNormalColor(gameObject), 200);
-
+                //attempt to check for tintable property on gameObjects (enemy and resources boolean property).
+                if(gameObject.tintable === true){
+                    gameObject.setTint(0xff0000);
+                    setTimeout(()=> this.setBackToNormalColor(gameObject), 200);
+                }
             } else if (this.anims.currentFrame.textureFrame === 'hero_attack_6') {
                 this.attack_frame = false
             }         

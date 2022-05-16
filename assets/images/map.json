@@ -38,6 +38,11 @@
                          "value":"[228,228]"
                         }, 
                         {
+                         "name":"tintable",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"yOrigin",
                          "type":"float",
                          "value":0.6
@@ -64,6 +69,11 @@
                          "name":"drops",
                          "type":"string",
                          "value":"[273,273]"
+                        }, 
+                        {
+                         "name":"tintable",
+                         "type":"bool",
+                         "value":false
                         }, 
                         {
                          "name":"yOrigin",
@@ -94,6 +104,11 @@
                          "value":"[272,272]"
                         }, 
                         {
+                         "name":"tintable",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"yOrigin",
                          "type":"float",
                          "value":0.8
@@ -120,6 +135,11 @@
                          "name":"drops",
                          "type":"string",
                          "value":"[228,228]"
+                        }, 
+                        {
+                         "name":"tintable",
+                         "type":"bool",
+                         "value":false
                         }, 
                         {
                          "name":"yOrigin",
@@ -150,6 +170,11 @@
                          "value":"[228,228]"
                         }, 
                         {
+                         "name":"tintable",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"yOrigin",
                          "type":"float",
                          "value":0.6
@@ -176,6 +201,11 @@
                          "name":"drops",
                          "type":"string",
                          "value":"[273,273]"
+                        }, 
+                        {
+                         "name":"tintable",
+                         "type":"bool",
+                         "value":false
                         }, 
                         {
                          "name":"yOrigin",
@@ -206,6 +236,11 @@
                          "value":"[273,273]"
                         }, 
                         {
+                         "name":"tintable",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"yOrigin",
                          "type":"float",
                          "value":0.6
@@ -232,6 +267,11 @@
                          "name":"drops",
                          "type":"string",
                          "value":"[273,273]"
+                        }, 
+                        {
+                         "name":"tintable",
+                         "type":"bool",
+                         "value":false
                         }, 
                         {
                          "name":"yOrigin",
@@ -262,6 +302,11 @@
                          "value":"[272,272]"
                         }, 
                         {
+                         "name":"tintable",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"yOrigin",
                          "type":"float",
                          "value":0.8
@@ -288,6 +333,11 @@
                          "name":"drops",
                          "type":"string",
                          "value":"[272,272]"
+                        }, 
+                        {
+                         "name":"tintable",
+                         "type":"bool",
+                         "value":false
                         }, 
                         {
                          "name":"yOrigin",
@@ -318,6 +368,11 @@
                          "value":"[272,272]"
                         }, 
                         {
+                         "name":"tintable",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"yOrigin",
                          "type":"float",
                          "value":0.8
@@ -344,6 +399,11 @@
                          "name":"drops",
                          "type":"string",
                          "value":"[272,272]"
+                        }, 
+                        {
+                         "name":"tintable",
+                         "type":"bool",
+                         "value":false
                         }, 
                         {
                          "name":"yOrigin",
@@ -374,6 +434,11 @@
                          "value":"[228,228]"
                         }, 
                         {
+                         "name":"tintable",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"yOrigin",
                          "type":"float",
                          "value":0.6
@@ -402,6 +467,11 @@
                          "value":"[228,228]"
                         }, 
                         {
+                         "name":"tintable",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"yOrigin",
                          "type":"float",
                          "value":0.6
@@ -428,6 +498,11 @@
                          "name":"drops",
                          "type":"string",
                          "value":"[228,228]"
+                        }, 
+                        {
+                         "name":"tintable",
+                         "type":"bool",
+                         "value":false
                         }, 
                         {
                          "name":"yOrigin",
@@ -500,6 +575,11 @@
                          "name":"health",
                          "type":"int",
                          "value":10
+                        }, 
+                        {
+                         "name":"tintable",
+                         "type":"bool",
+                         "value":true
                         }],
                  "rotation":0,
                  "type":"",
@@ -528,6 +608,11 @@
                          "name":"health",
                          "type":"int",
                          "value":5
+                        }, 
+                        {
+                         "name":"tintable",
+                         "type":"bool",
+                         "value":true
                         }],
                  "rotation":0,
                  "type":"",
@@ -556,6 +641,11 @@
                          "name":"health",
                          "type":"int",
                          "value":5
+                        }, 
+                        {
+                         "name":"tintable",
+                         "type":"bool",
+                         "value":true
                         }],
                  "rotation":0,
                  "type":"",

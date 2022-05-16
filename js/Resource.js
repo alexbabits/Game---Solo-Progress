@@ -15,8 +15,11 @@ export default class Resource extends MatterEntity {
 
         let drops = JSON.parse(resource.properties.find(p => p.name== 'drops').value);
         let depth = resource.properties.find(p => p.name== 'depth').value;
-
-        super({scene, x:resource.x, y:resource.y, texture: 'resources', frame:resource.type, drops, depth, health:5, name:resource.type});
+        //Attempts to add in the tintable boolean property. First via Tiled then via assignment.
+        let tintable = JSON.parse(resource.properties.find(p => p.name== 'tintable').value);
+        //let tintable = true;
+        //added in tintable to super.
+        super({scene, x:resource.x, y:resource.y, texture: 'resources', frame:resource.type, drops, depth, health:5, tintable, name:resource.type});
 
         let yOrigin = resource.properties.find(p=>p.name =='yOrigin').value;
 

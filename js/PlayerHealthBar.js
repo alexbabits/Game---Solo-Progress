@@ -54,25 +54,23 @@ export default class PlayerHealthBar extends Phaser.Scene {
     //dynamically calculates the total health width based on player health left and pixels per health.
         const healthWidth = (this.value * this.pixelPerHealth);
 
-    //making the inner bar (background bar that reveals when the bar on top decreases).
+    //making the inner bar (background bar that stays static to reveal when the bar on top decreases).
         this.bar.fillStyle(0xFFFFFF);
     //Chamfer doesn't work properly yet.
         this.bar.fillRoundedRect(x + offset + margin, y + offset + margin, width - margin, height - margin, chamfer);
 
-    //making the top bar that will actually move when the player is damaged. (inner dynamic bar) 
-    //width of the health bar is based on % health left (the dynamic variable healthWidth).
-        this.bar.fillStyle(0x00FF00);
-        this.bar.fillRoundedRect(x + offset + margin, y + offset + margin, healthWidth - margin, height - margin, chamfer);
-
-    //edge case if your health goes negative, sets and keeps health bar 'empty'. (Doesn't work properly yet).
-        if(healthWidth <= 0){
-            this.bar.fillRect(x + margin, y + margin, healthWidth - margin, height - margin);
-        }
-    //if less than 20% health, show different color health bar (Doesn't work properly yet)
-        if(healthWidth <= this.size.width/5){
+    //if less than 25% health, show different color health bar, else show normal color.
+        if(healthWidth <= this.size.width/4){
             this.bar.fillStyle(0xFF0000);
         } else {
             this.bar.fillStyle(0x00FF00);
+        }
+    
+    //edge case if your health goes negative, sets and keeps health bar 'empty'.
+        if(healthWidth > 0){
+    //making the top bar that will actually move when the player is damaged. (top dynamic bar) 
+    //width of the health bar is based on % health left (the dynamic variable healthWidth).
+            this.bar.fillRoundedRect(x + offset + margin, y + offset + margin, healthWidth - margin, height - margin, chamfer);
         }
 
     };

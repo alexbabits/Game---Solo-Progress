@@ -27,6 +27,8 @@ export default class MainScene extends Phaser.Scene {
         //load in the lightning and rain sounds
         this.load.audio('lightning', 'assets/audio/lightning.mp3');
         this.load.audio('rain', 'assets/audio/rain.mp3');
+        //preloading in the health bar frame image.
+        this.load.image('Healthbarframe', 'assets/images/Healthbarframe.png');
 
          //adding graphics so they can be rectangles in the future.
         let progressBar = this.add.graphics();
@@ -115,7 +117,13 @@ export default class MainScene extends Phaser.Scene {
     
         this.map.getObjectLayer('Resources').objects.forEach(resource =>  new Resource({scene:this, resource}));
         this.map.getObjectLayer('Enemies').objects.forEach(enemy =>  this.enemies.push(new Enemy({scene:this, enemy})));
-      
+
+        //loading in the health bar frame
+        const Healthbarframelogo = this.add.image(110, 102, 'Healthbarframe').setOrigin(0); 
+        Healthbarframelogo.depth = 9;
+        Healthbarframelogo.setScale(.3);
+        Healthbarframelogo.setScrollFactor(0);
+
         /*
         //This loads the object layer, and you get access to all the objects in that layer.
         const boundaryLayer = map.getObjectLayer('Boundary');

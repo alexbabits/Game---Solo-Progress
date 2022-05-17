@@ -11,8 +11,8 @@ export default class Player extends MatterEntity {
         this.touching = [];
         this.inventory = new Inventory();
         //Adding in the health bar to the player's constructor. this.health attempts to refer to the player's health, and not enemy/resource health.
-        this.hp = new PlayerHealthBar(this.scene, 69, 69, this.health)
-
+        //x and y position based on game configs and adjusted for zoom: EX: ((height - (height/zoom))/2. ((640 - (640/1.4))/2 = 91.43 becomes the new (0,0).
+        this.hp = new PlayerHealthBar(this.scene, 100, 100, this.health);
         this.attack_frame = false;
         const {Body,Bodies} = Phaser.Physics.Matter.Matter;
         let playerCollider = Bodies.rectangle(this.x, this.y, 22, 32, {chamfer: {radius: 10}, isSensor:false, label:'playerCollider'});
@@ -41,7 +41,12 @@ export default class Player extends MatterEntity {
         this.setOrigin(0.5);
     }
 
-
+    onHit = () => {
+        if(this.hit()){
+        //attempts to decrease the health bar
+        this.hp.decrease(this.health);
+        }
+    }
 
     update(){
     //if dead, don't do anything in the update method.

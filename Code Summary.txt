@@ -246,4 +246,5 @@ So then we move on to frame 6 and so on being false again. (We also just set the
 
 ------------------------------------------Health Bar Branch------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 79. Mostly done with health bar, but 'health' property still an issue. 
+80. Player Health bar working properly, minor issue with it still being slightly filled when supposed to be empty and negative values.
 ------------------------------------------Health Bar Branch------------------------------------------------------------------------------------------------------------------------------------------------------------------------

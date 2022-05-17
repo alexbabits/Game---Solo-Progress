@@ -38,7 +38,10 @@ export default class MatterEntity extends Phaser.Physics.Matter.Sprite {
         if(this.sound) this.sound.play();
         this.health--;
         //attempts to decrease the health bar
-        this.hp.modifyhp(this.health);
+        if (this.hp != null) {
+            this.hp.modifyhp(this.health);
+        }
+
         console.log(`Hitting: ${this.name} Health: ${this.health}`);
         if(this.dead){
             this.onDeath();

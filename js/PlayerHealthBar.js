@@ -48,17 +48,13 @@ export default class PlayerHealthBar extends Phaser.Scene {
         const { width, height } = this.size;
         const margin = 2;
     //dynamically calculates the total health width based on player health left and pixels per health.
-        const healthWidth = Math.floor(this.value * this.pixelPerHealth);
+        const healthWidth = (this.value * this.pixelPerHealth);
 
-    //color, shape, position, fill, size
-        this.bar.fillStyle(0xFF0000);
-        this.bar.fillRect(x, y, width + margin, height + margin);
-
-    //making another inner bar (background inner)
+    //making the inner bar (background bar that reveals when the bar on top decreases).
         this.bar.fillStyle(0xFFFFFF);
         this.bar.fillRect(x + margin, y + margin, width - margin, height - margin);
 
-    //making a 3rd bar that will actually move when the player is damaged. (inner dynamic bar) 
+    //making the top bar that will actually move when the player is damaged. (inner dynamic bar) 
     //width of the health bar is based on % health left (the dynamic variable healthWidth).
         this.bar.fillStyle(0x00FF00);
         this.bar.fillRect(x + margin, y + margin, healthWidth - margin, height - margin);

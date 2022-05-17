@@ -41,12 +41,8 @@ export default class Player extends MatterEntity {
         this.setOrigin(0.5);
     }
 
-    onHit = () => {
-        if(this.hit()){
-        //attempts to decrease the health bar
-        this.hp.decrease(this.health);
-        }
-    }
+
+
 
     update(){
     //if dead, don't do anything in the update method.

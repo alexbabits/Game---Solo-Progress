@@ -238,3 +238,8 @@ So then we move on to frame 6 and so on being false again. (We also just set the
 76. In Enemy's 'hit' method, allowed the player to be tinted when he is hit by an enemy.
 77. Added volume setting for sounds.
 ------------------------------------------Misc Additions from Various ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------Health Bar Branch------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+78. Succesfully drew a health bar. Does not scroll with camera, and does not have any functionality. this.health association may have issues
+    -Since 'health' is a property of enemies, resources, and the player, 'health' property may get confused. May need to specify/differentiate between all the different object's health.
+------------------------------------------Health Bar Branch------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,5 +1,7 @@
 import Inventory from "./Inventory.js";
 import MatterEntity from "./MatterEntity.js";
+//importing the player's health bar from PlayerHealthBar.js
+import PlayerHealthBar from "./PlayerHealthBar.js";
 
 export default class Player extends MatterEntity {
     constructor(data){
@@ -8,6 +10,8 @@ export default class Player extends MatterEntity {
         super({...data, health: 20, drops:[], name:'player'});
         this.touching = [];
         this.inventory = new Inventory();
+        //Adding in the health bar to the player's constructor. this.health attempts to refer to the player's health, and not enemy/resource health.
+        this.hp = new PlayerHealthBar(this.scene, 69, 69, this.health)
 
         this.attack_frame = false;
         const {Body,Bodies} = Phaser.Physics.Matter.Matter;

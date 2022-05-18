@@ -10,7 +10,7 @@ export default class HealthBar extends Phaser.Scene {
         this.bar.setScrollFactor(0,0);
 
         //creating the text phaser game object
-        this.text = new Phaser.GameObjects.Text(scene, 137, 114.75, ``, { fontSize: '11px', fill: '#000' });
+        this.text = new Phaser.GameObjects.Text(scene, 137, 114.75, ``, { fontFamily: 'Courier', fontSize: '11px', fill: '#000', resolution: 2});
         this.text.depth = 11;
         this.text.setScrollFactor(0,0);
         

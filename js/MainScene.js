@@ -3,6 +3,7 @@ import Enemy from "./Enemy.js";
 import Player from "./Player.js";
 //import PreloadScene from "./PreloadScene.js";
 import Resource from "./Resource.js";
+import MatterEntity from "./MatterEntity.js";
 
 export default class MainScene extends Phaser.Scene {
     constructor() {
@@ -326,15 +327,15 @@ export default class MainScene extends Phaser.Scene {
         */
         this.player = new Player({scene:this, x:Phaser.Math.Between(150,400), y:Phaser.Math.Between(150, 350), texture:'hero', frame:'hero_idle_1'});
         //}
+        this.matterEntity = new MatterEntity({scene:this, health:this.health});
 
-        /*
         // Display player's health
-        let playerHealthText = this.add.text(300, 300, `${??????}/${??????}`, { fontSize: '16px', fill: '#000' });
+        let playerHealthText = this.add.text(300, 300, `${this.matterEntity.health}/10`, { fontSize: '16px', fill: '#000' });
         // Sets health text depth
         playerHealthText.depth = 11;
         // Updates player's health text
-        playerHealthText.setText(`${??????}/${??????}`);
-        */
+        playerHealthText.setText(`${this.matterEntity.health}/10`);
+
 
         let camera = this.cameras.main;
         camera.zoom = 1.4;

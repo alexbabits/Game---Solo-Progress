@@ -37,7 +37,13 @@ export default class MatterEntity extends Phaser.Physics.Matter.Sprite {
     hit = ()=> {
         if(this.sound) this.sound.play();
         this.health--;
+        //attempts to decrease the health bar
+        if (this.hp != null) {
+            this.hp.modifyhp(this.health);
+        }
         console.log(`Hitting: ${this.name} Health: ${this.health}`);
+
+
         if(this.dead){
             this.onDeath();
             this.drops.forEach(drop => { //This was part of the tweaked inventory stuff to fix the error so Player could pick up items into inventory successfully.

@@ -27,6 +27,8 @@ export default class MainScene extends Phaser.Scene {
         //load in the lightning and rain sounds
         this.load.audio('lightning', 'assets/audio/lightning.mp3');
         this.load.audio('rain', 'assets/audio/rain.mp3');
+        //preloading in the health bar frame image.
+        this.load.image('Healthbarframe', 'assets/images/Healthbarframe.png');
 
          //adding graphics so they can be rectangles in the future.
         let progressBar = this.add.graphics();
@@ -92,7 +94,7 @@ export default class MainScene extends Phaser.Scene {
 
         //Just iterating the image 500 times to take time to load so loading bar has a purpose. zenvalogo doesn't exist but it doesn't matter it seems.
         this.load.image('logo', 'zenvalogo.png');
-        for (let i = 0; i < 500; i++) {
+        for (let i = 0; i < 10; i++) {
             this.load.image('logo'+i, 'zenvalogo.png');
                 }   
                 
@@ -103,7 +105,6 @@ export default class MainScene extends Phaser.Scene {
     create(){
         //logo for loading bar?
         let logo = this.add.image(400, 300, 'logo');
-
         this.input.setDefaultCursor('url(assets/images/cursor.png), pointer')
 
         const map = this.make.tilemap({key: 'map'});
@@ -115,7 +116,13 @@ export default class MainScene extends Phaser.Scene {
     
         this.map.getObjectLayer('Resources').objects.forEach(resource =>  new Resource({scene:this, resource}));
         this.map.getObjectLayer('Enemies').objects.forEach(enemy =>  this.enemies.push(new Enemy({scene:this, enemy})));
-      
+
+        //loading in the health bar frame
+        const Healthbarframelogo = this.add.image(110, 102, 'Healthbarframe').setOrigin(0); 
+        Healthbarframelogo.depth = 9;
+        Healthbarframelogo.setScale(.3);
+        Healthbarframelogo.setScrollFactor(0);
+
         /*
         //This loads the object layer, and you get access to all the objects in that layer.
         const boundaryLayer = map.getObjectLayer('Boundary');
@@ -273,7 +280,7 @@ export default class MainScene extends Phaser.Scene {
             scale: 2,
             quantity: 1,
             maxParticles: 0,
-            frequency: Phaser.Math.Between(6000,30000), 
+            frequency: Phaser.Math.Between(6000,30000), //or you could do Math.Max((6000,(Math.random()*30000)))
             blendMode: 0
         });
 
@@ -319,6 +326,16 @@ export default class MainScene extends Phaser.Scene {
         */
         this.player = new Player({scene:this, x:Phaser.Math.Between(150,400), y:Phaser.Math.Between(150, 350), texture:'hero', frame:'hero_idle_1'});
         //}
+
+        /*
+        // Display player's health
+        let playerHealthText = this.add.text(300, 300, `${this.health}/10`, { fontSize: '16px', fill: '#000' });
+        // Sets health text depth
+        playerHealthText.depth = 11;
+        // Updates player's health text
+        playerHealthText.setText(`${this.health}/10`);
+        console.log(this);
+        */
 
         let camera = this.cameras.main;
         camera.zoom = 1.4;

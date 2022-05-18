@@ -1,14 +1,18 @@
 import Inventory from "./Inventory.js";
 import MatterEntity from "./MatterEntity.js";
+//importing the player's health bar from HealthBar.js
+import HealthBar from "./HealthBar.js";
 
 export default class Player extends MatterEntity {
     constructor(data){
         let {scene, x , y, texture, frame} = data;
 
-        super({...data, health: 20, drops:[], name:'player'});
+        super({...data, health: 10, drops:[], name:'player'});
         this.touching = [];
         this.inventory = new Inventory();
-
+        //Adding in the health bar to the player's constructor. this.health attempts to refer to the player's health, and not enemy/resource health.
+        //x and y position based on game configs and adjusted for zoom: EX: ((height - (height/zoom))/2. ((640 - (640/1.4))/2 = 91.43 becomes the new (0,0).
+        this.hp = new HealthBar(this.scene, 100, 100, this.health);
         this.attack_frame = false;
         const {Body,Bodies} = Phaser.Physics.Matter.Matter;
         let playerCollider = Bodies.rectangle(this.x, this.y, 22, 32, {chamfer: {radius: 10}, isSensor:false, label:'playerCollider'});
@@ -36,8 +40,6 @@ export default class Player extends MatterEntity {
         this.setTexture('items', 0 );
         this.setOrigin(0.5);
     }
-
-
 
     update(){
     //if dead, don't do anything in the update method.

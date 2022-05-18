@@ -105,7 +105,6 @@ export default class MainScene extends Phaser.Scene {
     create(){
         //logo for loading bar?
         let logo = this.add.image(400, 300, 'logo');
-
         this.input.setDefaultCursor('url(assets/images/cursor.png), pointer')
 
         const map = this.make.tilemap({key: 'map'});
@@ -327,6 +326,15 @@ export default class MainScene extends Phaser.Scene {
         */
         this.player = new Player({scene:this, x:Phaser.Math.Between(150,400), y:Phaser.Math.Between(150, 350), texture:'hero', frame:'hero_idle_1'});
         //}
+
+        /*
+        // Display player's health
+        let playerHealthText = this.add.text(300, 300, `${??????}/${??????}`, { fontSize: '16px', fill: '#000' });
+        // Sets health text depth
+        playerHealthText.depth = 11;
+        // Updates player's health text
+        playerHealthText.setText(`${??????}/${??????}`);
+        */
 
         let camera = this.cameras.main;
         camera.zoom = 1.4;

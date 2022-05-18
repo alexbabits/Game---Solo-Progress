@@ -1,7 +1,7 @@
-export default class PlayerHealthBar extends Phaser.Scene {
+export default class HealthBar extends Phaser.Scene {
         //attempts to refer to the player's health.
-    constructor(scene, x, y, health) {
-        super("PlayerHealthBar");
+    constructor(scene, x, y, health, player) {
+        super("HealthBar");
         //creating the healthbar phaser game object
         this.bar = new Phaser.GameObjects.Graphics(scene);
         //The bar graphic follows the camera.
@@ -10,7 +10,8 @@ export default class PlayerHealthBar extends Phaser.Scene {
         this.bar.depth = 10;
         this.x = x;
         this.y = y;
-        //attempts to refer to the player's health.
+        this.player = player;
+        //attempts to refer to the objects's health, based on the class it's in (enemy/player/etc.).
         this.value = health;
 
         //size of the health bar.
@@ -19,7 +20,7 @@ export default class PlayerHealthBar extends Phaser.Scene {
             height: 11
         }
 
-        //How many pixels per health? (this.size.width / player health, hard coded for now.). Attempts to refer to the player's health.
+        //How many pixels per health?
         this.pixelPerHealth = this.size.width / this.value;
 
         //this actually adds the bar to the scene.
@@ -31,7 +32,7 @@ export default class PlayerHealthBar extends Phaser.Scene {
 
     //Once your constructor is good, import it to your player.js
 
-    //decrease method to decrease the amount. Draws new bar with new x and y for amount decreased.
+    //modifyhp method to alter the current amount, which is the health, which is this.value. Draws new bar with new x and y for amount decreased.
     //Also checks if it's less than zero, then just set it to zero, else set it to normal decreased amount.
     modifyhp(amount) {
         if(amount <= 0) {
@@ -40,7 +41,9 @@ export default class PlayerHealthBar extends Phaser.Scene {
             this.value = amount;
         }
         this.draw(this.x, this.y);
+
     }
+
 
     //draw method to make the bars
     draw(x,y) {
@@ -56,7 +59,6 @@ export default class PlayerHealthBar extends Phaser.Scene {
 
     //making the inner bar (background bar that stays static to reveal when the bar on top decreases).
         this.bar.fillStyle(0xFFFFFF);
-    //Chamfer doesn't work properly yet.
         this.bar.fillRoundedRect(x + offset + margin, y + offset + margin, width - margin, height - margin, chamfer);
 
     //if less than 25% health, show different color health bar, else show normal color.

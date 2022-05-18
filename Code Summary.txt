@@ -248,4 +248,6 @@ So then we move on to frame 6 and so on being false again. (We also just set the
 79. Mostly done with health bar, but 'health' property still an issue. 
 80. Player Health bar working properly, minor issue with it still being slightly filled when supposed to be empty and negative values.
 81. Fixed chamfer, color change, empty bar problems.
+82. Changed PlayerHealthBar to HealthBar to accurately describe the nature of the class (it can be instanced with any object's health, not just the player's)
+83. Figuring out Health Bar text.
 ------------------------------------------Health Bar Branch------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,16 +1,22 @@
 export default class HealthBar extends Phaser.Scene {
         //attempts to refer to the player's health.
-    constructor(scene, x, y, health, player) {
+    constructor(scene, x, y, health) {
         super("HealthBar");
         //creating the healthbar phaser game object
         this.bar = new Phaser.GameObjects.Graphics(scene);
-        //The bar graphic follows the camera.
-        this.bar.setScrollFactor(0,0);
         //sets depth of bar to front of screen always.
         this.bar.depth = 10;
+        //The bar graphic follows the camera.
+        this.bar.setScrollFactor(0,0);
+
+        //creating the text phaser game object
+        this.text = new Phaser.GameObjects.Text(scene, 137, 114.75, ``, { fontSize: '11px', fill: '#000' });
+        this.text.depth = 11;
+        this.text.setScrollFactor(0,0);
+        
         this.x = x;
         this.y = y;
-        this.player = player;
+
         //attempts to refer to the objects's health, based on the class it's in (enemy/player/etc.).
         this.value = health;
 
@@ -25,6 +31,7 @@ export default class HealthBar extends Phaser.Scene {
 
         //this actually adds the bar to the scene.
         scene.add.existing(this.bar);
+        scene.add.existing(this.text);
         //calls the draw method we created below the constructor
         this.draw(x, y);
 
@@ -44,11 +51,14 @@ export default class HealthBar extends Phaser.Scene {
 
     }
 
-
+    
     //draw method to make the bars
     draw(x,y) {
     //clears any previous shape.
         this.bar.clear();
+    //creates the dynamic text based on the health left
+        this.text.setText(`${this.value}/10`);
+
     //get width and height, and margin for the bars
         const { width, height } = this.size;
         const margin = 2;
@@ -56,7 +66,7 @@ export default class HealthBar extends Phaser.Scene {
         const chamfer = 4;
     //dynamically calculates the total health width based on player health left and pixels per health.
         const healthWidth = (this.value * this.pixelPerHealth);
-
+        
     //making the inner bar (background bar that stays static to reveal when the bar on top decreases).
         this.bar.fillStyle(0xFFFFFF);
         this.bar.fillRoundedRect(x + offset + margin, y + offset + margin, width - margin, height - margin, chamfer);

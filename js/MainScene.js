@@ -3,7 +3,6 @@ import Enemy from "./Enemy.js";
 import Player from "./Player.js";
 //import PreloadScene from "./PreloadScene.js";
 import Resource from "./Resource.js";
-import MatterEntity from "./MatterEntity.js";
 
 export default class MainScene extends Phaser.Scene {
     constructor() {
@@ -95,7 +94,7 @@ export default class MainScene extends Phaser.Scene {
 
         //Just iterating the image 500 times to take time to load so loading bar has a purpose. zenvalogo doesn't exist but it doesn't matter it seems.
         this.load.image('logo', 'zenvalogo.png');
-        for (let i = 0; i < 500; i++) {
+        for (let i = 0; i < 10; i++) {
             this.load.image('logo'+i, 'zenvalogo.png');
                 }   
                 
@@ -281,7 +280,7 @@ export default class MainScene extends Phaser.Scene {
             scale: 2,
             quantity: 1,
             maxParticles: 0,
-            frequency: Phaser.Math.Between(6000,30000), 
+            frequency: Phaser.Math.Between(6000,30000), //or you could do Math.Max((6000,(Math.random()*30000)))
             blendMode: 0
         });
 
@@ -327,15 +326,16 @@ export default class MainScene extends Phaser.Scene {
         */
         this.player = new Player({scene:this, x:Phaser.Math.Between(150,400), y:Phaser.Math.Between(150, 350), texture:'hero', frame:'hero_idle_1'});
         //}
-        this.matterEntity = new MatterEntity({scene:this, health:this.health});
 
+        /*
         // Display player's health
-        let playerHealthText = this.add.text(300, 300, `${this.matterEntity.health}/10`, { fontSize: '16px', fill: '#000' });
+        let playerHealthText = this.add.text(300, 300, `${this.health}/10`, { fontSize: '16px', fill: '#000' });
         // Sets health text depth
         playerHealthText.depth = 11;
         // Updates player's health text
-        playerHealthText.setText(`${this.matterEntity.health}/10`);
-
+        playerHealthText.setText(`${this.health}/10`);
+        console.log(this);
+        */
 
         let camera = this.cameras.main;
         camera.zoom = 1.4;

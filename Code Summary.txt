@@ -250,4 +250,5 @@ So then we move on to frame 6 and so on being false again. (We also just set the
 81. Fixed chamfer, color change, empty bar problems.
 82. Changed PlayerHealthBar to HealthBar to accurately describe the nature of the class (it can be instanced with any object's health, not just the player's)
 83. Figuring out Health Bar text.
+84. Figured out Health Bar text, but could have maxHealth property for static denominator for the text.
 ------------------------------------------Health Bar Branch------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -72,6 +72,14 @@ export default class Player extends MatterEntity {
         if(this.inputKeys.space.isDown === false) {
             this.attack_frame = false
         }
+
+                /*if(this.inputKeys.shift.isDown && playerVelocity.x !== 0 || playerVelocity.y !== 0) {
+            this.anims.play('hero_walk', true);
+            playerVelocity.x = speed/2;
+            playerVelocity.y = speed/2;
+        }*/
+
+        
     };
 
         heroTouchingTrigger(playerSensor){

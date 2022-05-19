@@ -113,6 +113,89 @@ export default class MainScene extends Phaser.Scene {
             shift: Phaser.Input.Keyboard.KeyCodes.SHIFT,
         });
 
+        /*
+
+        'this.emitter.start()' turns it's 'on' property to true. Rain will be emitted.
+        'this.emitter.stop()' turns it's 'on' property to false. Rain will not be emitted.
+
+        So we could say something like:
+
+        if(rainStartFlag is triggered){
+            this.emitter.start()
+        }
+        
+        if(this.emitter.on === true){
+            this.rainSound.play()
+        }
+
+        if(rainStopFlag is triggered){
+            this.emitter.stop()
+        }
+
+        if(this.emitter.on === false){
+            this.rainSound.stop()
+        }
+
+        We could also default lightning emitter to 'on: false' and then switch it true whenever rain is on, so lightning also starts striking when rainfall begins.
+
+        Adding rain and lightning together and condensing could look like this (btw: emitter refers to rain, emitter2 refers to lightning):
+        (We don't need to play lightningSound or stop lightningSound here, because it only plays when a lightning particle is emitted anyway.
+         It's sound is taken care of via the 'onParticleEmit' method)
+
+        if(stormStartFlag === true){
+            this.emitter.start()
+            this.emitter2.start()
+            this.rainSound.play()
+        } else return
+
+        if(stormStopFlag === true){
+            this.emitter.stop()
+            this.emitter2.stop()
+            this.rainSound.stop()
+        } else return
+
+        (where the flags will oppose eachother, being true/false or false/true)
+
+        default stormStartFlag to false, and stormStopFlag to true in the constructor.
+
+        if(stormStartTimer === 12345){
+            stormStartFlag = true
+        } else {
+            stormStartFlag = false
+        }
+
+        if(stormStopTimer === 12345){
+            stormStopFlag = true
+        } else {
+            stormStopFlag = false
+        }
+
+        Say, if every 1 second we have a function that spits out a number from 1 to 100
+        and we have our flag change if that number is 69. Then on average, every 100 seconds our flag will be triggered.
+        Or, start the timer, and anytime it gets above a minimum value, but below a maximum value, randomly from those min to max, trigger the storm flag.
+
+        */
+
+
+        /* Attempt to make a storm handler
+
+                //This function starts a storm. Both emitters have to be 'on: false' initially.
+                function stormStart(){
+                    this.emitter.start()
+                    this.emitter2.start()
+                    this.rainSound.play()
+                    setTimeout( () => this.stormStop(), Phaser.Math.Between(10000,60000) );
+            }
+        
+                //This function stops a storm. Both emitters have to be 'on: true'. 
+                function stormStop(){
+                    this.emitter.stop()
+                    this.emitter2.stop()
+                    this.rainSound.stop()
+                    setTimeout( () => this.stormStart(), Phaser.Math.Between(10000,60000) );
+            }
+            */
+
     };
 
     update(){

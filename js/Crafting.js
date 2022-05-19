@@ -6,9 +6,9 @@ export default class Crafting {
         let { mainScene } = data;
         this.mainScene = mainScene;
         this.inventory = mainScene.player.inventory;
-    this.player = mainScene.player;
-    this.selected = 0;
-    this.items = [];
+        this.player = mainScene.player;
+        this.selected = 0;
+        this.items = [];
     }
 
     craft(){

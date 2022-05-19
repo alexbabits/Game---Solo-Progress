@@ -9,10 +9,9 @@ export default class Inventory {
             2: {name: "stone", quantity: 1}
         }
 
-        this.addItem({name: "pickaxe", quantity: 68});
+        this.addItem({name: "pickaxe", quantity: 1});
         this.addItem({name: "wood", quantity: 1});
     };
-
 
     subscribe(fn) {
         this.observers.push(fn);
@@ -39,7 +38,7 @@ export default class Inventory {
             }
         }
         this.broadcast();
-    }
+    };
 
     removeItem(itemName){
         let existingKey = Object.keys(this.items).find(key => this.items[key].name === itemName);
@@ -48,23 +47,23 @@ export default class Inventory {
             if(this.items[existingKey].quantity <= 0) delete this.items[existingKey];
         }
         this.broadcast();
-    }
+    };
 
     getItem(index) {
         return this.items[index];
     };
 
     moveItem(start, end){
-    console.log(`start${start} end${end}`);
+    console.log(`start: ${start} end: ${end}`);
         if(start === end || this.items[end]) return;
         this.items[end] = this.items[start];
         delete this.items[start];
         this.broadcast();
-    }
+    };
 
     getItemQuantity(itemName) {
         return Object.values(this.items).filter(i => i.name === itemName).map(i => i.quantity).reduce((accumulater, currentValue) => accumulater + currentValue, 0);
-    }
+    };
 
     /*
     //selectedItem and getItemFrame have no use now, but could be used in the future for equipping items and getting their sprite.

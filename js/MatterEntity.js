@@ -11,13 +11,12 @@ export default class MatterEntity extends Phaser.Physics.Matter.Sprite {
         this.name = name;
         this.health = health;
         this.drops = drops;
-        //attempting to include tintable property
         this.tintable = tintable;
         this._position = new Phaser.Math.Vector2(this.x, this.y);
 
         if(this.name) this.sound = this.scene.sound.add(this.name, {volume: .3});
         this.scene.add.existing(this);
-    }
+    };
 
     get position() {
         this._position.set(this.x, this.y);
@@ -34,19 +33,17 @@ export default class MatterEntity extends Phaser.Physics.Matter.Sprite {
 
     onDeath = () => {};
 
-    hit = ()=> {
+    hit = () => {
         if(this.sound) this.sound.play();
         this.health--;
-        //attempts to decrease the health bar
         if (this.hp != null) {
             this.hp.modifyhp(this.health);
         }
         console.log(`Hitting: ${this.name} Health: ${this.health}`);
 
-
         if(this.dead){
             this.onDeath();
-            this.drops.forEach(drop => { //This was part of the tweaked inventory stuff to fix the error so Player could pick up items into inventory successfully.
+            this.drops.forEach(drop => {
                 const name = Object.keys(items).find(item => items[item].frame == drop);
                 return new DropItem({ scene: this.scene, x: this.x, y: this.y, frame: drop, name: name })
             });

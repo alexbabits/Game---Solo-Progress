@@ -1,16 +1,13 @@
 import Inventory from "./Inventory.js";
 import MatterEntity from "./MatterEntity.js";
-//importing the player's health bar from HealthBar.js
 import HealthBar from "./HealthBar.js";
 
 export default class Player extends MatterEntity {
     constructor(data){
         let {scene, x , y, texture, frame} = data;
-
         super({...data, health: 10, drops:[], name:'player'});
         this.touching = [];
         this.inventory = new Inventory();
-        //Adding in the health bar to the player's constructor. this.health attempts to refer to the player's health, and not enemy/resource health.
         //x and y position based on game configs and adjusted for zoom: EX: ((height - (height/zoom))/2. ((640 - (640/1.4))/2 = 91.43 becomes the new (0,0).
         this.hp = new HealthBar(this.scene, 100, 100, this.health);
         this.attack_frame = false;
@@ -42,7 +39,6 @@ export default class Player extends MatterEntity {
     }
 
     update(){
-    //if dead, don't do anything in the update method.
         if(this.dead) return;
 
         let speed = 4;
@@ -73,18 +69,16 @@ export default class Player extends MatterEntity {
                this.anims.play('hero_idle', true);
            }
 
+        if(this.inputKeys.space.isDown === false) {
+            this.attack_frame = false
+        }
+    };
+
         /*if(this.inputKeys.shift.isDown && playerVelocity.x !== 0 || playerVelocity.y !== 0) {
             this.anims.play('hero_walk', true);
             playerVelocity.x = speed/2;
             playerVelocity.y = speed/2;
         }*/
-        
-        //This always sets our attack_frame trigger to false while not attacking (spacebar), so the flag always triggers in the correct way for our whackStuff() method.
-        if(this.inputKeys.space.isDown === false) {
-            this.attack_frame = false
-        }
-        
-    };
 
         heroTouchingTrigger(playerSensor){
 
@@ -132,36 +126,27 @@ export default class Player extends MatterEntity {
     };
 
 
-        //function to set the tint back to normal.
         setBackToNormalColor(gameObject){
             gameObject.setTint(0xffffff);
-    }
+        };
 
          whackStuff(){
             this.touching = this.touching.filter(gameObject => gameObject.hit && !gameObject.dead);
             this.touching.forEach(gameObject =>{
-
-            /* We check if the current animation is hero attack 5 and if the flag is false (default). If it is, we immediately
-            turn it to true, and so the hit method gets called just for that first instance of hero attack 5.
-            Then we turn it back to false for the next anim and this process loops.
-            We found out we needed single '=' to reassign the flag's value.
-                
-            The only problem now: When the player goes to attack a resource after attacking one previously, the first hit doesn't register.*/
-            
-            if (this.anims.currentFrame.textureFrame === 'hero_attack_5'  && this.attack_frame === false) {
-                this.attack_frame = true
-                gameObject.hit()
-                //attempt to check for tintable property on gameObjects (enemy and resources boolean property).
-                if(gameObject.tintable === true){
-                    gameObject.setTint(0xff0000);
-                    setTimeout(()=> this.setBackToNormalColor(gameObject), 200);
-                }
+                if (this.anims.currentFrame.textureFrame === 'hero_attack_5'  && this.attack_frame === false) {
+                    this.attack_frame = true
+                    gameObject.hit()
+                    if(gameObject.tintable === true){
+                        gameObject.setTint(0xff0000);
+                        setTimeout(()=> this.setBackToNormalColor(gameObject), 200);
+                    }
             } else if (this.anims.currentFrame.textureFrame === 'hero_attack_6') {
                 this.attack_frame = false
             }         
                 if(gameObject.dead) gameObject.destroy();
         });
         //console.log(this.anims) to see what's going on with all things related to our animation state.
+        /*The only problem now: When the player goes to attack a resource after attacking one previously, the first hit doesn't register.*/   
       }; 
 
 };

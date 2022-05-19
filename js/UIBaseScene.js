@@ -9,4 +9,4 @@ export default class UIBaseScene extends Phaser.Scene {
     get tileSize() {
         return this._tileSize * this.uiScale;
     }
-}
+};

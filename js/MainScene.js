@@ -86,7 +86,21 @@ export default class MainScene extends Phaser.Scene {
 
         this.emitter2.onParticleEmit(lightningSound, this);
         
-        this.player = new Player({scene:this, x:Phaser.Math.Between(150,400), y:Phaser.Math.Between(150, 350), texture:'hero', frame:'hero_idle_1'});
+                /*
+        const villainGroup = this.add.group({ key: 'hero', frame:'hero_idle_5', frameQuantity: 4 });
+        const villainSpawnArea = new Phaser.Geom.Rectangle(300, 300, 300, 300);
+        Phaser.Actions.RandomRectangle(villainGroup.getChildren(), villainSpawnArea);
+        */
+
+        /*
+        //Attempt to make multiple fully functional player objects - testing for spawning future enemy object groups...
+        let a;
+        for (a=0;a<5;a++) {
+        */
+            this.player = new Player({scene:this, x:Phaser.Math.Between(150,400), y:Phaser.Math.Between(150, 350), texture:'hero', frame:'hero_idle_1'});
+            //}
+
+            
         let camera = this.cameras.main;
         camera.zoom = 1.4;
         camera.startFollow(this.player);
@@ -112,6 +126,15 @@ export default class MainScene extends Phaser.Scene {
             space: Phaser.Input.Keyboard.KeyCodes.SPACE,
             shift: Phaser.Input.Keyboard.KeyCodes.SHIFT,
         });
+
+                /*
+        this.dragon = new Phaser.Physics.Matter.Sprite(this.matter.world, Phaser.Math.Between(320,540), Phaser.Math.Between(40, 160), 'enemies', 'dragon_idle_1');
+        this.add.existing(this.dragon);
+        this.dragon.setFixedRotation();
+        this.dragon.setStatic(true);
+        */
+
+
 
     };
 

@@ -3,6 +3,7 @@ import CraftingScene from "./CraftingScene.js";
 import InventoryScene from "./InventoryScene.js";
 import MainScene from "./MainScene.js";
 import StartScene from "./StartScene.js";
+import map2 from "./map2.js"
 
 const config = {
   width:640,
@@ -10,7 +11,7 @@ const config = {
   backgroundColor: '#70491d',
   type: Phaser.AUTO,
   parent: 'configs',
-  scene:[StartScene, ControlsScene, MainScene, InventoryScene, CraftingScene],
+  scene:[StartScene, ControlsScene, map2, MainScene, InventoryScene, CraftingScene],
   scale: {
     zoom:1.4,
   },

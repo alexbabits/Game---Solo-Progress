@@ -10,7 +10,6 @@ export default class Enemy extends MatterEntity {
         scene.load.audio('ent', 'assets/audio/ent.mp3');
     };
 
-
     constructor(data){
 
         let {scene, enemy} = data;
@@ -52,8 +51,6 @@ export default class Enemy extends MatterEntity {
         target.setTint(0xff0000);
         setTimeout(()=> this.setBackToNormalColor(target), 200);
     };
-
-
 
     update(){
         if(this.dead) return;

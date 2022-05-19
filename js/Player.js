@@ -74,12 +74,6 @@ export default class Player extends MatterEntity {
         }
     };
 
-        /*if(this.inputKeys.shift.isDown && playerVelocity.x !== 0 || playerVelocity.y !== 0) {
-            this.anims.play('hero_walk', true);
-            playerVelocity.x = speed/2;
-            playerVelocity.y = speed/2;
-        }*/
-
         heroTouchingTrigger(playerSensor){
 
         this.scene.matterCollision.addOnCollideStart({
@@ -124,7 +118,6 @@ export default class Player extends MatterEntity {
         });
 
     };
-
 
         setBackToNormalColor(gameObject){
             gameObject.setTint(0xffffff);

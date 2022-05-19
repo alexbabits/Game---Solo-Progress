@@ -65,4 +65,19 @@ export default class Inventory {
         return Object.values(this.items).filter(i => i.name === itemName).map(i => i.quantity).reduce((accumulater, currentValue) => accumulater + currentValue, 0);
     };
 
+        /*
+    //selectedItem and getItemFrame have no use now, but could be used in the future for equipping items and getting their sprite.
+
+    get selectedItem() {
+    //This 'items' is the object in our constructor in Inventory.js (all our current items)
+        return this.items[this.selected];
+    }
+    //pass it in the item, does a look up in items, looks up the name and returns the frame.
+    //This 'items' is ALL the items found in items.js
+    //If using this method, will need to import items.js!
+    getItemFrame(item) {
+        return items[item.name].frame;
+    }
+    */
+   
 };

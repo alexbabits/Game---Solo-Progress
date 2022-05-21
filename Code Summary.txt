@@ -252,3 +252,7 @@ So then we move on to frame 6 and so on being false again. (We also just set the
 83. Figuring out Health Bar text.
 84. Figured out Health Bar text, but could have maxHealth property for static denominator for the text.
 ------------------------------------------Health Bar Branch------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------maxHealth-Property Branch------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+85. Added maxHealth property in everywhere it needed to be. Then used it as the static denominator for the healthbar.
+------------------------------------------maxHealth-Property Branch------------------------------------------------------------------------------------------------------------------------------------------------------------------------

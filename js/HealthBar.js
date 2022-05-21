@@ -1,6 +1,6 @@
 export default class HealthBar extends Phaser.Scene {
-
-    constructor(scene, x, y, health) {
+    //passed in maxHealth here
+    constructor(scene, x, y, health, maxHealth) {
         super("HealthBar");
 
         this.bar = new Phaser.GameObjects.Graphics(scene);
@@ -12,6 +12,8 @@ export default class HealthBar extends Phaser.Scene {
         this.x = x;
         this.y = y;
         this.value = health;
+        //let maxHealth be the denominator
+        this.denominator = maxHealth;
         this.size = {
             width: 77,
             height: 11
@@ -37,7 +39,8 @@ export default class HealthBar extends Phaser.Scene {
     draw(x,y) {
 
         this.bar.clear();
-        this.text.setText(`${this.value}/10`);
+        //put the denominator value here, which is maxHealth.
+        this.text.setText(`${this.value}/${this.denominator}`);
 
         const { width, height } = this.size;
         const margin = 2;

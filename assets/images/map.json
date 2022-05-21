@@ -577,6 +577,11 @@
                          "value":10
                         }, 
                         {
+                         "name":"maxHealth",
+                         "type":"int",
+                         "value":10
+                        }, 
+                        {
                          "name":"tintable",
                          "type":"bool",
                          "value":true
@@ -610,6 +615,11 @@
                          "value":5
                         }, 
                         {
+                         "name":"maxHealth",
+                         "type":"int",
+                         "value":5
+                        }, 
+                        {
                          "name":"tintable",
                          "type":"bool",
                          "value":true
@@ -639,6 +649,11 @@
                         }, 
                         {
                          "name":"health",
+                         "type":"int",
+                         "value":5
+                        }, 
+                        {
+                         "name":"maxHealth",
                          "type":"int",
                          "value":5
                         }, 

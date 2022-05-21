@@ -10,7 +10,8 @@ export default class Player extends MatterEntity {
         this.inventory = new Inventory();
         //x and y position based on game configs and adjusted for zoom: EX: ((height - (height/zoom))/2. ((640 - (640/1.4))/2 = 91.43 becomes the new (0,0).
         this.hp = new HealthBar(this.scene, 100, 100, this.health);
-        this.attack_frame = false;
+        this.attackFlag = false;
+        this.walkingSwitch = true;
         const {Body,Bodies} = Phaser.Physics.Matter.Matter;
         let playerCollider = Bodies.rectangle(this.x, this.y, 22, 32, {chamfer: {radius: 10}, isSensor:false, label:'playerCollider'});
         let playerSensor = Bodies.rectangle(this.x, this.y, 46, 8, {isSensor:true, label: 'playerSensor'});
@@ -43,61 +44,38 @@ export default class Player extends MatterEntity {
 
         const runningSpeed = 4;
         const walkingSpeed = 2;
-        let walkingSwitch = true;
 
         if(Phaser.Input.Keyboard.JustDown(this.inputKeys.shift)){
-            walkingSwitch = !walkingSwitch
+            this.walkingSwitch = !this.walkingSwitch
         }
 
-        if(this.inputKeys.shift.isUp){
-            walkingSwitch = walkingSwitch
-        }
-        
         let playerVelocity = new Phaser.Math.Vector2();
 
         //running controls
-        if(this.inputKeys.left.isDown && walkingSwitch === false) {
+        if(this.inputKeys.left.isDown && this.walkingSwitch === false) {
             this.flipX = true;
             playerVelocity.x = -runningSpeed;
-        } else if (this.inputKeys.right.isDown && walkingSwitch === false) {
+        } else if (this.inputKeys.right.isDown && this.walkingSwitch === false) {
             this.flipX = false;
             playerVelocity.x = runningSpeed;
-        } else if (this.inputKeys.up.isDown && walkingSwitch === false) {
+        } else if (this.inputKeys.up.isDown && this.walkingSwitch === false) {
             playerVelocity.y = -runningSpeed;
-        } else if (this.inputKeys.down.isDown && walkingSwitch === false) {
+        } else if (this.inputKeys.down.isDown && this.walkingSwitch === false) {
             playerVelocity.y = runningSpeed;
         } 
 
         //walking controls
-        if(this.inputKeys.left.isDown && walkingSwitch === true) {
+        if(this.inputKeys.left.isDown && this.walkingSwitch === true) {
             this.flipX = true;
             playerVelocity.x = -walkingSpeed;
-        } else if (this.inputKeys.right.isDown && walkingSwitch === true) {
+        } else if (this.inputKeys.right.isDown && this.walkingSwitch === true) {
             this.flipX = false;
             playerVelocity.x = walkingSpeed;
-        } else if (this.inputKeys.up.isDown && walkingSwitch === true) {
+        } else if (this.inputKeys.up.isDown && this.walkingSwitch === true) {
             playerVelocity.y = -walkingSpeed;
-        } else if (this.inputKeys.down.isDown && walkingSwitch === true) {
+        } else if (this.inputKeys.down.isDown && this.walkingSwitch === true) {
             playerVelocity.y = walkingSpeed;
         }
-
-        /*
-        For Toggling walking, 
-        1. The method `setEmitOnRepeat(false)` from Phaser.Input.Keyboard.Key. 
-        Controls if this Key will continuously emit a down event while being held down (true), 
-        or emit the event just once, on first press, and then skip future events (false).
-
-        2. The method JustDown(key) from Phaser.Input.Keyboard. allows you to test if this Key has just been pressed down or not. 
-        When you check this value it will return true if the Key is down, otherwise false. 
-
-        This almost worked in player.js update:
-                let walkingSwitch = true;
-
-        if(Phaser.Input.Keyboard.JustDown(this.inputKeys.shift)){
-            walkingSwitch = false;
-        }
-
-        */
 
         //normalize makes diagonals same speed if needed, if I decide to allow diagonal movement. "playerVelocity.normalize();"
 
@@ -117,11 +95,8 @@ export default class Player extends MatterEntity {
            }
              
         if(this.inputKeys.space.isDown === false) {
-            this.attack_frame = false
+            this.attackFlag = false
         }
-        
-        
-
 
     };
 
@@ -177,15 +152,15 @@ export default class Player extends MatterEntity {
          whackStuff(){
             this.touching = this.touching.filter(gameObject => gameObject.hit && !gameObject.dead);
             this.touching.forEach(gameObject =>{
-                if (this.anims.currentFrame.textureFrame === 'hero_attack_5'  && this.attack_frame === false) {
-                    this.attack_frame = true
+                if (this.anims.currentFrame.textureFrame === 'hero_attack_5'  && this.attackFlag === false) {
+                    this.attackFlag = true
                     gameObject.hit()
                     if(gameObject.tintable === true){
                         gameObject.setTint(0xff0000);
                         setTimeout(()=> this.setBackToNormalColor(gameObject), 200);
                     }
             } else if (this.anims.currentFrame.textureFrame === 'hero_attack_6') {
-                this.attack_frame = false
+                this.attackFlag = false
             }         
                 if(gameObject.dead) gameObject.destroy();
         });

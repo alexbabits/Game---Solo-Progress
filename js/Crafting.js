@@ -16,6 +16,7 @@ export default class Crafting {
         if(item.canCraft) {
             new DropItem({ name:item.name, scene:this.mainScene, x:this.player.x + 32, y:this.player.y, frame:item.frame});
             item.matDetails.forEach(matDetail => this.inventory.removeItem(matDetail.name));
+            //this.craftingSound.play();
         }
     }
 

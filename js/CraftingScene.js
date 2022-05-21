@@ -15,17 +15,19 @@ export default class CraftingScene extends UIBaseScene {
     }
 
     create() {
+        this.craftingSound = this.sound.add('craftingsound', {volume: 0.3})
         this.updateCraftableSlots();
         this.input.on("wheel",(pointer, gameObjects, deltaX, deltaY, deltaZ) => {
             this.crafting.selected = Math.max(0, this.crafting.selected+ (deltaY > 0 ? 1 : -1)) % this.crafting.items.length;
-            this.updateSelected();
+            this.tintSelectedSlot();
         });
         this.input.keyboard.on('keydown-E', () => {
             this.crafting.craft();
+            this.craftingSound.play();
         });
     }
 
-        updateSelected(){
+        tintSelectedSlot(){
             for (let index = 0; index < this.crafting.items.length; index++){
                 this.craftingSlots[index].tint = this.crafting.selected === index ? 0xffff00 : 0xffffff;
             }

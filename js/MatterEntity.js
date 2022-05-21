@@ -3,7 +3,6 @@ import items from "./Items.js";
 
 export default class MatterEntity extends Phaser.Physics.Matter.Sprite {
     constructor(data){
-        //added in maxHealth property.
         let {name, scene, x, y, health, maxHealth, drops, tintable, texture, frame, depth} = data;
         super(scene.matter.world, x, y, texture, frame);
         this.x += this.width/2;
@@ -11,7 +10,6 @@ export default class MatterEntity extends Phaser.Physics.Matter.Sprite {
         this.depth = depth || 1;
         this.name = name;
         this.health = health;
-        //added in maxHealth property.
         this.maxHealth = maxHealth;
         this.drops = drops;
         this.tintable = tintable;

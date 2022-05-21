@@ -15,10 +15,8 @@ export default class Enemy extends MatterEntity {
         let {scene, enemy} = data;
         let drops = JSON.parse(enemy.properties.find(p => p.name== 'drops').value);
         let health = enemy.properties.find(p => p.name== 'health').value;
-        //added maxHealth property in Tiled map, and got the value here.
         let maxHealth = enemy.properties.find(p => p.name== 'maxHealth').value;
         let tintable = enemy.properties.find(p => p.name== 'tintable').value;
-        //passed in maxHealth here.
         super({scene, x:enemy.x, y:enemy.y, texture:'enemies', frame:`${enemy.name}_idle_1`, drops, health, maxHealth, tintable, name:enemy.name});
 
         const {Body,Bodies} = Phaser.Physics.Matter.Matter;

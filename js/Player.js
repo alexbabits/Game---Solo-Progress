@@ -41,45 +41,74 @@ export default class Player extends MatterEntity {
     update(){
         if(this.dead) return;
 
-        let speed = 4;
+        const runningSpeed = 4;
+        const walkingSpeed = 2;
         let playerVelocity = new Phaser.Math.Vector2();
+
+        //running controls
         if(this.inputKeys.left.isDown) {
             this.flipX = true;
-            playerVelocity.x = -1;
+            playerVelocity.x = -runningSpeed;
         } else if (this.inputKeys.right.isDown) {
             this.flipX = false;
-            playerVelocity.x = 1;
+            playerVelocity.x = runningSpeed;
         } else if (this.inputKeys.up.isDown) {
-            playerVelocity.y = -1;
+            playerVelocity.y = -runningSpeed;
         } else if (this.inputKeys.down.isDown) {
-            playerVelocity.y = 1;
+            playerVelocity.y = runningSpeed;
         } 
+
+        //walking controls
+        if(this.inputKeys.left.isDown && this.inputKeys.shift.isDown) {
+            this.flipX = true;
+            playerVelocity.x = -walkingSpeed;
+
+        } else if (this.inputKeys.right.isDown && this.inputKeys.shift.isDown) {
+            this.flipX = false;
+            playerVelocity.x = walkingSpeed;
+
+        } else if (this.inputKeys.up.isDown && this.inputKeys.shift.isDown) {
+            playerVelocity.y = -walkingSpeed;
+
+        } else if (this.inputKeys.down.isDown && this.inputKeys.shift.isDown) {
+            playerVelocity.y = walkingSpeed;
+
+        }
+
+        /*
+        For Toggling walking, 
+        1. The method `setEmitOnRepeat(false)` from Phaser.Input.Keyboard.Key. 
+        Controls if this Key will continuously emit a down event while being held down (true), 
+        or emit the event just once, on first press, and then skip future events (false).
+
+        2.JustDown(key) from Phaser.Input.Keyboard. allows you to test if this Key has just been pressed down or not. 
+        When you check this value it will return true if the Key is down, otherwise false. 
+        */
+
         //normalize makes diagonals same speed if needed, if I decide to allow diagonal movement. "playerVelocity.normalize();"
 
-        playerVelocity.scale(speed);
+        //playerVelocity.scale(speed);
 
         this.setVelocity(playerVelocity.x,playerVelocity.y);
 
         if(this.inputKeys.space.isDown && playerVelocity.x === 0 && playerVelocity.y === 0) {
             this.anims.play('hero_attack', true);
             this.whackStuff();
-           } else if (playerVelocity.x !== 0 || playerVelocity.y !== 0) {
+           } else if (Math.abs(playerVelocity.x) === runningSpeed || Math.abs(playerVelocity.y) === runningSpeed) {
                 this.anims.play('hero_run', true);
+           } else if (Math.abs(playerVelocity.x) === walkingSpeed || Math.abs(playerVelocity.y) === walkingSpeed) {
+                this.anims.play('hero_walk', true);
            } else {
-               this.anims.play('hero_idle', true);
+            this.anims.play('hero_idle', true);
            }
-
+             
         if(this.inputKeys.space.isDown === false) {
             this.attack_frame = false
         }
-
-                /*if(this.inputKeys.shift.isDown && playerVelocity.x !== 0 || playerVelocity.y !== 0) {
-            this.anims.play('hero_walk', true);
-            playerVelocity.x = speed/2;
-            playerVelocity.y = speed/2;
-        }*/
-
         
+        
+
+
     };
 
         heroTouchingTrigger(playerSensor){

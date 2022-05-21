@@ -38,9 +38,6 @@ export default class Player extends MatterEntity {
         this.setOrigin(0.5);
     }
 
-        
-
-
     update(){
         if(this.dead) return;
 
@@ -48,8 +45,12 @@ export default class Player extends MatterEntity {
         const walkingSpeed = 2;
         let walkingSwitch = true;
 
-        if(this.inputKeys.shift.isDown){
+        if(Phaser.Input.Keyboard.JustDown(this.inputKeys.shift)){
             walkingSwitch = !walkingSwitch
+        }
+
+        if(this.inputKeys.shift.isUp){
+            walkingSwitch = walkingSwitch
         }
         
         let playerVelocity = new Phaser.Math.Vector2();
@@ -88,6 +89,14 @@ export default class Player extends MatterEntity {
 
         2. The method JustDown(key) from Phaser.Input.Keyboard. allows you to test if this Key has just been pressed down or not. 
         When you check this value it will return true if the Key is down, otherwise false. 
+
+        This almost worked in player.js update:
+                let walkingSwitch = true;
+
+        if(Phaser.Input.Keyboard.JustDown(this.inputKeys.shift)){
+            walkingSwitch = false;
+        }
+
         */
 
         //normalize makes diagonals same speed if needed, if I decide to allow diagonal movement. "playerVelocity.normalize();"

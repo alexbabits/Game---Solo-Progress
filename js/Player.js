@@ -38,41 +38,46 @@ export default class Player extends MatterEntity {
         this.setOrigin(0.5);
     }
 
+        
+
+
     update(){
         if(this.dead) return;
 
         const runningSpeed = 4;
         const walkingSpeed = 2;
+        let walkingSwitch = true;
+
+        if(this.inputKeys.shift.isDown){
+            walkingSwitch = !walkingSwitch
+        }
+        
         let playerVelocity = new Phaser.Math.Vector2();
 
         //running controls
-        if(this.inputKeys.left.isDown) {
+        if(this.inputKeys.left.isDown && walkingSwitch === false) {
             this.flipX = true;
             playerVelocity.x = -runningSpeed;
-        } else if (this.inputKeys.right.isDown) {
+        } else if (this.inputKeys.right.isDown && walkingSwitch === false) {
             this.flipX = false;
             playerVelocity.x = runningSpeed;
-        } else if (this.inputKeys.up.isDown) {
+        } else if (this.inputKeys.up.isDown && walkingSwitch === false) {
             playerVelocity.y = -runningSpeed;
-        } else if (this.inputKeys.down.isDown) {
+        } else if (this.inputKeys.down.isDown && walkingSwitch === false) {
             playerVelocity.y = runningSpeed;
         } 
 
         //walking controls
-        if(this.inputKeys.left.isDown && this.inputKeys.shift.isDown) {
+        if(this.inputKeys.left.isDown && walkingSwitch === true) {
             this.flipX = true;
             playerVelocity.x = -walkingSpeed;
-
-        } else if (this.inputKeys.right.isDown && this.inputKeys.shift.isDown) {
+        } else if (this.inputKeys.right.isDown && walkingSwitch === true) {
             this.flipX = false;
             playerVelocity.x = walkingSpeed;
-
-        } else if (this.inputKeys.up.isDown && this.inputKeys.shift.isDown) {
+        } else if (this.inputKeys.up.isDown && walkingSwitch === true) {
             playerVelocity.y = -walkingSpeed;
-
-        } else if (this.inputKeys.down.isDown && this.inputKeys.shift.isDown) {
+        } else if (this.inputKeys.down.isDown && walkingSwitch === true) {
             playerVelocity.y = walkingSpeed;
-
         }
 
         /*
@@ -81,7 +86,7 @@ export default class Player extends MatterEntity {
         Controls if this Key will continuously emit a down event while being held down (true), 
         or emit the event just once, on first press, and then skip future events (false).
 
-        2.JustDown(key) from Phaser.Input.Keyboard. allows you to test if this Key has just been pressed down or not. 
+        2. The method JustDown(key) from Phaser.Input.Keyboard. allows you to test if this Key has just been pressed down or not. 
         When you check this value it will return true if the Key is down, otherwise false. 
         */
 
@@ -180,4 +185,3 @@ export default class Player extends MatterEntity {
       }; 
 
 };
-

@@ -7,6 +7,8 @@ export default class MainScene extends Phaser.Scene {
     constructor() {
         super("MainScene");
         this.enemies = [];
+        //this.randomLightningQuantity = Phaser.Math.Between(1,3);
+        //this.randomLightningFrequency = Phaser.Math.Between(500,3000);
     };
 
     preload() {
@@ -20,10 +22,13 @@ export default class MainScene extends Phaser.Scene {
         this.load.animation('enemies_anims', 'assets/images/enemies_anims.json');
         this.load.image('rain', 'assets/images/rain.png');
         this.load.image('cursor', 'assets/images/cursor.png');
-        this.load.image('lightning', 'assets/images/lightning.png');
+        //loaded in lightning as an atlas since it has multiple frames to choose from.
+        this.load.atlas('lightning', 'assets/images/lightning.png', 'assets/images/lightning_atlas.json');
         this.load.audio('lightning', 'assets/audio/lightning.mp3');
         this.load.audio('rain', 'assets/audio/rain.mp3');
         this.load.image('Healthbarframe', 'assets/images/Healthbarframe.png');
+
+
                 
     };
 
@@ -44,12 +49,22 @@ export default class MainScene extends Phaser.Scene {
         Healthbarframelogo.depth = 9;
         Healthbarframelogo.setScale(.3);
         Healthbarframelogo.setScrollFactor(0);
-        
+
+/*
+        function generateBoomStick() {
+            Phaser.Math.Between(1,3);
+        }
+
+        function generateBoomStickFrequency() {
+            Phaser.Math.Between(1000,10000);
+        }
+*/
+
         this.rainSound = this.sound.add('rain', {volume: 0.2})
         this.lightningSound = this.sound.add('lightning', {volume: 0.2})
 
-        this.particles = this.add.particles('rain');
-        this.emitter = this.particles.createEmitter({
+        this.rainParticles = this.add.particles('rain');
+        this.rainEmitter = this.rainParticles.createEmitter({
             x: { min:0, max: 800},
             y: 0,
             lifespan: 5000,
@@ -66,25 +81,26 @@ export default class MainScene extends Phaser.Scene {
         //added rainsound, plays 24/7 for now.
         this.rainSound.play()
 
-        this.particles2 = this.add.particles('lightning');
-        this.emitter2 = this.particles2.createEmitter({
-            x: { min:0, max: 640},
-            y: 0,
+        this.lightningParticles = this.add.particles('lightning');
+        this.lightningEmitter = this.lightningParticles.createEmitter({
+            //added in frames since 'lightning' png is an atlas with multiple frames.
+            frame: [ 'lightning1', 'lightning2'],
+            x: { min:250, max: 350},
+            y: { min:0, max: this.game.config.width/4},
             lifespan: 100,
-            speedY: {min: 0, max: 0},
-            speedX: {min: 0, max: 0},
-            scale: 2,
-            quantity: 1,
-            maxParticles: 0,
-            frequency: Phaser.Math.Between(6000,30000), //or you could do Math.Max((6000,(Math.random()*30000)))
-            blendMode: 0
+            scale: 1.5,
+            alpha: {start: 1, end: 0},
+            quantity: Math.floor(Math.random() * 10) + 1,
+            frequency: Phaser.Math.Between(1000,10000), //or you could do Math.Max((6000,(Math.random()*30000)))
+            blendMode: 0,
+            on: true
         });
 
         function lightningSound() {
             this.lightningSound.play()
           }
 
-        this.emitter2.onParticleEmit(lightningSound, this);
+        this.lightningEmitter.onParticleEmit(lightningSound, this);
         
         this.player = new Player({scene:this, x:Phaser.Math.Between(150,400), y:Phaser.Math.Between(150, 350), texture:'hero', frame:'hero_idle_1'});
         let camera = this.cameras.main;
@@ -138,19 +154,19 @@ export default class MainScene extends Phaser.Scene {
 
         We could also default lightning emitter to 'on: false' and then switch it true whenever rain is on, so lightning also starts striking when rainfall begins.
 
-        Adding rain and lightning together and condensing could look like this (btw: emitter refers to rain, emitter2 refers to lightning):
+        Adding rain and lightning together and condensing could look like this (btw: emitter refers to rain, lightningEmitter refers to lightning):
         (We don't need to play lightningSound or stop lightningSound here, because it only plays when a lightning particle is emitted anyway.
          It's sound is taken care of via the 'onParticleEmit' method)
 
         if(stormStartFlag === true){
             this.emitter.start()
-            this.emitter2.start()
+            this.lightningEmitter.start()
             this.rainSound.play()
         } else return
 
         if(stormStopFlag === true){
             this.emitter.stop()
-            this.emitter2.stop()
+            this.lightningEmitter.stop()
             this.rainSound.stop()
         } else return
 
@@ -182,7 +198,7 @@ export default class MainScene extends Phaser.Scene {
                 //This function starts a storm. Both emitters have to be 'on: false' initially.
                 function stormStart(){
                     this.emitter.start()
-                    this.emitter2.start()
+                    this.lightningEmitter.start()
                     this.rainSound.play()
                     setTimeout( () => this.stormStop(), Phaser.Math.Between(10000,60000) );
             }
@@ -190,7 +206,7 @@ export default class MainScene extends Phaser.Scene {
                 //This function stops a storm. Both emitters have to be 'on: true'. 
                 function stormStop(){
                     this.emitter.stop()
-                    this.emitter2.stop()
+                    this.lightningEmitter.stop()
                     this.rainSound.stop()
                     setTimeout( () => this.stormStart(), Phaser.Math.Between(10000,60000) );
             }

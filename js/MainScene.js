@@ -7,8 +7,6 @@ export default class MainScene extends Phaser.Scene {
     constructor() {
         super("MainScene");
         this.enemies = [];
-        //this.randomLightningQuantity = Phaser.Math.Between(1,3);
-        //this.randomLightningFrequency = Phaser.Math.Between(500,3000);
     };
 
     preload() {
@@ -22,7 +20,6 @@ export default class MainScene extends Phaser.Scene {
         this.load.animation('enemies_anims', 'assets/images/enemies_anims.json');
         this.load.image('rain', 'assets/images/rain.png');
         this.load.image('cursor', 'assets/images/cursor.png');
-        //loaded in lightning as an atlas since it has multiple frames to choose from.
         this.load.atlas('lightning', 'assets/images/lightning.png', 'assets/images/lightning_atlas.json');
         this.load.audio('lightning', 'assets/audio/lightning.mp3');
         this.load.audio('rain', 'assets/audio/rain.mp3');
@@ -33,6 +30,9 @@ export default class MainScene extends Phaser.Scene {
     };
 
     create(){
+
+        this.player = new Player({scene:this, x:Phaser.Math.Between(150,400), y:Phaser.Math.Between(150, 350), texture:'hero', frame:'hero_idle_1'});
+
         this.input.setDefaultCursor('url(assets/images/cursor.png), pointer')
 
         const map = this.make.tilemap({key: 'map'});
@@ -50,18 +50,10 @@ export default class MainScene extends Phaser.Scene {
         Healthbarframelogo.setScale(.3);
         Healthbarframelogo.setScrollFactor(0);
 
-/*
-        function generateBoomStick() {
-            Phaser.Math.Between(1,3);
-        }
 
-        function generateBoomStickFrequency() {
-            Phaser.Math.Between(1000,10000);
-        }
-*/
-
-        this.rainSound = this.sound.add('rain', {volume: 0.2})
-        this.lightningSound = this.sound.add('lightning', {volume: 0.2})
+        this.rainSound = this.sound.add('rain', {volume: 0.2}, {loop: true})
+        //try to base pan and volume off location of particle relative to the player.
+        this.lightningSound = this.sound.add('lightning', {volume: 0.2}, {pan: 0})
 
         this.rainParticles = this.add.particles('rain');
         this.rainEmitter = this.rainParticles.createEmitter({
@@ -76,33 +68,43 @@ export default class MainScene extends Phaser.Scene {
             frequency: 0, 
             blendMode: 0,
             on: true
-        });         
+        });   
+
+        /* maybe rainParticles instead of rainEmitter?
+        if(this.rainEmitter.on === true) {
+            this.rainSound.play
+        }
+        */
+        
 
         //added rainsound, plays 24/7 for now.
         this.rainSound.play()
 
         this.lightningParticles = this.add.particles('lightning');
         this.lightningEmitter = this.lightningParticles.createEmitter({
-            //added in frames since 'lightning' png is an atlas with multiple frames.
             frame: [ 'lightning1', 'lightning2'],
-            x: { min:250, max: 350},
-            y: { min:0, max: this.game.config.width/4},
-            lifespan: 100,
-            scale: 1.5,
+            x: { min:0, max: this.game.config.width},
+            y: { min:-this.game.config.height/1.5, max: this.game.config.height*1.5},
+            lifespan: 75,
+            scaleX: 1,
+            scaleY: 1,
             alpha: {start: 1, end: 0},
-            quantity: Math.floor(Math.random() * 10) + 1,
-            frequency: Phaser.Math.Between(1000,10000), //or you could do Math.Max((6000,(Math.random()*30000)))
+            quantity: 1,
+            frequency: 60000,
             blendMode: 0,
             on: true
         });
 
-        function lightningSound() {
-            this.lightningSound.play()
-          }
+        //set everything here with methods.
+            this.lightningEmitter.onParticleEmit(() => {
+                this.lightningSound.play()
+                this.lightningEmitter.setLifespan(Phaser.Math.Between(10, 150))
+                this.lightningEmitter.setScaleX(Phaser.Math.Between(1, 1.5))
+                this.lightningEmitter.setScaleY(Phaser.Math.Between(1, 1.5))
+                this.lightningEmitter.setQuantity(Phaser.Math.Between(1, 5))
+                this.lightningEmitter.setFrequency(Phaser.Math.Between(10000, 60000))
+            });
 
-        this.lightningEmitter.onParticleEmit(lightningSound, this);
-        
-        this.player = new Player({scene:this, x:Phaser.Math.Between(150,400), y:Phaser.Math.Between(150, 350), texture:'hero', frame:'hero_idle_1'});
         let camera = this.cameras.main;
         camera.zoom = 1.4;
         camera.startFollow(this.player);

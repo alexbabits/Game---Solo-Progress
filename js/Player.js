@@ -52,30 +52,35 @@ export default class Player extends MatterEntity {
         let playerVelocity = new Phaser.Math.Vector2();
 
         //running controls
-        if(this.inputKeys.left.isDown && this.walkingSwitch === false) {
-            this.flipX = true;
-            playerVelocity.x = -runningSpeed;
-        } else if (this.inputKeys.right.isDown && this.walkingSwitch === false) {
-            this.flipX = false;
-            playerVelocity.x = runningSpeed;
-        } else if (this.inputKeys.up.isDown && this.walkingSwitch === false) {
-            playerVelocity.y = -runningSpeed;
-        } else if (this.inputKeys.down.isDown && this.walkingSwitch === false) {
-            playerVelocity.y = runningSpeed;
-        } 
+        if(this.walkingSwitch === false) {
+            if(this.inputKeys.left.isDown) {
+                this.flipX = true;
+                playerVelocity.x = -runningSpeed;
+            } else if (this.inputKeys.right.isDown) {
+                this.flipX = false;
+                playerVelocity.x = runningSpeed;
+            } else if (this.inputKeys.up.isDown) {
+                playerVelocity.y = -runningSpeed;
+            } else if (this.inputKeys.down.isDown) {
+                playerVelocity.y = runningSpeed;
+            } 
+        }
 
         //walking controls
-        if(this.inputKeys.left.isDown && this.walkingSwitch === true) {
-            this.flipX = true;
-            playerVelocity.x = -walkingSpeed;
-        } else if (this.inputKeys.right.isDown && this.walkingSwitch === true) {
-            this.flipX = false;
-            playerVelocity.x = walkingSpeed;
-        } else if (this.inputKeys.up.isDown && this.walkingSwitch === true) {
-            playerVelocity.y = -walkingSpeed;
-        } else if (this.inputKeys.down.isDown && this.walkingSwitch === true) {
-            playerVelocity.y = walkingSpeed;
+        if(this.walkingSwitch === true){
+            if(this.inputKeys.left.isDown) {
+                this.flipX = true;
+                playerVelocity.x = -walkingSpeed;
+            } else if (this.inputKeys.right.isDown) {
+                this.flipX = false;
+                playerVelocity.x = walkingSpeed;
+            } else if (this.inputKeys.up.isDown) {
+                playerVelocity.y = -walkingSpeed;
+            } else if (this.inputKeys.down.isDown) {
+                playerVelocity.y = walkingSpeed;
+            }
         }
+
 
         //normalize makes diagonals same speed if needed, if I decide to allow diagonal movement. "playerVelocity.normalize();"
 

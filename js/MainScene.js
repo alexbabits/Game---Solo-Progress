@@ -23,10 +23,7 @@ export default class MainScene extends Phaser.Scene {
         this.load.atlas('lightning', 'assets/images/lightning.png', 'assets/images/lightning_atlas.json');
         this.load.audio('lightning', 'assets/audio/lightning.mp3');
         this.load.audio('rain', 'assets/audio/rain.mp3');
-        this.load.image('Healthbarframe', 'assets/images/Healthbarframe.png');
-
-
-                
+        this.load.image('Healthbarframe', 'assets/images/Healthbarframe.png');     
     };
 
     create(){
@@ -67,18 +64,8 @@ export default class MainScene extends Phaser.Scene {
             maxParticles: 0,
             frequency: 0, 
             blendMode: 0,
-            on: true
+            on: false
         });   
-
-        /* maybe rainParticles instead of rainEmitter?
-        if(this.rainEmitter.on === true) {
-            this.rainSound.play
-        }
-        */
-        
-
-        //added rainsound, plays 24/7 for now.
-        this.rainSound.play()
 
         this.lightningParticles = this.add.particles('lightning');
         this.lightningEmitter = this.lightningParticles.createEmitter({
@@ -92,18 +79,47 @@ export default class MainScene extends Phaser.Scene {
             quantity: 1,
             frequency: 60000,
             blendMode: 0,
-            on: true
+            on: false
         });
 
         //set everything here with methods.
-            this.lightningEmitter.onParticleEmit(() => {
-                this.lightningSound.play()
-                this.lightningEmitter.setLifespan(Phaser.Math.Between(10, 150))
-                this.lightningEmitter.setScaleX(Phaser.Math.Between(1, 1.5))
-                this.lightningEmitter.setScaleY(Phaser.Math.Between(1, 1.5))
-                this.lightningEmitter.setQuantity(Phaser.Math.Between(1, 5))
-                this.lightningEmitter.setFrequency(Phaser.Math.Between(10000, 60000))
-            });
+        this.lightningEmitter.onParticleEmit(() => {
+            this.lightningSound.play()
+            this.lightningEmitter.setLifespan(Phaser.Math.Between(10, 150))
+            this.lightningEmitter.setScaleX(Phaser.Math.Between(1, 1.5))
+            this.lightningEmitter.setScaleY(Phaser.Math.Between(1, 1.5))
+            this.lightningEmitter.setQuantity(Phaser.Math.Between(1, 5))
+            this.lightningEmitter.setFrequency(Phaser.Math.Between(3000, 3000))
+            this.lightningStrikes++
+            console.log(`number of lightning strikes this storm: ${this.lightningStrikes}`)
+            if(this.lightningStrikes >= Phaser.Math.Between(40, 100)){
+                this.rainEmitter.stop()
+                this.lightningEmitter.stop()
+                this.rainSound.stop()
+                console.log(`rain turned on?: ${this.rainEmitter.on}`)   
+                console.log(`lightning turned on?: ${this.lightningEmitter.on}`)   
+                console.log(`The weather should be calm.`)   
+                this.lightningStrikes = 0
+                console.log(`number of lightning strikes should be reset to zero: ${this.lightningStrikes}`)
+                //set screen tint: this.setTint = normal
+            }
+        });
+
+            this.lightningStrikes = 0;
+        
+            //The callback function which starts a storm.
+            const stormStart = () => {
+                if(this.rainEmitter.on === false && this.lightningEmitter.on === false){
+                    this.rainEmitter.start()
+                    this.lightningEmitter.start()
+                    this.rainSound.play()  
+                    console.log(`rain turned on?: ${this.rainEmitter.on}`)   
+                    console.log(`lightning turned on?: ${this.lightningEmitter.on}`)   
+                    console.log(`A storm should be raging.`)   
+                }
+            }
+            //This timer calls the function every 3 seconds.        
+            setInterval(stormStart, Phaser.Math.Between(6000,10000));
 
         let camera = this.cameras.main;
         camera.zoom = 1.4;
@@ -130,89 +146,6 @@ export default class MainScene extends Phaser.Scene {
             space: Phaser.Input.Keyboard.KeyCodes.SPACE,
             shift: Phaser.Input.Keyboard.KeyCodes.SHIFT,
         });
-
-        /*
-
-        'this.emitter.start()' turns it's 'on' property to true. Rain will be emitted.
-        'this.emitter.stop()' turns it's 'on' property to false. Rain will not be emitted.
-
-        So we could say something like:
-
-        if(rainStartFlag is triggered){
-            this.emitter.start()
-        }
-        
-        if(this.emitter.on === true){
-            this.rainSound.play()
-        }
-
-        if(rainStopFlag is triggered){
-            this.emitter.stop()
-        }
-
-        if(this.emitter.on === false){
-            this.rainSound.stop()
-        }
-
-        We could also default lightning emitter to 'on: false' and then switch it true whenever rain is on, so lightning also starts striking when rainfall begins.
-
-        Adding rain and lightning together and condensing could look like this (btw: emitter refers to rain, lightningEmitter refers to lightning):
-        (We don't need to play lightningSound or stop lightningSound here, because it only plays when a lightning particle is emitted anyway.
-         It's sound is taken care of via the 'onParticleEmit' method)
-
-        if(stormStartFlag === true){
-            this.emitter.start()
-            this.lightningEmitter.start()
-            this.rainSound.play()
-        } else return
-
-        if(stormStopFlag === true){
-            this.emitter.stop()
-            this.lightningEmitter.stop()
-            this.rainSound.stop()
-        } else return
-
-        (where the flags will oppose eachother, being true/false or false/true)
-
-        default stormStartFlag to false, and stormStopFlag to true in the constructor.
-
-        if(stormStartTimer === 12345){
-            stormStartFlag = true
-        } else {
-            stormStartFlag = false
-        }
-
-        if(stormStopTimer === 12345){
-            stormStopFlag = true
-        } else {
-            stormStopFlag = false
-        }
-
-        Say, if every 1 second we have a function that spits out a number from 1 to 100
-        and we have our flag change if that number is 69. Then on average, every 100 seconds our flag will be triggered.
-        Or, start the timer, and anytime it gets above a minimum value, but below a maximum value, randomly from those min to max, trigger the storm flag.
-
-        */
-
-
-        /* Attempt to make a storm handler
-
-                //This function starts a storm. Both emitters have to be 'on: false' initially.
-                function stormStart(){
-                    this.emitter.start()
-                    this.lightningEmitter.start()
-                    this.rainSound.play()
-                    setTimeout( () => this.stormStop(), Phaser.Math.Between(10000,60000) );
-            }
-        
-                //This function stops a storm. Both emitters have to be 'on: true'. 
-                function stormStop(){
-                    this.emitter.stop()
-                    this.lightningEmitter.stop()
-                    this.rainSound.stop()
-                    setTimeout( () => this.stormStart(), Phaser.Math.Between(10000,60000) );
-            }
-            */
 
     };
 

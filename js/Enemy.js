@@ -50,6 +50,7 @@ export default class Enemy extends MatterEntity {
         target.hit();
         target.setTint(0xff0000);
         setTimeout(()=> this.setBackToNormalColor(target), 200);
+        //May need to clearInterval here if memory gets bad, similar to below?
     };
 
     update(){

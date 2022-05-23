@@ -86,40 +86,44 @@ export default class MainScene extends Phaser.Scene {
         this.lightningEmitter.onParticleEmit(() => {
             this.lightningSound.play()
             this.lightningEmitter.setLifespan(Phaser.Math.Between(10, 150))
-            this.lightningEmitter.setScaleX(Phaser.Math.Between(1, 1.5))
-            this.lightningEmitter.setScaleY(Phaser.Math.Between(1, 1.5))
+            this.lightningEmitter.setScaleX(Phaser.Math.Between(1, 1.2))
+            this.lightningEmitter.setScaleY(Phaser.Math.Between(1, 2))
             this.lightningEmitter.setQuantity(Phaser.Math.Between(1, 5))
-            this.lightningEmitter.setFrequency(Phaser.Math.Between(3000, 3000))
+            this.lightningEmitter.setFrequency(Phaser.Math.Between(3000, 6000))
             this.lightningStrikes++
+            //set scene tint brighter due to lightning strike this.setTint = Bright
             console.log(`number of lightning strikes this storm: ${this.lightningStrikes}`)
-            if(this.lightningStrikes >= Phaser.Math.Between(40, 100)){
+            if(this.lightningStrikes >= Phaser.Math.Between(10, 30)){
+                this.player.setTint(0xFFFFFF)
+                this.enemies.forEach(enemy => enemy.setTint(0xFFFFFF))
                 this.rainEmitter.stop()
                 this.lightningEmitter.stop()
                 this.rainSound.stop()
+                this.lightningStrikes = 0
+                //set scene tint back to normal because the storm stopped: this.setTint = Normal
                 console.log(`rain turned on?: ${this.rainEmitter.on}`)   
                 console.log(`lightning turned on?: ${this.lightningEmitter.on}`)   
                 console.log(`The weather should be calm.`)   
-                this.lightningStrikes = 0
                 console.log(`number of lightning strikes should be reset to zero: ${this.lightningStrikes}`)
-                //set screen tint: this.setTint = normal
             }
         });
-
             this.lightningStrikes = 0;
+            
         
-            //The callback function which starts a storm.
             const stormStart = () => {
                 if(this.rainEmitter.on === false && this.lightningEmitter.on === false){
                     this.rainEmitter.start()
                     this.lightningEmitter.start()
                     this.rainSound.play()  
+                    this.player.setTint(0xa0a0a0)
+                    this.enemies.forEach(enemy => enemy.setTint(0xa0a0a0))
                     console.log(`rain turned on?: ${this.rainEmitter.on}`)   
                     console.log(`lightning turned on?: ${this.lightningEmitter.on}`)   
                     console.log(`A storm should be raging.`)   
                 }
-            }
-            //This timer calls the function every 3 seconds.        
-            setInterval(stormStart, Phaser.Math.Between(6000,10000));
+            }       
+            setInterval(stormStart, Phaser.Math.Between(30000,45000));
+            
 
         let camera = this.cameras.main;
         camera.zoom = 1.4;

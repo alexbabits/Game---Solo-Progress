@@ -34,6 +34,18 @@ export default class Player extends MatterEntity {
         scene.load.audio('player', 'assets/audio/player.mp3');
     }
 
+    create(){
+        //created create() method and put keys in here.
+        this.player.inputKeys = this.input.keyboard.addKeys({
+            up: Phaser.Input.Keyboard.KeyCodes.W,
+            down: Phaser.Input.Keyboard.KeyCodes.S,
+            left: Phaser.Input.Keyboard.KeyCodes.A,
+            right: Phaser.Input.Keyboard.KeyCodes.D,
+            space: Phaser.Input.Keyboard.KeyCodes.SPACE,
+            shift: Phaser.Input.Keyboard.KeyCodes.SHIFT,
+        });
+    }
+
     onDeath = () => {
         this.anims.stop();
         this.setTexture('items', 0 );

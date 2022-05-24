@@ -23,12 +23,18 @@ export default class MainScene extends Phaser.Scene {
         this.load.atlas('lightning', 'assets/images/lightning.png', 'assets/images/lightning_atlas.json');
         this.load.audio('lightning', 'assets/audio/lightning.mp3');
         this.load.audio('rain', 'assets/audio/rain.mp3');
-        this.load.image('Healthbarframe', 'assets/images/Healthbarframe.png');     
     };
 
     create(){
 
         this.player = new Player({scene:this, x:Phaser.Math.Between(150,400), y:Phaser.Math.Between(150, 350), texture:'hero', frame:'hero_idle_1'});
+        //tried calling the player create method
+        this.player.create();
+        this.crafting = new Crafting({ mainScene:this});
+    
+        this.scene.launch('InventoryScene', {mainScene:this});
+        
+        this.craftingScene.create();
 
         this.input.setDefaultCursor('url(assets/images/cursor.png), pointer')
 
@@ -38,15 +44,8 @@ export default class MainScene extends Phaser.Scene {
         const background = map.createStaticLayer('background', tileset, 0, 2);
         background.setCollisionByProperty({collides:true});
         this.matter.world.convertTilemapLayer(background);
-    
         this.map.getObjectLayer('Resources').objects.forEach(resource =>  new Resource({scene:this, resource}));
         this.map.getObjectLayer('Enemies').objects.forEach(enemy =>  this.enemies.push(new Enemy({scene:this, enemy})));
-
-        const Healthbarframelogo = this.add.image(110, 102, 'Healthbarframe').setOrigin(0); 
-        Healthbarframelogo.depth = 9;
-        Healthbarframelogo.setScale(.3);
-        Healthbarframelogo.setScrollFactor(0);
-
 
         this.rainSound = this.sound.add('rain', {volume: 0.2}, {loop: true})
         //try to base pan and volume off location of particle relative to the player.
@@ -130,26 +129,6 @@ export default class MainScene extends Phaser.Scene {
         camera.startFollow(this.player);
         camera.setLerp(0.1,0.1);
         camera.setBounds(0,2,this.game.config.width,this.game.config.height);
-
-        this.scene.launch('InventoryScene', {mainScene:this});
-        this.crafting = new Crafting({ mainScene:this});
-
-        this.input.keyboard.on('keydown-C', () => {
-            if(this.scene.isActive("CraftingScene")){
-                this.scene.stop('CraftingScene')
-            } else {
-                this.scene.launch('CraftingScene', {mainScene:this});
-            }
-        });
-
-        this.player.inputKeys = this.input.keyboard.addKeys({
-            up: Phaser.Input.Keyboard.KeyCodes.W,
-            down: Phaser.Input.Keyboard.KeyCodes.S,
-            left: Phaser.Input.Keyboard.KeyCodes.A,
-            right: Phaser.Input.Keyboard.KeyCodes.D,
-            space: Phaser.Input.Keyboard.KeyCodes.SPACE,
-            shift: Phaser.Input.Keyboard.KeyCodes.SHIFT,
-        });
 
     };
 

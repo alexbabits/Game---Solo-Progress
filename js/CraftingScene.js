@@ -21,6 +21,15 @@ export default class CraftingScene extends UIBaseScene {
             this.crafting.selected = Math.max(0, this.crafting.selected+ (deltaY > 0 ? 1 : -1)) % this.crafting.items.length;
             this.tintSelectedSlot();
         });
+        //tried to put craftingScene keydown C here. Don't think I can because this actually launches the scene so it should be in mainscene.
+        this.input.keyboard.on('keydown-C', () => {
+            if(this.scene.isActive("CraftingScene")){
+                this.scene.stop('CraftingScene')
+            } else {
+                this.scene.launch('CraftingScene', {mainScene:this});
+            }
+        });
+
         this.input.keyboard.on('keydown-E', () => {
             this.crafting.craft();
             this.craftingSound.play();

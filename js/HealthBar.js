@@ -1,7 +1,9 @@
 export default class HealthBar extends Phaser.Scene {
+
     constructor(scene, x, y, health, maxHealth) {
         super("HealthBar");
-
+        //tried loading the image here
+        scene.load.image('Healthbarframe', 'assets/images/Healthbarframe.png');
         this.bar = new Phaser.GameObjects.Graphics(scene);
         this.bar.depth = 10;
         this.bar.setScrollFactor(0,0);
@@ -12,14 +14,23 @@ export default class HealthBar extends Phaser.Scene {
         this.y = y;
         this.value = health;
         this.denominator = maxHealth;
+        //tried creating the image here and setting things.
+        this.image = new Phaser.GameObjects.Image(scene, 110, 102, "Healthbarframe").setOrigin(0);
+        this.image.depth = 9;
+        this.image.setScale(.3);
+        this.image.setScrollFactor(0);
         this.size = {
             width: 77,
             height: 11
+        
+
         }
+
         this.pixelPerHealth = this.size.width / this.value;
 
         scene.add.existing(this.bar);
         scene.add.existing(this.text);
+        scene.add.existing(this.image);
 
         this.draw(x, y);
     };
@@ -33,11 +44,14 @@ export default class HealthBar extends Phaser.Scene {
         this.draw(this.x, this.y);
 
     }
+    
 
     draw(x,y) {
 
         this.bar.clear();
         this.text.setText(`${this.value}/${this.denominator}`);
+        //tried actually setting the image texture so it's visible.
+        this.image.setTexture(`Healthbarframe`);
 
         const { width, height } = this.size;
         const margin = 2;

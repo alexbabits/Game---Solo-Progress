@@ -18,8 +18,6 @@ export default class MainScene extends Phaser.Scene {
         //add in instance of our weather class we created.
         this.weather = new Weather(this)
 
-        this.load.image('rain', 'assets/images/rain.png');
-        this.load.atlas('lightning', 'assets/images/lightning.png', 'assets/images/lightning_atlas.json');
         this.load.image('tiles', 'assets/images/RPG Nature Tileset.png');
         this.load.tilemapTiledJSON('map','assets/images/map.json');
         this.load.atlas('enemies', 'assets/images/enemies.png', 'assets/images/enemies_atlas.json');

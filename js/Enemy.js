@@ -36,12 +36,6 @@ export default class Enemy extends MatterEntity {
         });
     };   
 
-
-    setBackToNormalColor(target){
-        target.setTint(0xffffff);
-    };
-
-
     attack = (target) => {
         if(target.dead || this.dead) {
             clearInterval(this.attackTimer);
@@ -49,7 +43,7 @@ export default class Enemy extends MatterEntity {
         }
         target.hit();
         target.setTint(0xff0000);
-        setTimeout(()=> this.setBackToNormalColor(target), 200);
+        setTimeout(()=> target.clearTint(), 200);
         //May need to clearInterval here if memory gets bad, similar to below?
     };
 

@@ -119,10 +119,6 @@ export default class Player extends MatterEntity {
 
     };
 
-        setBackToNormalColor(gameObject){
-            gameObject.setTint(0xffffff);
-        };
-
          whackStuff(){
             this.touching = this.touching.filter(gameObject => gameObject.hit && !gameObject.dead);
             this.touching.forEach(gameObject =>{
@@ -131,7 +127,7 @@ export default class Player extends MatterEntity {
                     gameObject.hit()
                     if(gameObject.tintable === true){
                         gameObject.setTint(0xff0000);
-                        setTimeout(()=> this.setBackToNormalColor(gameObject), 200);
+                        setTimeout(()=> gameObject.clearTint(), 200);
                     }
             } else if (this.anims.currentFrame.textureFrame === 'hero_attack_6') {
                 this.attack_frame = false

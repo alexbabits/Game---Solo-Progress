@@ -15,8 +15,9 @@ export default class Enemy extends MatterEntity {
         let {scene, enemy} = data;
         let drops = JSON.parse(enemy.properties.find(p => p.name== 'drops').value);
         let health = enemy.properties.find(p => p.name== 'health').value;
+        let maxHealth = enemy.properties.find(p => p.name== 'maxHealth').value;
         let tintable = enemy.properties.find(p => p.name== 'tintable').value;
-        super({scene, x:enemy.x, y:enemy.y, texture:'enemies', frame:`${enemy.name}_idle_1`, drops, health, tintable, name:enemy.name});
+        super({scene, x:enemy.x, y:enemy.y, texture:'enemies', frame:`${enemy.name}_idle_1`, drops, health, maxHealth, tintable, name:enemy.name});
 
         const {Body,Bodies} = Phaser.Physics.Matter.Matter;
         let enemyCollider = Bodies.circle(this.x,this.y,12,{isSensor:false,label:'enemyCollider'});
@@ -36,12 +37,6 @@ export default class Enemy extends MatterEntity {
         });
     };   
 
-
-    setBackToNormalColor(target){
-        target.setTint(0xffffff);
-    };
-
-
     attack = (target) => {
         if(target.dead || this.dead) {
             clearInterval(this.attackTimer);
@@ -49,7 +44,8 @@ export default class Enemy extends MatterEntity {
         }
         target.hit();
         target.setTint(0xff0000);
-        setTimeout(()=> this.setBackToNormalColor(target), 200);
+        setTimeout(()=> target.clearTint(), 200);
+        //May need to clearInterval here if memory gets bad, similar to below?
     };
 
     update(){

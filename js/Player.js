@@ -5,13 +5,14 @@ import HealthBar from "./HealthBar.js";
 export default class Player extends MatterEntity {
     constructor(data){
         let {scene, x , y, texture, frame} = data;
-        super({...data, health: 10, drops:[], name:'player'});
+        super({...data, health: 10, maxHealth: 10, drops:[], name:'player'});
         this.touching = [];
         this.inventory = new Inventory();
         //x and y position based on game configs and adjusted for zoom: EX: ((height - (height/zoom))/2. ((640 - (640/1.4))/2 = 91.43 becomes the new (0,0).
-        this.hp = new HealthBar(this.scene, 100, 100, this.health);
+        this.hp = new HealthBar(this.scene, 100, 100, this.health, this.maxHealth);
         this.attackFlag = false;
         this.walkingSwitch = false;
+
         const {Body,Bodies} = Phaser.Physics.Matter.Matter;
         let playerCollider = Bodies.rectangle(this.x, this.y, 22, 32, {chamfer: {radius: 10}, isSensor:false, label:'playerCollider'});
         let playerSensor = Bodies.rectangle(this.x, this.y, 46, 8, {isSensor:true, label: 'playerSensor'});
@@ -150,10 +151,6 @@ export default class Player extends MatterEntity {
 
     };
 
-        setBackToNormalColor(gameObject){
-            gameObject.setTint(0xffffff);
-        };
-
          whackStuff(){
             this.touching = this.touching.filter(gameObject => gameObject.hit && !gameObject.dead);
             this.touching.forEach(gameObject =>{
@@ -162,7 +159,7 @@ export default class Player extends MatterEntity {
                     gameObject.hit()
                     if(gameObject.tintable === true){
                         gameObject.setTint(0xff0000);
-                        setTimeout(()=> this.setBackToNormalColor(gameObject), 200);
+                        setTimeout(()=> gameObject.clearTint(), 200);
                     }
             } else if (this.anims.currentFrame.textureFrame === 'hero_attack_6') {
                 this.attackFlag = false

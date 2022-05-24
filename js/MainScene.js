@@ -2,6 +2,7 @@ import Crafting from "./Crafting.js";
 import Enemy from "./Enemy.js";
 import Player from "./Player.js";
 import Resource from "./Resource.js";
+import Weather from "./Weather.js";
 
 export default class MainScene extends Phaser.Scene {
     constructor() {
@@ -18,17 +19,15 @@ export default class MainScene extends Phaser.Scene {
         this.load.tilemapTiledJSON('map','assets/images/map.json');
         this.load.atlas('enemies', 'assets/images/enemies.png', 'assets/images/enemies_atlas.json');
         this.load.animation('enemies_anims', 'assets/images/enemies_anims.json');
-        this.load.image('rain', 'assets/images/rain.png');
         this.load.image('cursor', 'assets/images/cursor.png');
-        this.load.atlas('lightning', 'assets/images/lightning.png', 'assets/images/lightning_atlas.json');
-        this.load.audio('lightning', 'assets/audio/lightning.mp3');
-        this.load.audio('rain', 'assets/audio/rain.mp3');
         this.load.image('Healthbarframe', 'assets/images/Healthbarframe.png');     
     };
 
     create(){
 
         this.player = new Player({scene:this, x:Phaser.Math.Between(150,400), y:Phaser.Math.Between(150, 350), texture:'hero', frame:'hero_idle_1'});
+        //added this similar to how I did crafting/inventory below
+        this.weather = new Weather({ mainScene:this});
 
         this.input.setDefaultCursor('url(assets/images/cursor.png), pointer')
 
@@ -46,83 +45,6 @@ export default class MainScene extends Phaser.Scene {
         Healthbarframelogo.depth = 9;
         Healthbarframelogo.setScale(.3);
         Healthbarframelogo.setScrollFactor(0);
-
-
-        this.rainSound = this.sound.add('rain', {volume: 0.2}, {loop: true})
-        //try to base pan and volume off location of particle relative to the player.
-        this.lightningSound = this.sound.add('lightning', {volume: 0.2}, {pan: 0})
-
-        this.rainParticles = this.add.particles('rain');
-        this.rainEmitter = this.rainParticles.createEmitter({
-            x: { min:0, max: 800},
-            y: 0,
-            lifespan: 5000,
-            speedY: {min: 150, max: 200},
-            speedX: {min: -50, max: -30},
-            scale: 0.14,
-            quantity: 5,
-            maxParticles: 0,
-            frequency: 0, 
-            blendMode: 0,
-            on: false
-        });   
-
-        this.lightningParticles = this.add.particles('lightning');
-        this.lightningEmitter = this.lightningParticles.createEmitter({
-            frame: [ 'lightning1', 'lightning2'],
-            x: { min:0, max: this.game.config.width},
-            y: { min:-this.game.config.height/1.5, max: this.game.config.height*1.5},
-            lifespan: 75,
-            scaleX: 1,
-            scaleY: 1,
-            alpha: {start: 1, end: 0},
-            quantity: 1,
-            frequency: 60000,
-            blendMode: 0,
-            on: false
-        });
-
-        //set everything here with methods.
-        this.lightningEmitter.onParticleEmit(() => {
-            this.lightningSound.play()
-            this.lightningEmitter.setLifespan(Phaser.Math.Between(10, 150))
-            this.lightningEmitter.setScaleX(Phaser.Math.Between(1, 1.2))
-            this.lightningEmitter.setScaleY(Phaser.Math.Between(1, 2))
-            this.lightningEmitter.setQuantity(Phaser.Math.Between(1, 5))
-            this.lightningEmitter.setFrequency(Phaser.Math.Between(6000, 20000))
-            this.lightningStrikes++
-            //set scene tint brighter due to lightning strike this.setTint = Bright
-            console.log(`number of lightning strikes this storm: ${this.lightningStrikes}`)
-            if(this.lightningStrikes >= Phaser.Math.Between(50, 200)){
-                this.player.clearTint()
-                this.enemies.forEach(enemy => enemy.clearTint())
-                this.rainEmitter.stop()
-                this.lightningEmitter.stop()
-                this.rainSound.stop()
-                this.lightningStrikes = 0
-                //set scene tint back to normal because the storm stopped: this.setTint = Normal
-                console.log(`rain turned on?: ${this.rainEmitter.on}`)   
-                console.log(`lightning turned on?: ${this.lightningEmitter.on}`)   
-                console.log(`The weather should be calm.`)   
-                console.log(`number of lightning strikes should be reset to zero: ${this.lightningStrikes}`)
-            }
-        });
-            this.lightningStrikes = 0;
-            
-        
-            const stormStart = () => {
-                if(this.rainEmitter.on === false && this.lightningEmitter.on === false){
-                    this.rainEmitter.start()
-                    this.lightningEmitter.start()
-                    this.rainSound.play()  
-                    this.player.setTint(0xa0a0a0)
-                    this.enemies.forEach(enemy => enemy.setTint(0xa0a0a0))
-                    console.log(`rain turned on?: ${this.rainEmitter.on}`)   
-                    console.log(`lightning turned on?: ${this.lightningEmitter.on}`)   
-                    console.log(`A storm should be raging.`)   
-                }
-            }       
-            setInterval(stormStart, Phaser.Math.Between(30000,180000));
             
 
         let camera = this.cameras.main;
@@ -156,6 +78,7 @@ export default class MainScene extends Phaser.Scene {
     update(){
         this.enemies.forEach(enemy => enemy.update());
         this.player.update();
+        //It did not like this.weather.update(), said it was not a function
     };
 
 };

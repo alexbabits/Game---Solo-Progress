@@ -3,7 +3,7 @@ import items from "./Items.js";
 
 export default class MatterEntity extends Phaser.Physics.Matter.Sprite {
     constructor(data){
-        let {name, scene, x, y, health, maxHealth, drops, tintable, texture, frame, depth} = data;
+        let {name, scene, x, y, health, maxHealth, stamina, maxStamina, drops, tintable, texture, frame, depth} = data;
         super(scene.matter.world, x, y, texture, frame);
         this.x += this.width/2;
         this.y -= this.height/2;
@@ -11,6 +11,8 @@ export default class MatterEntity extends Phaser.Physics.Matter.Sprite {
         this.name = name;
         this.health = health;
         this.maxHealth = maxHealth;
+        this.stamina = stamina;
+        this.maxStamina = maxStamina;
         this.drops = drops;
         this.tintable = tintable;
         this._position = new Phaser.Math.Vector2(this.x, this.y);
@@ -37,9 +39,14 @@ export default class MatterEntity extends Phaser.Physics.Matter.Sprite {
     hit = () => {
         if(this.sound) this.sound.play();
         this.health--;
+        this.stamina -= 20;
         if (this.hp != null) {
             this.hp.modifyhp(this.health);
         }
+        if (this.energy != null) {
+            this.energy.modifyStamina(this.stamina);
+        }
+
         console.log(`Hitting: ${this.name} Health: ${this.health}`);
 
         if(this.dead){

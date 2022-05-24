@@ -47,6 +47,11 @@ export default class MainScene extends Phaser.Scene {
         Healthbarframelogo.setScale(.3);
         Healthbarframelogo.setScrollFactor(0);
 
+        const Staminabarframelogo = this.add.image(300, 300, 'Healthbarframe').setOrigin(0); 
+        Staminabarframelogo.depth = 9;
+        Staminabarframelogo.setScale(.3);
+        Staminabarframelogo.setScrollFactor(0);
+
 
         this.rainSound = this.sound.add('rain', {volume: 0.2}, {loop: true})
         //try to base pan and volume off location of particle relative to the player.

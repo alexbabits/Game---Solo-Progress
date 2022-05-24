@@ -1,15 +1,18 @@
 import Inventory from "./Inventory.js";
 import MatterEntity from "./MatterEntity.js";
 import HealthBar from "./HealthBar.js";
+import StaminaBar from "./StaminaBar.js";
 
 export default class Player extends MatterEntity {
     constructor(data){
         let {scene, x , y, texture, frame} = data;
-        super({...data, health: 10, maxHealth: 10, drops:[], name:'player'});
+        super({...data, health: 10, maxHealth: 10, stamina: 100, maxStamina: 100, drops:[], name:'player'});
         this.touching = [];
         this.inventory = new Inventory();
         //x and y position based on game configs and adjusted for zoom: EX: ((height - (height/zoom))/2. ((640 - (640/1.4))/2 = 91.43 becomes the new (0,0).
         this.hp = new HealthBar(this.scene, 100, 100, this.health, this.maxHealth);
+        //atempt to add in the stamina bar.
+        this.energy = new StaminaBar(this.scene, 200, 200, this.stamina, this.maxStamina);
         this.attackFlag = false;
         this.walkingSwitch = false;
 

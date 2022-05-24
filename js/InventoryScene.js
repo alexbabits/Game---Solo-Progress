@@ -52,10 +52,10 @@ export default class InventoryScene extends UIBaseScene {
             };
             this.inventorySlots.push(inventorySlot);
         };
-        this.updateSelected();
+        this.tintSelectedSlot();
     };
 
-    updateSelected() {
+    tintSelectedSlot() {
         for (let index = 0; index < this.maxColumns; index++) {
             this.inventorySlots[index].tint = this.inventory.selected === index ? 0xffff00 : 0xffffff;
         }
@@ -65,7 +65,7 @@ export default class InventoryScene extends UIBaseScene {
         this.input.on("wheel", (pointer, gameObject, deltaX, deltaY, deltaZ) => {
             if(this.scene.isActive('CraftingScene')) return;
             this.inventory.selected = Math.max(0, this.inventory.selected + (deltaY > 0 ? 1 : -1)) % this.maxColumns;
-            this.updateSelected();
+            this.tintSelectedSlot();
         });
         this.input.keyboard.on("keydown-I", ()=> {
             this.rows = this.rows === 1 ? this.maxRows : 1;

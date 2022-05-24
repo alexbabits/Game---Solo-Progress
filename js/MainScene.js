@@ -15,6 +15,11 @@ export default class MainScene extends Phaser.Scene {
         Enemy.preload(this);
         Resource.preload(this);
 
+        //add in instance of our weather class we created.
+        this.weather = new Weather(this)
+
+        this.load.image('rain', 'assets/images/rain.png');
+        this.load.atlas('lightning', 'assets/images/lightning.png', 'assets/images/lightning_atlas.json');
         this.load.image('tiles', 'assets/images/RPG Nature Tileset.png');
         this.load.tilemapTiledJSON('map','assets/images/map.json');
         this.load.atlas('enemies', 'assets/images/enemies.png', 'assets/images/enemies_atlas.json');
@@ -26,8 +31,10 @@ export default class MainScene extends Phaser.Scene {
     create(){
 
         this.player = new Player({scene:this, x:Phaser.Math.Between(150,400), y:Phaser.Math.Between(150, 350), texture:'hero', frame:'hero_idle_1'});
-        //added this similar to how I did crafting/inventory below
-        this.weather = new Weather({ mainScene:this});
+        this.crafting = new Crafting({ mainScene:this});
+        this.scene.launch('InventoryScene', {mainScene:this});
+        //called create method on the weather instance which grabs everything from create() in weather
+        this.weather.create();
 
         this.input.setDefaultCursor('url(assets/images/cursor.png), pointer')
 
@@ -50,11 +57,8 @@ export default class MainScene extends Phaser.Scene {
         let camera = this.cameras.main;
         camera.zoom = 1.4;
         camera.startFollow(this.player);
-        camera.setLerp(0.1,0.1);
-        camera.setBounds(0,2,this.game.config.width,this.game.config.height);
-
-        this.scene.launch('InventoryScene', {mainScene:this});
-        this.crafting = new Crafting({ mainScene:this});
+        camera.setLerp(0.1, 0.1);
+        camera.setBounds(0, 2, this.game.config.width, this.game.config.height);
 
         this.input.keyboard.on('keydown-C', () => {
             if(this.scene.isActive("CraftingScene")){
@@ -78,7 +82,6 @@ export default class MainScene extends Phaser.Scene {
     update(){
         this.enemies.forEach(enemy => enemy.update());
         this.player.update();
-        //It did not like this.weather.update(), said it was not a function
     };
 
 };

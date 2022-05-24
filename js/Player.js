@@ -57,9 +57,11 @@ export default class Player extends MatterEntity {
 
         //running controls
         if(this.walkingSwitch === false) {
+            
             if(this.inputKeys.left.isDown) {
                 this.flipX = true;
                 playerVelocity.x = -runningSpeed;
+                this.staminaTimer = setInterval(this.changeRunEnergy, 1000)
             } else if (this.inputKeys.right.isDown) {
                 this.flipX = false;
                 playerVelocity.x = runningSpeed;
@@ -108,6 +110,29 @@ export default class Player extends MatterEntity {
         }
 
     };
+    
+
+    changeRunEnergy = () => {
+        this.stamina--;
+        this.energy.modifyStamina(this.stamina);
+        if(this.stamina <= 0){
+            this.stamina = 0
+        }
+        console.log(`Adjusting Stamina for player: ${this.stamina}/${this.maxStamina}`); 
+    };
+
+    startStaminaTimer() {
+        if (this.staminaTimer === undefined) {
+          this.staminaTimer = setInterval(this.changeRunEnergy, 1000)
+        }
+      }
+      
+      stopStaminaTimer() {
+        if (this.staminaTimer !== undefined) {
+          clearInterval(this.staminaTimer)
+          this.staminaTimer = undefined
+        }
+      }
 
         heroTouchingTrigger(playerSensor){
 

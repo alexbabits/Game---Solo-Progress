@@ -39,14 +39,9 @@ export default class MatterEntity extends Phaser.Physics.Matter.Sprite {
     hit = () => {
         if(this.sound) this.sound.play();
         this.health--;
-        this.stamina -= 20;
         if (this.hp != null) {
             this.hp.modifyhp(this.health);
         }
-        if (this.energy != null) {
-            this.energy.modifyStamina(this.stamina);
-        }
-
         console.log(`Hitting: ${this.name} Health: ${this.health}`);
 
         if(this.dead){
@@ -57,4 +52,18 @@ export default class MatterEntity extends Phaser.Physics.Matter.Sprite {
             });
         }
     };
-}
+/*
+    changeRunEnergy = () => {
+
+        this.stamina -= 5;
+
+        if (this.energy != null) {
+            this.energy.modifyStamina(this.stamina);
+        }  
+
+    }
+    staminaTimer = setInterval(this.changeRunEnergy, 1000)
+*/
+
+};
+

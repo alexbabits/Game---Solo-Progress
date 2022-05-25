@@ -113,13 +113,13 @@ export default class Player extends MatterEntity {
     
 
     changeRunEnergy = () => {
-        if(this.walkingSwitch === false && (Math.abs(playerVelocity) === runningSpeed)){
+        if(this.walkingSwitch === false /*&& (Math.abs(playerVelocity) === runningSpeed)*/){
             this.stamina--;
         }
-        if(this.walkingSwitch === true && (Math.abs(playerVelocity) === 0)){
+        if(this.walkingSwitch === true /*&& (Math.abs(playerVelocity) === 0)*/){
             this.stamina +=2;
         }
-        if(this.walkingSwitch === true && (Math.abs(playerVelocity) === walkingSpeed)){
+        if(this.walkingSwitch === true/* && (Math.abs(playerVelocity) === walkingSpeed)*/){
             this.stamina ++;
         }
 
@@ -142,7 +142,7 @@ export default class Player extends MatterEntity {
       }
       
     stopStaminaTimer() {
-        if (this.staminaTimer !== null) {
+        if (this.staminaTimer) {
           clearInterval(this.staminaTimer)
           this.staminaTimer = null
         }

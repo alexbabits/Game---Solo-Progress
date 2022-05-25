@@ -44,21 +44,25 @@ export default class Player extends MatterEntity {
         this.setOrigin(0.5);
     }
 
+    decreaseRunEnergy = () => {
+        this.stamina--;
+        this.energy.modifyStamina(this.stamina);
+        console.log(`Adjusting Stamina for player: ${this.stamina}/${this.maxStamina}`); 
+    };
+
     update(){
         if(this.dead) return;
 
         const runningSpeed = 4;
         const walkingSpeed = 2;
+        let playerVelocity = new Phaser.Math.Vector2();
 
         if(Phaser.Input.Keyboard.JustDown(this.inputKeys.shift)){
             this.walkingSwitch = !this.walkingSwitch
         }
 
-        let playerVelocity = new Phaser.Math.Vector2();
-
         //running controls
         if(this.walkingSwitch === false) {
-            this.staminaTimer = setInterval(this.changeRunEnergy, 1000)
             if(this.inputKeys.left.isDown) {
                 this.flipX = true;
                 playerVelocity.x = -runningSpeed;  
@@ -70,6 +74,19 @@ export default class Player extends MatterEntity {
             } else if (this.inputKeys.down.isDown) {
                 playerVelocity.y = runningSpeed;
             } 
+        }
+
+        if(this.walkingSwitch === true && playerVelocity.x === 0 && playerVelocity.y === 0){
+
+            if(this.staminaTimer) {
+                clearInterval(this.staminaTimer);
+                this.staminaTimer = null;
+            }
+    
+        } else {
+            if(this.staminaTimer == null) {
+                this.staminaTimer = setInterval(this.decreaseRunEnergy, 1000);
+            }
         }
 
         //walking controls
@@ -111,42 +128,6 @@ export default class Player extends MatterEntity {
 
     };
     
-
-    changeRunEnergy = () => {
-        if(this.walkingSwitch === false /*&& (Math.abs(playerVelocity) === runningSpeed)*/){
-            this.stamina--;
-        }
-        if(this.walkingSwitch === true /*&& (Math.abs(playerVelocity) === 0)*/){
-            this.stamina +=2;
-        }
-        if(this.walkingSwitch === true/* && (Math.abs(playerVelocity) === walkingSpeed)*/){
-            this.stamina ++;
-        }
-
-        if(this.stamina <= 0){
-            this.stamina = 0
-        }
-        if(this.stamina >= this.maxStamina){
-            this.stamina = this.maxStamina
-        }
-
-        this.energy.modifyStamina(this.stamina);
-
-        console.log(`Adjusting Stamina for player: ${this.stamina}/${this.maxStamina}`); 
-    };
-
-    startStaminaTimer() {
-        if (this.staminaTimer == null) {
-          this.staminaTimer = setInterval(this.changeRunEnergy, 1000)
-        }
-      }
-      
-    stopStaminaTimer() {
-        if (this.staminaTimer) {
-          clearInterval(this.staminaTimer)
-          this.staminaTimer = null
-        }
-      }
 
         heroTouchingTrigger(playerSensor){
 

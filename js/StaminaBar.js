@@ -5,7 +5,7 @@ export default class StaminaBar extends Phaser.Scene {
         this.bar = new Phaser.GameObjects.Graphics(scene);
         this.bar.depth = 10;
         this.bar.setScrollFactor(0,0);
-        this.text = new Phaser.GameObjects.Text(scene, 300, 300, ``, { fontFamily: 'Courier', fontSize: '24px', fill: '#000', resolution: 2});
+        this.text = new Phaser.GameObjects.Text(scene, 320, 114.25, ``, { fontFamily: 'Courier', fontSize: '12px', fill: '#000', resolution: 2});
         this.text.depth = 11;
         this.text.setScrollFactor(0,0);
         this.x = x;

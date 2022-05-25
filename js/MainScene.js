@@ -24,6 +24,7 @@ export default class MainScene extends Phaser.Scene {
         this.load.audio('lightning', 'assets/audio/lightning.mp3');
         this.load.audio('rain', 'assets/audio/rain.mp3');
         this.load.image('Healthbarframe', 'assets/images/Healthbarframe.png');     
+        this.load.image('Staminabarframe', 'assets/images/Staminabarframe.png');  
     };
 
     create(){
@@ -47,7 +48,7 @@ export default class MainScene extends Phaser.Scene {
         Healthbarframelogo.setScale(.3);
         Healthbarframelogo.setScrollFactor(0);
 
-        const Staminabarframelogo = this.add.image(300, 300, 'Healthbarframe').setOrigin(0); 
+        const Staminabarframelogo = this.add.image(220, 102, 'Staminabarframe').setOrigin(0); 
         Staminabarframelogo.depth = 9;
         Staminabarframelogo.setScale(.3);
         Staminabarframelogo.setScrollFactor(0);

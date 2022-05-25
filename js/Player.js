@@ -12,7 +12,8 @@ export default class Player extends MatterEntity {
         //x and y position based on game configs and adjusted for zoom: EX: ((height - (height/zoom))/2. ((640 - (640/1.4))/2 = 91.43 becomes the new (0,0).
         this.hp = new HealthBar(this.scene, 100, 100, this.health, this.maxHealth);
         //atempt to add in the stamina bar.
-        this.energy = new StaminaBar(this.scene, 200, 200, this.stamina, this.maxStamina);
+        this.energy = new StaminaBar(this.scene, 218, 100, this.stamina, this.maxStamina);
+
         this.attackFlag = false;
         this.walkingSwitch = false;
 
@@ -57,11 +58,10 @@ export default class Player extends MatterEntity {
 
         //running controls
         if(this.walkingSwitch === false) {
-            
+            this.staminaTimer = setInterval(this.changeRunEnergy, 1000)
             if(this.inputKeys.left.isDown) {
                 this.flipX = true;
-                playerVelocity.x = -runningSpeed;
-                this.staminaTimer = setInterval(this.changeRunEnergy, 1000)
+                playerVelocity.x = -runningSpeed;  
             } else if (this.inputKeys.right.isDown) {
                 this.flipX = false;
                 playerVelocity.x = runningSpeed;
@@ -92,7 +92,7 @@ export default class Player extends MatterEntity {
 
         //playerVelocity.scale(speed);
 
-        this.setVelocity(playerVelocity.x,playerVelocity.y);
+        this.setVelocity(playerVelocity.x, playerVelocity.y);
 
         if(this.inputKeys.space.isDown && playerVelocity.x === 0 && playerVelocity.y === 0) {
             this.anims.play('hero_attack', true);
@@ -113,24 +113,38 @@ export default class Player extends MatterEntity {
     
 
     changeRunEnergy = () => {
-        this.stamina--;
-        this.energy.modifyStamina(this.stamina);
+        if(this.walkingSwitch === false && (Math.abs(playerVelocity) === runningSpeed)){
+            this.stamina--;
+        }
+        if(this.walkingSwitch === true && (Math.abs(playerVelocity) === 0)){
+            this.stamina +=2;
+        }
+        if(this.walkingSwitch === true && (Math.abs(playerVelocity) === walkingSpeed)){
+            this.stamina ++;
+        }
+
         if(this.stamina <= 0){
             this.stamina = 0
         }
+        if(this.stamina >= this.maxStamina){
+            this.stamina = this.maxStamina
+        }
+
+        this.energy.modifyStamina(this.stamina);
+
         console.log(`Adjusting Stamina for player: ${this.stamina}/${this.maxStamina}`); 
     };
 
     startStaminaTimer() {
-        if (this.staminaTimer === undefined) {
+        if (this.staminaTimer == null) {
           this.staminaTimer = setInterval(this.changeRunEnergy, 1000)
         }
       }
       
-      stopStaminaTimer() {
-        if (this.staminaTimer !== undefined) {
+    stopStaminaTimer() {
+        if (this.staminaTimer !== null) {
           clearInterval(this.staminaTimer)
-          this.staminaTimer = undefined
+          this.staminaTimer = null
         }
       }
 

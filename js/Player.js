@@ -56,6 +56,7 @@ export default class Player extends MatterEntity {
         const runningSpeed = 4;
         const walkingSpeed = 2;
         let playerVelocity = new Phaser.Math.Vector2();
+        
 
         if(Phaser.Input.Keyboard.JustDown(this.inputKeys.shift)){
             this.walkingSwitch = !this.walkingSwitch
@@ -65,7 +66,7 @@ export default class Player extends MatterEntity {
         if(this.walkingSwitch === false) {
             if(this.inputKeys.left.isDown) {
                 this.flipX = true;
-                playerVelocity.x = -runningSpeed;  
+                playerVelocity.x = -runningSpeed;
             } else if (this.inputKeys.right.isDown) {
                 this.flipX = false;
                 playerVelocity.x = runningSpeed;
@@ -74,19 +75,6 @@ export default class Player extends MatterEntity {
             } else if (this.inputKeys.down.isDown) {
                 playerVelocity.y = runningSpeed;
             } 
-        }
-
-        if(this.walkingSwitch === true && playerVelocity.x === 0 && playerVelocity.y === 0){
-
-            if(this.staminaTimer) {
-                clearInterval(this.staminaTimer);
-                this.staminaTimer = null;
-            }
-    
-        } else {
-            if(this.staminaTimer == null) {
-                this.staminaTimer = setInterval(this.decreaseRunEnergy, 1000);
-            }
         }
 
         //walking controls
@@ -103,24 +91,36 @@ export default class Player extends MatterEntity {
                 playerVelocity.y = walkingSpeed;
             }
         }
-
-
-        //normalize makes diagonals same speed if needed, if I decide to allow diagonal movement. "playerVelocity.normalize();"
-
-        //playerVelocity.scale(speed);
+    
 
         this.setVelocity(playerVelocity.x, playerVelocity.y);
+        //"playerVelocity.normalize();" normalize makes diagonals same speed if I decide to allow diagonal movement. 
 
         if(this.inputKeys.space.isDown && playerVelocity.x === 0 && playerVelocity.y === 0) {
             this.anims.play('hero_attack', true);
             this.whackStuff();
+            if(this.staminaTimer){
+                clearInterval(this.staminaTimer);
+                this.staminaTimer = null;
+            };
            } else if (Math.abs(playerVelocity.x) === runningSpeed || Math.abs(playerVelocity.y) === runningSpeed) {
-                this.anims.play('hero_run', true);
+                this.anims.play('hero_run', true)
+                if(this.staminaTimer == null){
+                    this.staminaTimer = setInterval(this.decreaseRunEnergy, 200);
+                };
            } else if (Math.abs(playerVelocity.x) === walkingSpeed || Math.abs(playerVelocity.y) === walkingSpeed) {
                 this.anims.play('hero_walk', true);
+                if(this.staminaTimer){
+                    clearInterval(this.staminaTimer);
+                    this.staminaTimer = null;
+                };
            } else {
             this.anims.play('hero_idle', true);
-           }
+            if(this.staminaTimer){
+                clearInterval(this.staminaTimer);
+                this.staminaTimer = null;
+            };
+        }
              
         if(this.inputKeys.space.isDown === false) {
             this.attackFlag = false

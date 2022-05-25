@@ -5,7 +5,7 @@ export default class StaminaBar extends Phaser.Scene {
         this.bar = new Phaser.GameObjects.Graphics(scene);
         this.bar.depth = 10;
         this.bar.setScrollFactor(0,0);
-        this.text = new Phaser.GameObjects.Text(scene, 320, 114.25, ``, { fontFamily: 'Courier', fontSize: '12px', fill: '#000', resolution: 2});
+        this.text = new Phaser.GameObjects.Text(scene, 311, 114.25, ``, { fontFamily: 'Courier', fontSize: '12px', fill: '#000', resolution: 2});
         this.text.depth = 11;
         this.text.setScrollFactor(0,0);
         this.x = x;
@@ -48,10 +48,14 @@ export default class StaminaBar extends Phaser.Scene {
         this.bar.fillStyle(0xFFFFFF);
         this.bar.fillRoundedRect(x + offset + margin, y + offset + margin, width - margin, height - margin, chamfer);
 
-        if(staminaWidth <= this.size.width/4){
-            this.bar.fillStyle(0xFF0000);
-        } else {
+        if(staminaWidth <= this.size.width && staminaWidth > this.size.width/1.333){
+            this.bar.fillStyle(0x00b300);
+        } else if (staminaWidth <= this.size.width/1.333 && staminaWidth > this.size.width/2) {
             this.bar.fillStyle(0xe6e600);
+        } else if (staminaWidth <= this.size.width/2 && staminaWidth >= this.size.width/4) {
+            this.bar.fillStyle(0xff9000);
+        } else {
+            this.bar.fillStyle(0xFF0000);
         }
     
         if(staminaWidth > 0){

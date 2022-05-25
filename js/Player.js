@@ -126,6 +126,17 @@ export default class Player extends MatterEntity {
             this.attackFlag = false
         }
 
+        //fix not quite right, sits at -1 because it overlaps one time on the decrement.
+        if(this.stamina <= 0){
+            this.stamina = 1
+        }
+
+        //fix not quite right, sits at 101 because it overlaps one time on the increment.
+        if(this.stamina >= this.maxStamina) {
+            this.stamina = 99
+        }
+
+
     };
     
 

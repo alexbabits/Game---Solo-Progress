@@ -10,13 +10,13 @@ export default class StaminaBar extends Phaser.Scene {
         this.text.setScrollFactor(0,0);
         this.x = x;
         this.y = y;
-        this.value = stamina;
-        this.denominator = maxStamina;
+        this.staminaValue = stamina;
+        this.staminaDenominator = maxStamina;
         this.size = {
             width: 200,
             height: 11
         }
-        this.pixelPerStamina = this.size.width / this.value;
+        this.pixelPerStamina = this.size.width / this.staminaValue;
 
         scene.add.existing(this.bar);
         scene.add.existing(this.text);
@@ -26,9 +26,9 @@ export default class StaminaBar extends Phaser.Scene {
 
     modifyStamina(amount) {
         if(amount <= 0) {
-            this.value = 0;
+            this.staminaValue = 0;
         } else {
-            this.value = amount;
+            this.staminaValue = amount;
         }
         this.draw(this.x, this.y);
 
@@ -37,13 +37,13 @@ export default class StaminaBar extends Phaser.Scene {
     draw(x,y) {
 
         this.bar.clear();
-        this.text.setText(`${this.value}/${this.denominator}`);
+        this.text.setText(`${this.staminaValue}/${this.staminaDenominator}`);
 
         const { width, height } = this.size;
         const margin = 2;
         const offset = 15;
         const chamfer = 4;
-        const staminaWidth = (this.value * this.pixelPerStamina);
+        const staminaWidth = (this.staminaValue * this.pixelPerStamina);
         
         this.bar.fillStyle(0xFFFFFF);
         this.bar.fillRoundedRect(x + offset + margin, y + offset + margin, width - margin, height - margin, chamfer);

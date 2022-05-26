@@ -52,18 +52,6 @@ export default class MatterEntity extends Phaser.Physics.Matter.Sprite {
             });
         }
     };
-/*
-    changeRunEnergy = () => {
-
-        this.stamina -= 5;
-
-        if (this.energy != null) {
-            this.energy.modifyStamina(this.stamina);
-        }  
-
-    }
-    staminaTimer = setInterval(this.changeRunEnergy, 1000)
-*/
 
 };
 

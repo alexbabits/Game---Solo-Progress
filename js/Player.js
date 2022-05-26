@@ -135,6 +135,8 @@ export default class Player extends MatterEntity {
             };
            } else if (Math.abs(playerVelocity.x) === runningSpeed || Math.abs(playerVelocity.y) === runningSpeed) {
                 this.anims.play('hero_run', true)
+                //successfully forces the player to walk.
+                if(this.stamina <= 0) this.walkingSwitch = true;
                 if(this.RSDT == null){
                     this.RSDT = setInterval(this.runningStaminaDecrement, 200);
                 };
@@ -252,6 +254,8 @@ export default class Player extends MatterEntity {
     };
 
          whackStuff(){
+            //kind of works to make it so you can't attack. Doesn't stop anims though.
+            if(this.stamina <= 10) return;
             this.touching = this.touching.filter(gameObject => gameObject.hit && !gameObject.dead);
             this.touching.forEach(gameObject =>{
                 if (this.anims.currentFrame.textureFrame === 'hero_attack_5'  && this.attackFlag === false) {

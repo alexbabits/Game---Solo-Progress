@@ -6,7 +6,7 @@ import StaminaBar from "./StaminaBar.js";
 export default class Player extends MatterEntity {
     constructor(data){
         let {scene, x , y, texture, frame} = data;
-        super({...data, health: 10, maxHealth: 10, stamina: 30, maxStamina: 30, drops:[], name:'player'});
+        super({...data, health: 10, maxHealth: 10, stamina: 100, maxStamina: 100, drops:[], name:'player'});
         this.touching = [];
         this.inventory = new Inventory();
         //x and y position based on game configs and adjusted for zoom: EX: ((height - (height/zoom))/2. ((640 - (640/1.4))/2 = 91.43 becomes the new (0,0).
@@ -51,22 +51,22 @@ export default class Player extends MatterEntity {
     };
 
     idleStaminaIncrement = () => {
-        this.stamina++;
+        this.stamina += 2;
         this.energy.modifyStamina(this.stamina);
         console.log(`You should be Idling. Current Stamina: ${this.stamina} maxStamina: ${this.maxStamina}`); 
     }
 
-    /*walkingStaminaIncrement = () => {
+    walkingStaminaIncrement = () => {
         this.stamina++;
         this.energy.modifyStamina(this.stamina);
         console.log(`You should be Walking. Current Stamina: ${this.stamina} maxStamina: ${this.maxStamina}`); 
     }
 
     hittingStaminaDecrement = () => {
-        this.stamina -= 15;
+        this.stamina -= 10;
         this.energy.modifyStamina(this.stamina);
         console.log(`You should be doing hit(). Current Stamina: ${this.stamina} maxStamina: ${this.maxStamina}`); 
-    }*/
+    }
 
 
     update(){
@@ -118,6 +118,9 @@ export default class Player extends MatterEntity {
         if(this.inputKeys.space.isDown && playerVelocity.x === 0 && playerVelocity.y === 0) {
             this.anims.play('hero_attack', true);
             this.whackStuff();
+            if(this.HSDT == null){
+                this.HSDT = setInterval(this.hittingStaminaDecrement, 600);
+            };
             if(this.RSDT){
                 clearInterval(this.RSDT);
                 this.RSDT = null;
@@ -125,6 +128,10 @@ export default class Player extends MatterEntity {
             if(this.ISIT){
                 clearInterval(this.ISIT);
                 this.ISIT = null;
+            };
+            if(this.WSIT){
+                clearInterval(this.WSIT);
+                this.WSIT = null;
             };
            } else if (Math.abs(playerVelocity.x) === runningSpeed || Math.abs(playerVelocity.y) === runningSpeed) {
                 this.anims.play('hero_run', true)
@@ -135,8 +142,19 @@ export default class Player extends MatterEntity {
                     clearInterval(this.ISIT);
                     this.ISIT = null;
                 };
+                if(this.WSIT){
+                    clearInterval(this.WSIT);
+                    this.WSIT = null;
+                };
+                if(this.HSDT){
+                    clearInterval(this.HSDT);
+                    this.HSDT = null;
+                };
            } else if (Math.abs(playerVelocity.x) === walkingSpeed || Math.abs(playerVelocity.y) === walkingSpeed) {
                 this.anims.play('hero_walk', true);
+                if(this.WSIT == null){
+                    this.WSIT = setInterval(this.walkingStaminaIncrement, 2000);
+                };
                 if(this.RSDT){
                     clearInterval(this.RSDT);
                     this.RSDT = null;
@@ -144,6 +162,10 @@ export default class Player extends MatterEntity {
                 if(this.ISIT){
                     clearInterval(this.ISIT);
                     this.ISIT = null;
+                };
+                if(this.HSDT){
+                    clearInterval(this.HSDT);
+                    this.HSDT = null;
                 };
            } else {
             this.anims.play('hero_idle', true);
@@ -153,10 +175,19 @@ export default class Player extends MatterEntity {
             };
             if(this.ISIT == null){
                 this.ISIT = setInterval(this.idleStaminaIncrement, 1000);
+            }; 
+            if(this.WSIT){
+                clearInterval(this.WSIT);
+                this.WSIT = null;
             };
-            
+            if(this.HSDT){
+                clearInterval(this.HSDT);
+                this.HSDT = null;
+            };
+
         }
-             
+        
+        
         if(this.inputKeys.space.isDown === false) {
             this.attackFlag = false
         }
@@ -168,7 +199,7 @@ export default class Player extends MatterEntity {
 
         //fix not quite right, sits at 101 because it overlaps one time on the increment.
         if(this.stamina >= this.maxStamina) {
-            this.stamina = 30
+            this.stamina = this.maxStamina
         }
 
 

@@ -24,11 +24,12 @@ export default class MainScene extends Phaser.Scene {
         this.load.audio('lightning', 'assets/audio/lightning.mp3');
         this.load.audio('rain', 'assets/audio/rain.mp3');
         this.load.image('Healthbarframe', 'assets/images/Healthbarframe.png');     
+        this.load.image('Staminabarframe', 'assets/images/Staminabarframe.png');  
     };
 
     create(){
 
-        this.player = new Player({scene:this, x:Phaser.Math.Between(150,400), y:Phaser.Math.Between(150, 350), texture:'hero', frame:'hero_idle_1'});
+        this.player = new Player({scene:this, x:Phaser.Math.Between(300,400), y:Phaser.Math.Between(150, 350), texture:'hero', frame:'hero_idle_1'});
 
         this.input.setDefaultCursor('url(assets/images/cursor.png), pointer')
 
@@ -46,6 +47,11 @@ export default class MainScene extends Phaser.Scene {
         Healthbarframelogo.depth = 9;
         Healthbarframelogo.setScale(.3);
         Healthbarframelogo.setScrollFactor(0);
+
+        const Staminabarframelogo = this.add.image(220, 102, 'Staminabarframe').setOrigin(0); 
+        Staminabarframelogo.depth = 9;
+        Staminabarframelogo.setScale(.3);
+        Staminabarframelogo.setScrollFactor(0);
 
 
         this.rainSound = this.sound.add('rain', {volume: 0.2}, {loop: true})

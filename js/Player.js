@@ -1,15 +1,19 @@
 import Inventory from "./Inventory.js";
 import MatterEntity from "./MatterEntity.js";
 import HealthBar from "./HealthBar.js";
+import StaminaBar from "./StaminaBar.js";
 
 export default class Player extends MatterEntity {
     constructor(data){
         let {scene, x , y, texture, frame} = data;
-        super({...data, health: 10, maxHealth: 10, drops:[], name:'player'});
+        super({...data, health: 10, maxHealth: 10, stamina: 100, maxStamina: 100, drops:[], name:'player'});
         this.touching = [];
         this.inventory = new Inventory();
         //x and y position based on game configs and adjusted for zoom: EX: ((height - (height/zoom))/2. ((640 - (640/1.4))/2 = 91.43 becomes the new (0,0).
-        this.hp = new HealthBar(this.scene, 100, 100, this.health, this.maxHealth);
+        this.hp = new HealthBar(this.scene, 117, 117, this.health, this.maxHealth);
+        //atempt to add in the stamina bar.
+        this.energy = new StaminaBar(this.scene, 235, 117, this.stamina, this.maxStamina);
+
         this.attackFlag = false;
         this.walkingSwitch = false;
 
@@ -40,17 +44,48 @@ export default class Player extends MatterEntity {
         this.setOrigin(0.5);
     }
 
+    runningStaminaDecrement = () => {
+        this.stamina--;
+        this.energy.modifyStamina(this.stamina);
+        console.log(`You should be running. Current Stamina: ${this.stamina} maxStamina: ${this.maxStamina}`); 
+    };
+
+    idleStaminaIncrement = () => {
+        this.stamina += 2;
+        if(this.stamina >= this.maxStamina) {
+            this.stamina = this.maxStamina 
+        }
+        this.energy.modifyStamina(this.stamina);
+        console.log(`You should be Idling. Current Stamina: ${this.stamina} maxStamina: ${this.maxStamina}`); 
+    }
+
+    walkingStaminaIncrement = () => {
+        this.stamina++;
+        if(this.stamina >= this.maxStamina) {
+            this.stamina = this.maxStamina 
+        }
+        this.energy.modifyStamina(this.stamina);
+        console.log(`You should be Walking. Current Stamina: ${this.stamina} maxStamina: ${this.maxStamina}`); 
+    }
+
+    hittingStaminaDecrement = () => {
+        this.stamina -= 10;
+        this.energy.modifyStamina(this.stamina);
+        console.log(`You should be doing hit(). Current Stamina: ${this.stamina} maxStamina: ${this.maxStamina}`); 
+    }
+
+
     update(){
         if(this.dead) return;
 
         const runningSpeed = 4;
         const walkingSpeed = 2;
+        let playerVelocity = new Phaser.Math.Vector2();
+        
 
         if(Phaser.Input.Keyboard.JustDown(this.inputKeys.shift)){
             this.walkingSwitch = !this.walkingSwitch
         }
-
-        let playerVelocity = new Phaser.Math.Vector2();
 
         //running controls
         if(this.walkingSwitch === false) {
@@ -81,30 +116,81 @@ export default class Player extends MatterEntity {
                 playerVelocity.y = walkingSpeed;
             }
         }
+    
 
+        this.setVelocity(playerVelocity.x, playerVelocity.y);
+        //"playerVelocity.normalize();" normalize makes diagonals same speed if I decide to allow diagonal movement. 
 
-        //normalize makes diagonals same speed if needed, if I decide to allow diagonal movement. "playerVelocity.normalize();"
-
-        //playerVelocity.scale(speed);
-
-        this.setVelocity(playerVelocity.x,playerVelocity.y);
-
-        if(this.inputKeys.space.isDown && playerVelocity.x === 0 && playerVelocity.y === 0) {
+        if(this.inputKeys.space.isDown && playerVelocity.x === 0 && playerVelocity.y === 0 && this.stamina >= 10) {
             this.anims.play('hero_attack', true);
             this.whackStuff();
+            if(this.RSDT){
+                clearInterval(this.RSDT);
+                this.RSDT = null;
+            };
+            if(this.ISIT){
+                clearInterval(this.ISIT);
+                this.ISIT = null;
+            };
+            if(this.WSIT){
+                clearInterval(this.WSIT);
+                this.WSIT = null;
+            };
            } else if (Math.abs(playerVelocity.x) === runningSpeed || Math.abs(playerVelocity.y) === runningSpeed) {
-                this.anims.play('hero_run', true);
+                this.anims.play('hero_run', true)
+                //successfully forces the player to walk.
+                if(this.stamina <= 0) this.walkingSwitch = true;
+
+                if(this.RSDT == null){
+                    this.RSDT = setInterval(this.runningStaminaDecrement, 200);
+                };
+                if(this.ISIT){
+                    clearInterval(this.ISIT);
+                    this.ISIT = null;
+                };
+                if(this.WSIT){
+                    clearInterval(this.WSIT);
+                    this.WSIT = null;
+                };
+
            } else if (Math.abs(playerVelocity.x) === walkingSpeed || Math.abs(playerVelocity.y) === walkingSpeed) {
                 this.anims.play('hero_walk', true);
+
+                if(this.WSIT == null){
+                    this.WSIT = setInterval(this.walkingStaminaIncrement, 2000);
+                };
+                if(this.RSDT){
+                    clearInterval(this.RSDT);
+                    this.RSDT = null;
+                };
+                if(this.ISIT){
+                    clearInterval(this.ISIT);
+                    this.ISIT = null;
+                };
+
            } else {
             this.anims.play('hero_idle', true);
-           }
-             
+
+            if(this.RSDT){
+                clearInterval(this.RSDT);
+                this.RSDT = null;
+            };
+            if(this.ISIT == null){
+                this.ISIT = setInterval(this.idleStaminaIncrement, 1000);
+            }; 
+            if(this.WSIT){
+                clearInterval(this.WSIT);
+                this.WSIT = null;
+            };
+
+        }
+        
         if(this.inputKeys.space.isDown === false) {
             this.attackFlag = false
         }
 
     };
+    
 
         heroTouchingTrigger(playerSensor){
 
@@ -150,24 +236,36 @@ export default class Player extends MatterEntity {
         });
 
     };
-
+        
          whackStuff(){
+            //Makes it so if you swing while nothing in touching array, it still decrements stamina.
+            if(this.anims.currentFrame.textureFrame === 'hero_attack_5'  && this.attackFlag === false && this.touching.length === 0) {
+                this.attackFlag = true;
+                this.hittingStaminaDecrement();
+            } else if (this.anims.currentFrame.textureFrame === 'hero_attack_6') {
+                this.attackFlag = false
+            }
+
             this.touching = this.touching.filter(gameObject => gameObject.hit && !gameObject.dead);
             this.touching.forEach(gameObject =>{
                 if (this.anims.currentFrame.textureFrame === 'hero_attack_5'  && this.attackFlag === false) {
-                    this.attackFlag = true
-                    gameObject.hit()
+                    this.attackFlag = true;
+                    gameObject.hit();
+                    //decrements stamina on each 'hit' perfectly.
+                    this.hittingStaminaDecrement();
                     if(gameObject.tintable === true){
                         gameObject.setTint(0xff0000);
                         setTimeout(()=> gameObject.clearTint(), 200);
-                    }
+                    };
             } else if (this.anims.currentFrame.textureFrame === 'hero_attack_6') {
                 this.attackFlag = false
-            }         
+            };        
                 if(gameObject.dead) gameObject.destroy();
         });
         //console.log(this.anims) to see what's going on with all things related to our animation state.
-        /*The only problem now: When the player goes to attack a resource after attacking one previously, the first hit doesn't register.*/   
+        /*The only problem now: When the player goes to attack a resource after attacking one previously, the first hit doesn't register.
+        Has to do with holding space, going away from bush, then keeping holding space, and going to bush, first hit will not register.        
+        */   
       }; 
 
 };

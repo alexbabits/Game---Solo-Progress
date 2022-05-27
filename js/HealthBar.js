@@ -10,13 +10,13 @@ export default class HealthBar extends Phaser.Scene {
         this.text.setScrollFactor(0,0);
         this.x = x;
         this.y = y;
-        this.value = health;
-        this.denominator = maxHealth;
+        this.healthValue = health;
+        this.healthDenominator = maxHealth;
         this.size = {
             width: 77,
-            height: 11
+            height: 9
         }
-        this.pixelPerHealth = this.size.width / this.value;
+        this.pixelPerHealth = this.size.width / this.healthDenominator;
 
         scene.add.existing(this.bar);
         scene.add.existing(this.text);
@@ -26,9 +26,9 @@ export default class HealthBar extends Phaser.Scene {
 
     modifyhp(amount) {
         if(amount <= 0) {
-            this.value = 0;
+            this.healthValue = 0;
         } else {
-            this.value = amount;
+            this.healthValue = amount;
         }
         this.draw(this.x, this.y);
 
@@ -37,16 +37,14 @@ export default class HealthBar extends Phaser.Scene {
     draw(x,y) {
 
         this.bar.clear();
-        this.text.setText(`${this.value}/${this.denominator}`);
+        this.text.setText(`${this.healthValue}/${this.healthDenominator}`);
 
         const { width, height } = this.size;
-        const margin = 2;
-        const offset = 15;
         const chamfer = 4;
-        const healthWidth = (this.value * this.pixelPerHealth);
+        const healthWidth = (this.healthValue * this.pixelPerHealth);
         
         this.bar.fillStyle(0xFFFFFF);
-        this.bar.fillRoundedRect(x + offset + margin, y + offset + margin, width - margin, height - margin, chamfer);
+        this.bar.fillRoundedRect(x, y, width, height, chamfer);
 
         if(healthWidth <= this.size.width/4){
             this.bar.fillStyle(0xFF0000);
@@ -55,7 +53,7 @@ export default class HealthBar extends Phaser.Scene {
         }
     
         if(healthWidth > 0){
-            this.bar.fillRoundedRect(x + offset + margin, y + offset + margin, healthWidth - margin, height - margin, chamfer);
+            this.bar.fillRoundedRect(x, y, healthWidth, height, chamfer);
         }
 
     };

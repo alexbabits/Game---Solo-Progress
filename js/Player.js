@@ -52,12 +52,18 @@ export default class Player extends MatterEntity {
 
     idleStaminaIncrement = () => {
         this.stamina += 2;
+        if(this.stamina >= this.maxStamina) {
+            this.stamina = this.maxStamina 
+        }
         this.energy.modifyStamina(this.stamina);
         console.log(`You should be Idling. Current Stamina: ${this.stamina} maxStamina: ${this.maxStamina}`); 
     }
 
     walkingStaminaIncrement = () => {
         this.stamina++;
+        if(this.stamina >= this.maxStamina) {
+            this.stamina = this.maxStamina 
+        }
         this.energy.modifyStamina(this.stamina);
         console.log(`You should be Walking. Current Stamina: ${this.stamina} maxStamina: ${this.maxStamina}`); 
     }
@@ -71,11 +77,6 @@ export default class Player extends MatterEntity {
 
     update(){
         if(this.dead) return;
-        
-                //fix not quite right, sits at 101 because it overlaps one time on the increment.
-                if(this.stamina >= this.maxStamina) {
-                    this.stamina = this.maxStamina
-                }
 
         const runningSpeed = 4;
         const walkingSpeed = 2;
@@ -154,6 +155,7 @@ export default class Player extends MatterEntity {
 
            } else if (Math.abs(playerVelocity.x) === walkingSpeed || Math.abs(playerVelocity.y) === walkingSpeed) {
                 this.anims.play('hero_walk', true);
+
                 if(this.WSIT == null){
                     this.WSIT = setInterval(this.walkingStaminaIncrement, 2000);
                 };
@@ -168,6 +170,7 @@ export default class Player extends MatterEntity {
 
            } else {
             this.anims.play('hero_idle', true);
+
             if(this.RSDT){
                 clearInterval(this.RSDT);
                 this.RSDT = null;

@@ -99,7 +99,7 @@ export default class MainScene extends Phaser.Scene {
             this.lightningStrikes++
             //set scene tint brighter due to lightning strike this.setTint = Bright
             console.log(`number of lightning strikes this storm: ${this.lightningStrikes}`)
-            if(this.lightningStrikes >= Phaser.Math.Between(50, 200)){
+            if(this.lightningStrikes >= Phaser.Math.Between(10, 20)){
                 this.player.clearTint()
                 this.enemies.forEach(enemy => enemy.clearTint())
                 this.rainEmitter.stop()
@@ -128,7 +128,7 @@ export default class MainScene extends Phaser.Scene {
                     console.log(`A storm should be raging.`)   
                 }
             }       
-            setInterval(stormStart, Phaser.Math.Between(30000,180000));
+            setInterval(stormStart, Phaser.Math.Between(30000,60000));
             
 
         let camera = this.cameras.main;

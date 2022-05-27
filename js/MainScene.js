@@ -29,7 +29,7 @@ export default class MainScene extends Phaser.Scene {
 
     create(){
 
-        this.player = new Player({scene:this, x:Phaser.Math.Between(150,400), y:Phaser.Math.Between(150, 350), texture:'hero', frame:'hero_idle_1'});
+        this.player = new Player({scene:this, x:Phaser.Math.Between(300,400), y:Phaser.Math.Between(150, 350), texture:'hero', frame:'hero_idle_1'});
 
         this.input.setDefaultCursor('url(assets/images/cursor.png), pointer')
 

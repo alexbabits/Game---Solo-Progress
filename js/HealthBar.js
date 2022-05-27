@@ -16,7 +16,7 @@ export default class HealthBar extends Phaser.Scene {
             width: 77,
             height: 11
         }
-        this.pixelPerHealth = this.size.width / this.healthValue;
+        this.pixelPerHealth = this.size.width / this.healthDenominator;
 
         scene.add.existing(this.bar);
         scene.add.existing(this.text);

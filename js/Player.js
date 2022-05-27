@@ -71,6 +71,11 @@ export default class Player extends MatterEntity {
 
     update(){
         if(this.dead) return;
+        
+                //fix not quite right, sits at 101 because it overlaps one time on the increment.
+                if(this.stamina >= this.maxStamina) {
+                    this.stamina = this.maxStamina
+                }
 
         const runningSpeed = 4;
         const walkingSpeed = 2;
@@ -115,12 +120,9 @@ export default class Player extends MatterEntity {
         this.setVelocity(playerVelocity.x, playerVelocity.y);
         //"playerVelocity.normalize();" normalize makes diagonals same speed if I decide to allow diagonal movement. 
 
-        if(this.inputKeys.space.isDown && playerVelocity.x === 0 && playerVelocity.y === 0) {
+        if(this.inputKeys.space.isDown && playerVelocity.x === 0 && playerVelocity.y === 0 && this.stamina >= 10) {
             this.anims.play('hero_attack', true);
             this.whackStuff();
-            if(this.HSDT == null){
-                this.HSDT = setInterval(this.hittingStaminaDecrement, 600);
-            };
             if(this.RSDT){
                 clearInterval(this.RSDT);
                 this.RSDT = null;
@@ -137,6 +139,7 @@ export default class Player extends MatterEntity {
                 this.anims.play('hero_run', true)
                 //successfully forces the player to walk.
                 if(this.stamina <= 0) this.walkingSwitch = true;
+
                 if(this.RSDT == null){
                     this.RSDT = setInterval(this.runningStaminaDecrement, 200);
                 };
@@ -148,10 +151,7 @@ export default class Player extends MatterEntity {
                     clearInterval(this.WSIT);
                     this.WSIT = null;
                 };
-                if(this.HSDT){
-                    clearInterval(this.HSDT);
-                    this.HSDT = null;
-                };
+
            } else if (Math.abs(playerVelocity.x) === walkingSpeed || Math.abs(playerVelocity.y) === walkingSpeed) {
                 this.anims.play('hero_walk', true);
                 if(this.WSIT == null){
@@ -165,10 +165,7 @@ export default class Player extends MatterEntity {
                     clearInterval(this.ISIT);
                     this.ISIT = null;
                 };
-                if(this.HSDT){
-                    clearInterval(this.HSDT);
-                    this.HSDT = null;
-                };
+
            } else {
             this.anims.play('hero_idle', true);
             if(this.RSDT){
@@ -182,28 +179,12 @@ export default class Player extends MatterEntity {
                 clearInterval(this.WSIT);
                 this.WSIT = null;
             };
-            if(this.HSDT){
-                clearInterval(this.HSDT);
-                this.HSDT = null;
-            };
 
         }
-        
         
         if(this.inputKeys.space.isDown === false) {
             this.attackFlag = false
         }
-
-        //fix not quite right, sits at -1 because it overlaps one time on the decrement.
-        if(this.stamina <= 0){
-            this.stamina = 0
-        }
-
-        //fix not quite right, sits at 101 because it overlaps one time on the increment.
-        if(this.stamina >= this.maxStamina) {
-            this.stamina = this.maxStamina
-        }
-
 
     };
     
@@ -252,26 +233,36 @@ export default class Player extends MatterEntity {
         });
 
     };
-
+        
          whackStuff(){
-            //kind of works to make it so you can't attack. Doesn't stop anims though.
-            if(this.stamina <= 10) return;
+            //Makes it so if you swing while nothing in touching array, it still decrements stamina.
+            if(this.anims.currentFrame.textureFrame === 'hero_attack_5'  && this.attackFlag === false && this.touching.length === 0) {
+                this.attackFlag = true;
+                this.hittingStaminaDecrement();
+            } else if (this.anims.currentFrame.textureFrame === 'hero_attack_6') {
+                this.attackFlag = false
+            }
+
             this.touching = this.touching.filter(gameObject => gameObject.hit && !gameObject.dead);
             this.touching.forEach(gameObject =>{
                 if (this.anims.currentFrame.textureFrame === 'hero_attack_5'  && this.attackFlag === false) {
-                    this.attackFlag = true
-                    gameObject.hit()
+                    this.attackFlag = true;
+                    gameObject.hit();
+                    //decrements stamina on each 'hit' perfectly.
+                    this.hittingStaminaDecrement();
                     if(gameObject.tintable === true){
                         gameObject.setTint(0xff0000);
                         setTimeout(()=> gameObject.clearTint(), 200);
-                    }
+                    };
             } else if (this.anims.currentFrame.textureFrame === 'hero_attack_6') {
                 this.attackFlag = false
-            }         
+            };        
                 if(gameObject.dead) gameObject.destroy();
         });
         //console.log(this.anims) to see what's going on with all things related to our animation state.
-        /*The only problem now: When the player goes to attack a resource after attacking one previously, the first hit doesn't register.*/   
+        /*The only problem now: When the player goes to attack a resource after attacking one previously, the first hit doesn't register.
+        Has to do with holding space, going away from bush, then keeping holding space, and going to bush, first hit will not register.        
+        */   
       }; 
 
 };

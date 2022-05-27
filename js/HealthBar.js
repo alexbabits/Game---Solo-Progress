@@ -14,7 +14,7 @@ export default class HealthBar extends Phaser.Scene {
         this.healthDenominator = maxHealth;
         this.size = {
             width: 77,
-            height: 11
+            height: 9
         }
         this.pixelPerHealth = this.size.width / this.healthDenominator;
 
@@ -40,13 +40,11 @@ export default class HealthBar extends Phaser.Scene {
         this.text.setText(`${this.healthValue}/${this.healthDenominator}`);
 
         const { width, height } = this.size;
-        const margin = 2;
-        const offset = 15;
         const chamfer = 4;
         const healthWidth = (this.healthValue * this.pixelPerHealth);
         
         this.bar.fillStyle(0xFFFFFF);
-        this.bar.fillRoundedRect(x + offset + margin, y + offset + margin, width - margin, height - margin, chamfer);
+        this.bar.fillRoundedRect(x, y, width, height, chamfer);
 
         if(healthWidth <= this.size.width/4){
             this.bar.fillStyle(0xFF0000);
@@ -55,7 +53,7 @@ export default class HealthBar extends Phaser.Scene {
         }
     
         if(healthWidth > 0){
-            this.bar.fillRoundedRect(x + offset + margin, y + offset + margin, healthWidth - margin, height - margin, chamfer);
+            this.bar.fillRoundedRect(x, y, healthWidth, height, chamfer);
         }
 
     };

@@ -10,7 +10,7 @@ export default class Player extends MatterEntity {
         this.touching = [];
         this.inventory = new Inventory();
         //x and y position based on game configs and adjusted for zoom: EX: ((height - (height/zoom))/2. ((640 - (640/1.4))/2 = 91.43 becomes the new (0,0).
-        this.hp = new HealthBar(this.scene, 100, 100, this.health, this.maxHealth);
+        this.hp = new HealthBar(this.scene, 117, 117, this.health, this.maxHealth);
         //atempt to add in the stamina bar.
         this.energy = new StaminaBar(this.scene, 235, 117, this.stamina, this.maxStamina);
 

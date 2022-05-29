@@ -74,7 +74,6 @@ export default class Player extends MatterEntity {
         console.log(`You should be doing hit(). Current Stamina: ${this.stamina} maxStamina: ${this.maxStamina}`); 
     }
 
-
     update(){
         if(this.dead) return;
 
@@ -122,29 +121,8 @@ export default class Player extends MatterEntity {
         //"playerVelocity.normalize();" normalize makes diagonals same speed if I decide to allow diagonal movement. 
 
 
-        if (this.sound.isPlaying === true){
-            this.anims.play('hero_damage', true);
-                if(this.anims.currentAnim === 'hero_damage') {
-                    playerVelocity.x = 0
-                    playerVelocity.y = 0
-                }
-            } else if(this.inputKeys.space.isDown && playerVelocity.x === 0 && playerVelocity.y === 0 && this.stamina >= 10) {
-                this.anims.play('hero_attack', true);
-                this.whackStuff();
-                if(this.RSDT){
-                    clearInterval(this.RSDT);
-                    this.RSDT = null;
-                };
-                if(this.ISIT){
-                    clearInterval(this.ISIT);
-                    this.ISIT = null;
-                };
-                if(this.WSIT){
-                    clearInterval(this.WSIT);
-                    this.WSIT = null;
-                };
-           } else if (Math.abs(playerVelocity.x) === runningSpeed || Math.abs(playerVelocity.y) === runningSpeed) {
-                this.anims.play('hero_run', true)
+             if (Math.abs(playerVelocity.x) === runningSpeed || Math.abs(playerVelocity.y) === runningSpeed) {
+                this.anims.play('hero_run', true);
                 //successfully forces the player to walk.
                 if(this.stamina <= 0) this.walkingSwitch = true;
 
@@ -174,8 +152,26 @@ export default class Player extends MatterEntity {
                     clearInterval(this.ISIT);
                     this.ISIT = null;
                 };
-
-           } else {
+            //Had to have it below movement and above attacking, so the anim stops when he moves. Still allows him to move while hit, but stops animation when he moves. Good for now.
+           } else if(this.sound.isPlaying === true){
+                this.anims.play('hero_damage', true);
+        
+           } else if(this.inputKeys.space.isDown && playerVelocity.x === 0 && playerVelocity.y === 0 && this.stamina >= 10) {
+                this.anims.play('hero_attack', true);
+                this.whackStuff();
+                if(this.RSDT){
+                    clearInterval(this.RSDT);
+                    this.RSDT = null;
+                };
+                if(this.ISIT){
+                    clearInterval(this.ISIT);
+                    this.ISIT = null;
+                };
+                if(this.WSIT){
+                    clearInterval(this.WSIT);
+                    this.WSIT = null;
+                };
+       } else {
             this.anims.play('hero_idle', true);
 
             if(this.RSDT){
@@ -197,7 +193,6 @@ export default class Player extends MatterEntity {
         }
 
     };
-    
 
         heroTouchingTrigger(playerSensor){
 
@@ -269,7 +264,7 @@ export default class Player extends MatterEntity {
             };        
                 if(gameObject.dead) gameObject.destroy();
         });
-        console.log(this.anims) //to see what's going on with all things related to our animation state.
+        //console.log(this.anims) to see what's going on with all things related to our animation state.
         /*The only problem now: When the player goes to attack a resource after attacking one previously, the first hit doesn't register.
         Has to do with holding space, going away from bush, then keeping holding space, and going to bush, first hit will not register.        
         */   

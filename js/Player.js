@@ -2,6 +2,7 @@ import Inventory from "./Inventory.js";
 import MatterEntity from "./MatterEntity.js";
 import HealthBar from "./HealthBar.js";
 import StaminaBar from "./StaminaBar.js";
+import ManaBar from "./ManaBar.js";
 
 export default class Player extends MatterEntity {
     constructor(data){
@@ -11,14 +12,12 @@ export default class Player extends MatterEntity {
         this.touching = [];
         this.inventory = new Inventory();
         //x and y position based on game configs and adjusted for zoom: EX: ((height - (height/zoom))/2. ((640 - (640/1.4))/2 = 91.43 becomes the new (0,0).
-        this.hp = new HealthBar(this.scene, 117, 117, this.health, this.maxHealth);
-        //atempt to add in the stamina bar.
+        this.hp = new HealthBar(this.scene, 116, 117, this.health, this.maxHealth);
         this.energy = new StaminaBar(this.scene, 235, 117, this.stamina, this.maxStamina);
         //attempt to add in the mana bar.
-        //this.mana = new ManaBar(this.scene, 300, 300, this.mana, this.maxMana);
+        this.magic = new ManaBar(this.scene, 116, 157, this.mana, this.maxMana);
 
         this.attackFlag = false;
-        //added in the crit flag 
         this.critFlag = false;
         this.walkingSwitch = false;
 
@@ -64,6 +63,15 @@ export default class Player extends MatterEntity {
         console.log(`You should be Idling. Current Stamina: ${this.stamina} maxStamina: ${this.maxStamina}`); 
     }
 
+    manaIncrement = () => {
+        this.mana++;
+        if(this.mana >= this.maxMana) {
+            this.mana = this.maxMana 
+        }
+        this.magic.modifyMana(this.mana);
+        console.log(`You should be regaining mana: ${this.mana} maxMana: ${this.maxMana}`); 
+    }
+
     walkingStaminaIncrement = () => {
         this.stamina++;
         if(this.stamina >= this.maxStamina) {
@@ -81,11 +89,10 @@ export default class Player extends MatterEntity {
 
     specialAttackDecrement = () => {
         this.stamina -= 20;
-        //this.mana -= 2;
+        this.mana -= 2;
         this.energy.modifyStamina(this.stamina);
-        //this.mana.modifyMana(this.mana);
-        console.log(`You should be doing special attack. Current Stamina: ${this.stamina} maxStamina: ${this.maxStamina}`); 
-        //console.log(`Current Mana: ${this.mana} maxStamina: ${this.maxMana}`)
+        this.magic.modifyMana(this.mana);
+        console.log(`You should be doing special attack. Current Stamina: ${this.stamina}, maxStamina: ${this.maxStamina}, Current Mana: ${this.mana}, maxMana: ${this.maxMana},`); 
     }
 
     update(){
@@ -156,7 +163,7 @@ export default class Player extends MatterEntity {
                 this.anims.play('hero_walk', true);
 
                 if(this.WSIT == null){
-                    this.WSIT = setInterval(this.walkingStaminaIncrement, 2000);
+                    this.WSIT = setInterval(this.walkingStaminaIncrement, 500);
                 };
                 if(this.RSDT){
                     clearInterval(this.RSDT);
@@ -170,7 +177,7 @@ export default class Player extends MatterEntity {
            } else if(this.sound.isPlaying === true){
                 this.anims.play('hero_damage', true);
             //had to add the special attack here, above the normal attack, and below the 'damage' and movement.
-           }  else if(this.inputKeys.space.isDown && this.inputKeys.ctrl.isDown && playerVelocity.x === 0 && playerVelocity.y === 0 && this.stamina >= 20) {
+           }  else if(this.inputKeys.space.isDown && this.inputKeys.ctrl.isDown && playerVelocity.x === 0 && playerVelocity.y === 0 && this.stamina >= 20 && this.mana >= 2) {
                 this.anims.play('hero_crit', true);
                 this.specialAttack();
                 if(this.RSDT){
@@ -184,6 +191,10 @@ export default class Player extends MatterEntity {
                 if(this.WSIT){
                     clearInterval(this.WSIT);
                     this.WSIT = null;
+                };
+                if(this.MIT){
+                    clearInterval(this.MIT);
+                    this.MIT = null;
                 };
             } else if(this.inputKeys.space.isDown && playerVelocity.x === 0 && playerVelocity.y === 0 && this.stamina >= 10) {
                 this.anims.play('hero_attack', true);
@@ -200,6 +211,10 @@ export default class Player extends MatterEntity {
                     clearInterval(this.WSIT);
                     this.WSIT = null;
                 };
+                if(this.MIT){
+                    clearInterval(this.MIT);
+                    this.MIT = null;
+                };
            } else {
             this.anims.play('hero_idle', true);
 
@@ -208,7 +223,11 @@ export default class Player extends MatterEntity {
                 this.RSDT = null;
             };
             if(this.ISIT == null){
-                this.ISIT = setInterval(this.idleStaminaIncrement, 1000);
+                this.ISIT = setInterval(this.idleStaminaIncrement, 200);
+            }; 
+            //created mana idle regen interval
+            if(this.MIT == null){
+                this.MIT = setInterval(this.manaIncrement, 2000);
             }; 
             if(this.WSIT){
                 clearInterval(this.WSIT);
@@ -300,16 +319,16 @@ export default class Player extends MatterEntity {
       };
       
       specialAttack(){
-        if(this.anims.currentFrame.textureFrame === 'hero_crit_5'  && this.critFlag === false && this.touching.length === 0) {
+        if(this.anims.currentFrame.textureFrame === 'hero_crit_4'  && this.critFlag === false && this.touching.length === 0) {
             this.critFlag = true;
             this.specialAttackDecrement();
-        } else if (this.anims.currentFrame.textureFrame === 'hero_crit_6') {
+        } else if (this.anims.currentFrame.textureFrame === 'hero_crit_5') {
             this.critFlag = false
         }
 
             this.touching = this.touching.filter(gameObject => gameObject.hit && !gameObject.dead);
             this.touching.forEach(gameObject =>{
-                if (this.anims.currentFrame.textureFrame === 'hero_crit_5'  && this.critFlag === false) {
+                if (this.anims.currentFrame.textureFrame === 'hero_crit_4'  && this.critFlag === false) {
                     this.critFlag = true;
                     gameObject.specialHit();
                     //attempt to decrement mana and stamina when using special attack.
@@ -318,7 +337,7 @@ export default class Player extends MatterEntity {
                         gameObject.setTint(0xff0000);
                         setTimeout(()=> gameObject.clearTint(), 200);
                     };
-            } else if (this.anims.currentFrame.textureFrame === 'hero_crit_6') {
+            } else if (this.anims.currentFrame.textureFrame === 'hero_crit_5') {
                 this.critFlag = false
             };        
                 if(gameObject.dead) gameObject.destroy();

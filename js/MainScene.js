@@ -48,6 +48,11 @@ export default class MainScene extends Phaser.Scene {
         Healthbarframelogo.setScale(.3);
         Healthbarframelogo.setScrollFactor(0);
 
+        const Manabarframelogo = this.add.image(110, 142, 'Healthbarframe').setOrigin(0); 
+        Manabarframelogo.depth = 9;
+        Manabarframelogo.setScale(.3);
+        Manabarframelogo.setScrollFactor(0);
+
         const Staminabarframelogo = this.add.image(220, 102, 'Staminabarframe').setOrigin(0); 
         Staminabarframelogo.depth = 9;
         Staminabarframelogo.setScale(.3);

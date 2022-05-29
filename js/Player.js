@@ -6,15 +6,20 @@ import StaminaBar from "./StaminaBar.js";
 export default class Player extends MatterEntity {
     constructor(data){
         let {scene, x , y, texture, frame} = data;
-        super({...data, health: 10, maxHealth: 10, stamina: 100, maxStamina: 100, drops:[], name:'player'});
+        //added in mana and maxMana for special attack.
+        super({...data, health: 10, maxHealth: 10, stamina: 100, maxStamina: 100, mana: 10, maxMana: 10, drops:[], name:'player'});
         this.touching = [];
         this.inventory = new Inventory();
         //x and y position based on game configs and adjusted for zoom: EX: ((height - (height/zoom))/2. ((640 - (640/1.4))/2 = 91.43 becomes the new (0,0).
         this.hp = new HealthBar(this.scene, 117, 117, this.health, this.maxHealth);
         //atempt to add in the stamina bar.
         this.energy = new StaminaBar(this.scene, 235, 117, this.stamina, this.maxStamina);
+        //attempt to add in the mana bar.
+        //this.mana = new ManaBar(this.scene, 300, 300, this.mana, this.maxMana);
 
         this.attackFlag = false;
+        //added in the crit flag 
+        this.critFlag = false;
         this.walkingSwitch = false;
 
         const {Body,Bodies} = Phaser.Physics.Matter.Matter;
@@ -72,6 +77,15 @@ export default class Player extends MatterEntity {
         this.stamina -= 10;
         this.energy.modifyStamina(this.stamina);
         console.log(`You should be doing hit(). Current Stamina: ${this.stamina} maxStamina: ${this.maxStamina}`); 
+    }
+
+    specialAttackDecrement = () => {
+        this.stamina -= 20;
+        //this.mana -= 2;
+        this.energy.modifyStamina(this.stamina);
+        //this.mana.modifyMana(this.mana);
+        console.log(`You should be doing special attack. Current Stamina: ${this.stamina} maxStamina: ${this.maxStamina}`); 
+        //console.log(`Current Mana: ${this.mana} maxStamina: ${this.maxMana}`)
     }
 
     update(){
@@ -155,8 +169,23 @@ export default class Player extends MatterEntity {
             //Had to have it below movement and above attacking, so the anim stops when he moves. Still allows him to move while hit, but stops animation when he moves. Good for now.
            } else if(this.sound.isPlaying === true){
                 this.anims.play('hero_damage', true);
-        
-           } else if(this.inputKeys.space.isDown && playerVelocity.x === 0 && playerVelocity.y === 0 && this.stamina >= 10) {
+            //had to add the special attack here, above the normal attack, and below the 'damage' and movement.
+           }  else if(this.inputKeys.space.isDown && this.inputKeys.ctrl.isDown && playerVelocity.x === 0 && playerVelocity.y === 0 && this.stamina >= 20) {
+                this.anims.play('hero_crit', true);
+                this.specialAttack();
+                if(this.RSDT){
+                    clearInterval(this.RSDT);
+                    this.RSDT = null;
+                };
+                if(this.ISIT){
+                    clearInterval(this.ISIT);
+                    this.ISIT = null;
+                };
+                if(this.WSIT){
+                    clearInterval(this.WSIT);
+                    this.WSIT = null;
+                };
+            } else if(this.inputKeys.space.isDown && playerVelocity.x === 0 && playerVelocity.y === 0 && this.stamina >= 10) {
                 this.anims.play('hero_attack', true);
                 this.whackStuff();
                 if(this.RSDT){
@@ -171,7 +200,7 @@ export default class Player extends MatterEntity {
                     clearInterval(this.WSIT);
                     this.WSIT = null;
                 };
-       } else {
+           } else {
             this.anims.play('hero_idle', true);
 
             if(this.RSDT){
@@ -268,6 +297,32 @@ export default class Player extends MatterEntity {
         /*The only problem now: When the player goes to attack a resource after attacking one previously, the first hit doesn't register.
         Has to do with holding space, going away from bush, then keeping holding space, and going to bush, first hit will not register.        
         */   
-      }; 
+      };
+      
+      specialAttack(){
+        if(this.anims.currentFrame.textureFrame === 'hero_crit_5'  && this.critFlag === false && this.touching.length === 0) {
+            this.critFlag = true;
+            this.specialAttackDecrement();
+        } else if (this.anims.currentFrame.textureFrame === 'hero_crit_6') {
+            this.critFlag = false
+        }
+
+            this.touching = this.touching.filter(gameObject => gameObject.hit && !gameObject.dead);
+            this.touching.forEach(gameObject =>{
+                if (this.anims.currentFrame.textureFrame === 'hero_crit_5'  && this.critFlag === false) {
+                    this.critFlag = true;
+                    gameObject.specialHit();
+                    //attempt to decrement mana and stamina when using special attack.
+                    this.specialAttackDecrement();
+                    if(gameObject.tintable === true){
+                        gameObject.setTint(0xff0000);
+                        setTimeout(()=> gameObject.clearTint(), 200);
+                    };
+            } else if (this.anims.currentFrame.textureFrame === 'hero_crit_6') {
+                this.critFlag = false
+            };        
+                if(gameObject.dead) gameObject.destroy();
+        });
+    }
 
 };

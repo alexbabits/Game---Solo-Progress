@@ -155,6 +155,8 @@ export default class MainScene extends Phaser.Scene {
             right: Phaser.Input.Keyboard.KeyCodes.D,
             space: Phaser.Input.Keyboard.KeyCodes.SPACE,
             shift: Phaser.Input.Keyboard.KeyCodes.SHIFT,
+            //added ctrl key for special attack
+            ctrl: Phaser.Input.Keyboard.KeyCodes.CTRL,
         });
 
     };

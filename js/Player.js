@@ -121,21 +121,28 @@ export default class Player extends MatterEntity {
         this.setVelocity(playerVelocity.x, playerVelocity.y);
         //"playerVelocity.normalize();" normalize makes diagonals same speed if I decide to allow diagonal movement. 
 
-        if(this.inputKeys.space.isDown && playerVelocity.x === 0 && playerVelocity.y === 0 && this.stamina >= 10) {
-            this.anims.play('hero_attack', true);
-            this.whackStuff();
-            if(this.RSDT){
-                clearInterval(this.RSDT);
-                this.RSDT = null;
-            };
-            if(this.ISIT){
-                clearInterval(this.ISIT);
-                this.ISIT = null;
-            };
-            if(this.WSIT){
-                clearInterval(this.WSIT);
-                this.WSIT = null;
-            };
+
+        if (this.sound.isPlaying === true){
+            this.anims.play('hero_damage', true);
+                if(this.anims.currentAnim === 'hero_damage') {
+                    playerVelocity.x = 0
+                    playerVelocity.y = 0
+                }
+            } else if(this.inputKeys.space.isDown && playerVelocity.x === 0 && playerVelocity.y === 0 && this.stamina >= 10) {
+                this.anims.play('hero_attack', true);
+                this.whackStuff();
+                if(this.RSDT){
+                    clearInterval(this.RSDT);
+                    this.RSDT = null;
+                };
+                if(this.ISIT){
+                    clearInterval(this.ISIT);
+                    this.ISIT = null;
+                };
+                if(this.WSIT){
+                    clearInterval(this.WSIT);
+                    this.WSIT = null;
+                };
            } else if (Math.abs(playerVelocity.x) === runningSpeed || Math.abs(playerVelocity.y) === runningSpeed) {
                 this.anims.play('hero_run', true)
                 //successfully forces the player to walk.
@@ -262,7 +269,7 @@ export default class Player extends MatterEntity {
             };        
                 if(gameObject.dead) gameObject.destroy();
         });
-        //console.log(this.anims) to see what's going on with all things related to our animation state.
+        console.log(this.anims) //to see what's going on with all things related to our animation state.
         /*The only problem now: When the player goes to attack a resource after attacking one previously, the first hit doesn't register.
         Has to do with holding space, going away from bush, then keeping holding space, and going to bush, first hit will not register.        
         */   

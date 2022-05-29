@@ -74,7 +74,6 @@ export default class Player extends MatterEntity {
         console.log(`You should be doing hit(). Current Stamina: ${this.stamina} maxStamina: ${this.maxStamina}`); 
     }
 
-
     update(){
         if(this.dead) return;
 
@@ -121,23 +120,9 @@ export default class Player extends MatterEntity {
         this.setVelocity(playerVelocity.x, playerVelocity.y);
         //"playerVelocity.normalize();" normalize makes diagonals same speed if I decide to allow diagonal movement. 
 
-        if(this.inputKeys.space.isDown && playerVelocity.x === 0 && playerVelocity.y === 0 && this.stamina >= 10) {
-            this.anims.play('hero_attack', true);
-            this.whackStuff();
-            if(this.RSDT){
-                clearInterval(this.RSDT);
-                this.RSDT = null;
-            };
-            if(this.ISIT){
-                clearInterval(this.ISIT);
-                this.ISIT = null;
-            };
-            if(this.WSIT){
-                clearInterval(this.WSIT);
-                this.WSIT = null;
-            };
-           } else if (Math.abs(playerVelocity.x) === runningSpeed || Math.abs(playerVelocity.y) === runningSpeed) {
-                this.anims.play('hero_run', true)
+
+             if (Math.abs(playerVelocity.x) === runningSpeed || Math.abs(playerVelocity.y) === runningSpeed) {
+                this.anims.play('hero_run', true);
                 //successfully forces the player to walk.
                 if(this.stamina <= 0) this.walkingSwitch = true;
 
@@ -167,8 +152,26 @@ export default class Player extends MatterEntity {
                     clearInterval(this.ISIT);
                     this.ISIT = null;
                 };
-
-           } else {
+            //Had to have it below movement and above attacking, so the anim stops when he moves. Still allows him to move while hit, but stops animation when he moves. Good for now.
+           } else if(this.sound.isPlaying === true){
+                this.anims.play('hero_damage', true);
+        
+           } else if(this.inputKeys.space.isDown && playerVelocity.x === 0 && playerVelocity.y === 0 && this.stamina >= 10) {
+                this.anims.play('hero_attack', true);
+                this.whackStuff();
+                if(this.RSDT){
+                    clearInterval(this.RSDT);
+                    this.RSDT = null;
+                };
+                if(this.ISIT){
+                    clearInterval(this.ISIT);
+                    this.ISIT = null;
+                };
+                if(this.WSIT){
+                    clearInterval(this.WSIT);
+                    this.WSIT = null;
+                };
+       } else {
             this.anims.play('hero_idle', true);
 
             if(this.RSDT){
@@ -190,7 +193,6 @@ export default class Player extends MatterEntity {
         }
 
     };
-    
 
         heroTouchingTrigger(playerSensor){
 

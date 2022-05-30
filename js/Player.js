@@ -293,7 +293,7 @@ export default class Player extends MatterEntity {
                 this.touching.push(other.gameObjectB);
                     console.log(this.touching.length, other.gameObjectB.name);
                 },
-            context: this.player, 
+            context: this.scene, 
         });
 
         this.scene.matterCollision.addOnCollideEnd({

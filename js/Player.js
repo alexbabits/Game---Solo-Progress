@@ -153,15 +153,6 @@ export default class Player extends MatterEntity {
             }
         }
 
-        /*
-        So close to working, this is where I need to check for flipX, need to just figure out how to shut off the sensor now.
-        */
-       console.log(this.flipX);
-        if(this.flipX === true){
-            //this.compoundBody.setSensor(false);
-        }
-
-
         this.setVelocity(playerVelocity.x, playerVelocity.y);
         //"playerVelocity.normalize();" normalize makes diagonals same speed if I decide to allow diagonal movement. 
 
@@ -264,6 +255,12 @@ export default class Player extends MatterEntity {
             this.attackFlag = false
         }
 
+        if(this.flipX === false){
+            heroTouchingTriggerRight(this.playerSensor.right);
+        } else {
+            return
+        }
+
     };
 
     heroTouchingTriggerRight(playerSensor){
@@ -280,8 +277,8 @@ export default class Player extends MatterEntity {
         this.scene.matterCollision.addOnCollideEnd({
             objectA:[playerSensor],
             callback: other => {  
-                this.touching = this.touching.filter(gameObject => gameObject != other.gameObjectB);
-                    console.log(this.touching.length);
+                    this.touching = this.touching.filter(gameObject => gameObject != other.gameObjectB);
+                        console.log(this.touching.length, `no more ${other.gameObjectB.name}`);
                 },
             context: this.scene,
         })
@@ -296,7 +293,7 @@ export default class Player extends MatterEntity {
                 this.touching.push(other.gameObjectB);
                     console.log(this.touching.length, other.gameObjectB.name);
                 },
-            context: this.scene, 
+            context: this.player, 
         });
 
         this.scene.matterCollision.addOnCollideEnd({

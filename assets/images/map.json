@@ -38,6 +38,11 @@
                          "value":"[228,228]"
                         }, 
                         {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"tintable",
                          "type":"bool",
                          "value":false
@@ -69,6 +74,11 @@
                          "name":"drops",
                          "type":"string",
                          "value":"[273,273]"
+                        }, 
+                        {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
                         }, 
                         {
                          "name":"tintable",
@@ -104,6 +114,11 @@
                          "value":"[272,272]"
                         }, 
                         {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"tintable",
                          "type":"bool",
                          "value":false
@@ -135,6 +150,11 @@
                          "name":"drops",
                          "type":"string",
                          "value":"[228,228]"
+                        }, 
+                        {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
                         }, 
                         {
                          "name":"tintable",
@@ -170,6 +190,11 @@
                          "value":"[228,228]"
                         }, 
                         {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"tintable",
                          "type":"bool",
                          "value":false
@@ -201,6 +226,11 @@
                          "name":"drops",
                          "type":"string",
                          "value":"[273,273]"
+                        }, 
+                        {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
                         }, 
                         {
                          "name":"tintable",
@@ -236,6 +266,11 @@
                          "value":"[273,273]"
                         }, 
                         {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"tintable",
                          "type":"bool",
                          "value":false
@@ -267,6 +302,11 @@
                          "name":"drops",
                          "type":"string",
                          "value":"[273,273]"
+                        }, 
+                        {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
                         }, 
                         {
                          "name":"tintable",
@@ -302,6 +342,11 @@
                          "value":"[272,272]"
                         }, 
                         {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"tintable",
                          "type":"bool",
                          "value":false
@@ -333,6 +378,11 @@
                          "name":"drops",
                          "type":"string",
                          "value":"[272,272]"
+                        }, 
+                        {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
                         }, 
                         {
                          "name":"tintable",
@@ -368,6 +418,11 @@
                          "value":"[272,272]"
                         }, 
                         {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"tintable",
                          "type":"bool",
                          "value":false
@@ -399,6 +454,11 @@
                          "name":"drops",
                          "type":"string",
                          "value":"[272,272]"
+                        }, 
+                        {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
                         }, 
                         {
                          "name":"tintable",
@@ -434,6 +494,11 @@
                          "value":"[228,228]"
                         }, 
                         {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"tintable",
                          "type":"bool",
                          "value":false
@@ -467,6 +532,11 @@
                          "value":"[228,228]"
                         }, 
                         {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"tintable",
                          "type":"bool",
                          "value":false
@@ -498,6 +568,11 @@
                          "name":"drops",
                          "type":"string",
                          "value":"[228,228]"
+                        }, 
+                        {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
                         }, 
                         {
                          "name":"tintable",
@@ -572,6 +647,11 @@
                          "value":"[241,280]"
                         }, 
                         {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"health",
                          "type":"int",
                          "value":10
@@ -610,6 +690,11 @@
                          "value":"[272,272]"
                         }, 
                         {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"health",
                          "type":"int",
                          "value":5
@@ -646,6 +731,11 @@
                          "name":"drops",
                          "type":"string",
                          "value":"[241]"
+                        }, 
+                        {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":true
                         }, 
                         {
                          "name":"health",

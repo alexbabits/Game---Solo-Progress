@@ -17,7 +17,8 @@ export default class Enemy extends MatterEntity {
         let health = enemy.properties.find(p => p.name== 'health').value;
         let maxHealth = enemy.properties.find(p => p.name== 'maxHealth').value;
         let tintable = enemy.properties.find(p => p.name== 'tintable').value;
-        super({scene, x:enemy.x, y:enemy.y, texture:'enemies', frame:`${enemy.name}_idle_1`, drops, health, maxHealth, tintable, name:enemy.name});
+        let givesXP = enemy.properties.find(p => p.name== 'givesXP').value;
+        super({scene, x:enemy.x, y:enemy.y, texture:'enemies', frame:`${enemy.name}_idle_1`, drops, health, maxHealth, tintable, givesXP, name:enemy.name});
 
         const {Body,Bodies} = Phaser.Physics.Matter.Matter;
         let enemyCollider = Bodies.circle(this.x,this.y,12,{isSensor:false,label:'enemyCollider'});

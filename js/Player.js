@@ -324,7 +324,10 @@ export default class Player extends MatterEntity {
                 if(gameObject.dead) {
                     gameObject.destroy();
                     //increments experience when enemy dies.
-                    this.experienceIncrement();
+                    //added in boolean if it gives xp. Later I could add in custom XP?
+                    if(gameObject.givesXP === true){
+                        this.experienceIncrement();
+                    }   
                 }
         });
         //console.log(this.anims) to see what's going on with all things related to our animation state.
@@ -358,7 +361,10 @@ export default class Player extends MatterEntity {
                 if(gameObject.dead) {
                     gameObject.destroy();
                     //increments experience when enemy dies.
-                    this.experienceIncrement();
+                    //added in boolean if it gives xp. Later I could add in custom XP?
+                    if(gameObject.givesXP === true){
+                        this.experienceIncrement();
+                    }   
                 }
         });
     }

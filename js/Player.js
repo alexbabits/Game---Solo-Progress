@@ -24,21 +24,21 @@ export default class Player extends MatterEntity {
         this.walkingSwitch = false;
 
         const {Body,Bodies} = Phaser.Physics.Matter.Matter;
-        let playerCollider = Bodies.rectangle(this.x, this.y, 22, 32, {chamfer: {radius: 10}, isSensor:false, label:'playerCollider'});
-        let playerSensor = {
+        this.playerCollider = Bodies.rectangle(this.x, this.y, 22, 32, {chamfer: {radius: 10}, isSensor:false, label:'playerCollider'});
+        this.playerSensor = {
             right: Bodies.rectangle(this.x + 15, this.y, 20, 8, {isSensor: true}, {label:'right'}),
             left: Bodies.rectangle(this.x - 15, this.y, 20, 8, {isSensor: true}, {label:'left'})
         };
-        const compoundBody = Body.create({
-            parts:[playerCollider, playerSensor.right, playerSensor.left],
+        this.compoundBody = Body.create({
+            parts:[this.playerCollider, this.playerSensor.right, this.playerSensor.left],
             frictionAir: .4,
         });
 
-        this.setExistingBody(compoundBody);
+        this.setExistingBody(this.compoundBody);
         this.setFixedRotation();
-        this.heroTouchingTriggerRight(playerSensor.right);
-        this.heroTouchingTriggerLeft(playerSensor.left);
-        this.createPickupCollisions(playerCollider);
+        this.heroTouchingTriggerRight(this.playerSensor.right);
+        this.heroTouchingTriggerLeft(this.playerSensor.left);
+        this.createPickupCollisions(this.playerCollider);
 
     };
 
@@ -155,12 +155,12 @@ export default class Player extends MatterEntity {
 
         /*
         So close to working, this is where I need to check for flipX, need to just figure out how to shut off the sensor now.
-        console.log(this.flipX)
-
-        if(this.flipX === true){
-            playerSensor.right.setSensor(false);
-        }
         */
+       console.log(this.flipX);
+        if(this.flipX === true){
+            //this.compoundBody.setSensor(false);
+        }
+
 
         this.setVelocity(playerVelocity.x, playerVelocity.y);
         //"playerVelocity.normalize();" normalize makes diagonals same speed if I decide to allow diagonal movement. 

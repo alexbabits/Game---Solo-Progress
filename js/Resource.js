@@ -25,7 +25,7 @@ export default class Resource extends MatterEntity {
         this.y = this.y + this.height * (yOrigin - 0.5);
 
         const {Bodies} = Phaser.Physics.Matter.Matter;
-        let circleCollider = Bodies.circle(this.x, this.y, 12, {isSensor:false, label:'circledCollider'});
+        let circleCollider = Bodies.circle(this.x, this.y, 12, {isSensor:false, label:'circleCollider'});
 
         this.setExistingBody(circleCollider);
         this.setOrigin(0.5, yOrigin);

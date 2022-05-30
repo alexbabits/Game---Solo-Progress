@@ -25,14 +25,19 @@ export default class Player extends MatterEntity {
 
         const {Body,Bodies} = Phaser.Physics.Matter.Matter;
         let playerCollider = Bodies.rectangle(this.x, this.y, 22, 32, {chamfer: {radius: 10}, isSensor:false, label:'playerCollider'});
-        let playerSensor = Bodies.rectangle(this.x, this.y, 46, 8, {isSensor:true, label: 'playerSensor'});
+        let playerSensor = {
+            right: Bodies.rectangle(this.x + 15, this.y, 20, 8, {isSensor: true}, {label:'right'}),
+            left: Bodies.rectangle(this.x - 15, this.y, 20, 8, {isSensor: true}, {label:'left'})
+        };
         const compoundBody = Body.create({
-            parts:[playerCollider, playerSensor],
-            frictionAir: 0.35,
+            parts:[playerCollider, playerSensor.right, playerSensor.left],
+            frictionAir: .4,
         });
+
         this.setExistingBody(compoundBody);
         this.setFixedRotation();
-        this.heroTouchingTrigger(playerSensor);
+        this.heroTouchingTriggerRight(playerSensor.right);
+        this.heroTouchingTriggerLeft(playerSensor.left);
         this.createPickupCollisions(playerCollider);
 
     };
@@ -53,7 +58,7 @@ export default class Player extends MatterEntity {
     runningStaminaDecrement = () => {
         this.stamina--;
         this.energy.modifyStamina(this.stamina);
-        console.log(`You should be running. Current Stamina: ${this.stamina} maxStamina: ${this.maxStamina}`); 
+        //console.log(`You should be running. Current Stamina: ${this.stamina} maxStamina: ${this.maxStamina}`); 
     };
 
     idleStaminaIncrement = () => {
@@ -62,7 +67,7 @@ export default class Player extends MatterEntity {
             this.stamina = this.maxStamina 
         }
         this.energy.modifyStamina(this.stamina);
-        console.log(`You should be Idling. Current Stamina: ${this.stamina} maxStamina: ${this.maxStamina}`); 
+        //console.log(`You should be Idling. Current Stamina: ${this.stamina} maxStamina: ${this.maxStamina}`); 
     }
 
     manaIncrement = () => {
@@ -71,7 +76,7 @@ export default class Player extends MatterEntity {
             this.mana = this.maxMana 
         }
         this.magic.modifyMana(this.mana);
-        console.log(`You should be regaining mana: ${this.mana} maxMana: ${this.maxMana}`); 
+        //console.log(`You should be regaining mana: ${this.mana} maxMana: ${this.maxMana}`); 
     }
 
     walkingStaminaIncrement = () => {
@@ -80,13 +85,13 @@ export default class Player extends MatterEntity {
             this.stamina = this.maxStamina 
         }
         this.energy.modifyStamina(this.stamina);
-        console.log(`You should be Walking. Current Stamina: ${this.stamina} maxStamina: ${this.maxStamina}`); 
+        //console.log(`You should be Walking. Current Stamina: ${this.stamina} maxStamina: ${this.maxStamina}`); 
     }
 
     hittingStaminaDecrement = () => {
         this.stamina -= 10;
         this.energy.modifyStamina(this.stamina);
-        console.log(`You should be doing hit(). Current Stamina: ${this.stamina} maxStamina: ${this.maxStamina}`); 
+        //console.log(`You should be doing hit(). Current Stamina: ${this.stamina} maxStamina: ${this.maxStamina}`); 
     }
 
     specialAttackDecrement = () => {
@@ -94,7 +99,7 @@ export default class Player extends MatterEntity {
         this.mana -= 2;
         this.energy.modifyStamina(this.stamina);
         this.magic.modifyMana(this.mana);
-        console.log(`You should be doing special attack. Current Stamina: ${this.stamina}, maxStamina: ${this.maxStamina}, Current Mana: ${this.mana}, maxMana: ${this.maxMana},`); 
+        //console.log(`You should be doing special attack. Current Stamina: ${this.stamina}, maxStamina: ${this.maxStamina}, Current Mana: ${this.mana}, maxMana: ${this.maxMana},`); 
     }
 
     experienceIncrement = () => {
@@ -103,7 +108,7 @@ export default class Player extends MatterEntity {
             this.experience = this.maxExperience 
         }
         this.xp.modifyXp(this.experience);
-        console.log(`You should be gaining experience. Current experience: ${this.experience}, maxExperience: ${this.maxExperience}`); 
+        //console.log(`You should be gaining experience. Current experience: ${this.experience}, maxExperience: ${this.maxExperience}`); 
     }
 
     update(){
@@ -113,7 +118,7 @@ export default class Player extends MatterEntity {
         const walkingSpeed = 2;
         let playerVelocity = new Phaser.Math.Vector2();
         
-
+        
         if(Phaser.Input.Keyboard.JustDown(this.inputKeys.shift)){
             this.walkingSwitch = !this.walkingSwitch
         }
@@ -147,7 +152,15 @@ export default class Player extends MatterEntity {
                 playerVelocity.y = walkingSpeed;
             }
         }
-    
+
+        /*
+        So close to working, this is where I need to check for flipX, need to just figure out how to shut off the sensor now.
+        console.log(this.flipX)
+
+        if(this.flipX === true){
+            playerSensor.right.setSensor(false);
+        }
+        */
 
         this.setVelocity(playerVelocity.x, playerVelocity.y);
         //"playerVelocity.normalize();" normalize makes diagonals same speed if I decide to allow diagonal movement. 
@@ -253,8 +266,29 @@ export default class Player extends MatterEntity {
 
     };
 
-        heroTouchingTrigger(playerSensor){
+    heroTouchingTriggerRight(playerSensor){
+            this.scene.matterCollision.addOnCollideStart({
+            objectA: [playerSensor],
+            callback: other => {
+                if(other.bodyB.isSensor) return;
+                    this.touching.push(other.gameObjectB)
+                    console.log(this.touching.length, other.gameObjectB.name);
+                },
+            context: this.scene, 
+        });
 
+        this.scene.matterCollision.addOnCollideEnd({
+            objectA:[playerSensor],
+            callback: other => {  
+                this.touching = this.touching.filter(gameObject => gameObject != other.gameObjectB);
+                    console.log(this.touching.length);
+                },
+            context: this.scene,
+        })
+    }
+
+
+    heroTouchingTriggerLeft(playerSensor){
         this.scene.matterCollision.addOnCollideStart({
             objectA: [playerSensor],
             callback: other => {

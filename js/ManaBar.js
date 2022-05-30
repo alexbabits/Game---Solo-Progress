@@ -5,7 +5,7 @@ export default class ManaBar extends Phaser.Scene {
         this.bar = new Phaser.GameObjects.Graphics(scene);
         this.bar.depth = 10;
         this.bar.setScrollFactor(0,0);
-        this.text = new Phaser.GameObjects.Text(scene, 137, 154.75, ``, { fontFamily: 'Courier', fontSize: '12px', fill: '#000', resolution: 2});
+        this.text = new Phaser.GameObjects.Text(scene, 137, 151, ``, { fontFamily: 'Courier', fontSize: '12px', fill: '#000', resolution: 2});
         this.text.depth = 11;
         this.text.setScrollFactor(0,0);
         this.x = x;
@@ -42,7 +42,7 @@ export default class ManaBar extends Phaser.Scene {
         const { width, height } = this.size;
         const chamfer = 4;
         const manaWidth = this.manaValue * this.pixelPerMana;
-        
+
         //white background bar
         this.bar.fillStyle(0xFFFFFF);
         this.bar.fillRoundedRect(x, y, width, height, 0);

@@ -48,7 +48,7 @@ export default class MainScene extends Phaser.Scene {
         Healthbarframelogo.setScale(.3);
         Healthbarframelogo.setScrollFactor(0);
 
-        const Manabarframelogo = this.add.image(110, 142, 'Healthbarframe').setOrigin(0); 
+        const Manabarframelogo = this.add.image(110, 139, 'Healthbarframe').setOrigin(0); 
         Manabarframelogo.depth = 9;
         Manabarframelogo.setScale(.3);
         Manabarframelogo.setScrollFactor(0);
@@ -57,6 +57,11 @@ export default class MainScene extends Phaser.Scene {
         Staminabarframelogo.depth = 9;
         Staminabarframelogo.setScale(.3);
         Staminabarframelogo.setScrollFactor(0);
+
+        const Experiencebarframelogo = this.add.image(110, 176.5, 'Healthbarframe').setOrigin(0); 
+        Experiencebarframelogo.depth = 9;
+        Experiencebarframelogo.setScale(.3);
+        Experiencebarframelogo.setScrollFactor(0);
 
 
         this.rainSound = this.sound.add('rain', {volume: 0.2}, {loop: true})

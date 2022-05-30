@@ -3,19 +3,21 @@ import MatterEntity from "./MatterEntity.js";
 import HealthBar from "./HealthBar.js";
 import StaminaBar from "./StaminaBar.js";
 import ManaBar from "./ManaBar.js";
+import ExperienceBar from "./ExperienceBar.js"
 
 export default class Player extends MatterEntity {
     constructor(data){
         let {scene, x , y, texture, frame} = data;
         //added in mana and maxMana for special attack.
-        super({...data, health: 10, maxHealth: 10, stamina: 100, maxStamina: 100, mana: 10, maxMana: 10, drops:[], name:'player'});
+        super({...data, health: 10, maxHealth: 10, stamina: 100, maxStamina: 100, mana: 10, maxMana: 10, experience: 0, maxExperience: 10, drops:[], name:'player'});
         this.touching = [];
         this.inventory = new Inventory();
         //x and y position based on game configs and adjusted for zoom: EX: ((height - (height/zoom))/2. ((640 - (640/1.4))/2 = 91.43 becomes the new (0,0).
         this.hp = new HealthBar(this.scene, 116, 117, this.health, this.maxHealth);
         this.energy = new StaminaBar(this.scene, 235, 117, this.stamina, this.maxStamina);
-        //attempt to add in the mana bar.
-        this.magic = new ManaBar(this.scene, 116, 157, this.mana, this.maxMana);
+        this.magic = new ManaBar(this.scene, 116, 154, this.mana, this.maxMana);
+        //attempt to add in experience Bar
+        this.xp = new ExperienceBar(this.scene, 116, 192, this.experience, this.maxExperience);
 
         this.attackFlag = false;
         this.critFlag = false;
@@ -93,6 +95,15 @@ export default class Player extends MatterEntity {
         this.energy.modifyStamina(this.stamina);
         this.magic.modifyMana(this.mana);
         console.log(`You should be doing special attack. Current Stamina: ${this.stamina}, maxStamina: ${this.maxStamina}, Current Mana: ${this.mana}, maxMana: ${this.maxMana},`); 
+    }
+
+    experienceIncrement = () => {
+        this.experience++;
+        if(this.experience >= this.maxExperience) {
+            this.experience = this.maxExperience 
+        }
+        this.xp.modifyXp(this.experience);
+        console.log(`You should be gaining experience. Current experience: ${this.experience}, maxExperience: ${this.maxExperience}`); 
     }
 
     update(){
@@ -310,7 +321,11 @@ export default class Player extends MatterEntity {
             } else if (this.anims.currentFrame.textureFrame === 'hero_attack_6') {
                 this.attackFlag = false
             };        
-                if(gameObject.dead) gameObject.destroy();
+                if(gameObject.dead) {
+                    gameObject.destroy();
+                    //increments experience when enemy dies.
+                    this.experienceIncrement();
+                }
         });
         //console.log(this.anims) to see what's going on with all things related to our animation state.
         /*The only problem now: When the player goes to attack a resource after attacking one previously, the first hit doesn't register.
@@ -340,7 +355,11 @@ export default class Player extends MatterEntity {
             } else if (this.anims.currentFrame.textureFrame === 'hero_crit_5') {
                 this.critFlag = false
             };        
-                if(gameObject.dead) gameObject.destroy();
+                if(gameObject.dead) {
+                    gameObject.destroy();
+                    //increments experience when enemy dies.
+                    this.experienceIncrement();
+                }
         });
     }
 

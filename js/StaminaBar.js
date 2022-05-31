@@ -5,7 +5,7 @@ export default class StaminaBar extends Phaser.Scene {
         this.bar = new Phaser.GameObjects.Graphics(scene);
         this.bar.depth = 10;
         this.bar.setScrollFactor(0,0);
-        this.text = new Phaser.GameObjects.Text(scene, 311, 114.25, ``, { fontFamily: 'Courier', fontSize: '12px', fill: '#000', resolution: 2});
+        this.text = new Phaser.GameObjects.Text(scene, 130, 136, ``, { fontFamily: 'Courier', fontSize: '11px', fill: '#000', resolution: 2});
         this.text.depth = 11;
         this.text.setScrollFactor(0,0);
         this.x = x;
@@ -13,8 +13,8 @@ export default class StaminaBar extends Phaser.Scene {
         this.staminaValue = stamina;
         this.staminaDenominator = maxStamina;
         this.size = {
-            width: 200,
-            height: 9
+            width: 77,
+            height: 10
         }
         this.pixelPerStamina = this.size.width/this.staminaDenominator;
 
@@ -44,7 +44,7 @@ export default class StaminaBar extends Phaser.Scene {
         const staminaWidth = this.staminaValue * this.pixelPerStamina;
         
         this.bar.fillStyle(0xFFFFFF);
-        this.bar.fillRoundedRect(x, y, width, height, 0);
+        this.bar.fillRoundedRect(x, y, width, height, chamfer);
 
         if(staminaWidth <= this.size.width && staminaWidth > this.size.width/1.333){
             this.bar.fillStyle(0x00FF00);
@@ -59,7 +59,7 @@ export default class StaminaBar extends Phaser.Scene {
         //almost fixed graphics for now, think it has to do with stamina going above max or below min.
 
         if(this.staminaValue > 0){
-            this.bar.fillRoundedRect(x, y, staminaWidth, height, 0);
+            this.bar.fillRoundedRect(x, y, staminaWidth, height, chamfer);
         }
 
     };

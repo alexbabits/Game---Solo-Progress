@@ -23,8 +23,8 @@ export default class MainScene extends Phaser.Scene {
         this.load.atlas('lightning', 'assets/images/lightning.png', 'assets/images/lightning_atlas.json');
         this.load.audio('lightning', 'assets/audio/lightning.mp3');
         this.load.audio('rain', 'assets/audio/rain.mp3');
-        this.load.image('Healthbarframe', 'assets/images/Healthbarframe.png');     
-        this.load.image('Staminabarframe', 'assets/images/Staminabarframe.png');  
+        this.load.image('barFrame', 'assets/images/barFrame.png');
+        this.load.image('expBarFrame', 'assets/images/expBarFrame.png');    
     };
 
     create(){
@@ -43,25 +43,13 @@ export default class MainScene extends Phaser.Scene {
         this.map.getObjectLayer('Resources').objects.forEach(resource =>  new Resource({scene:this, resource}));
         this.map.getObjectLayer('Enemies').objects.forEach(enemy =>  this.enemies.push(new Enemy({scene:this, enemy})));
 
-        const Healthbarframelogo = this.add.image(110, 102, 'Healthbarframe').setOrigin(0); 
-        Healthbarframelogo.depth = 9;
-        Healthbarframelogo.setScale(.3);
-        Healthbarframelogo.setScrollFactor(0);
+        const barFrame = this.add.image(100, 100, 'barFrame').setOrigin(0); 
+        barFrame.depth = 9;
+        barFrame.setScrollFactor(0);
 
-        const Manabarframelogo = this.add.image(110, 139, 'Healthbarframe').setOrigin(0); 
-        Manabarframelogo.depth = 9;
-        Manabarframelogo.setScale(.3);
-        Manabarframelogo.setScrollFactor(0);
-
-        const Staminabarframelogo = this.add.image(220, 102, 'Staminabarframe').setOrigin(0); 
-        Staminabarframelogo.depth = 9;
-        Staminabarframelogo.setScale(.3);
-        Staminabarframelogo.setScrollFactor(0);
-
-        const Experiencebarframelogo = this.add.image(110, 176.5, 'Healthbarframe').setOrigin(0); 
-        Experiencebarframelogo.depth = 9;
-        Experiencebarframelogo.setScale(.3);
-        Experiencebarframelogo.setScrollFactor(0);
+        const expBarFrame = this.add.image(205, 100, 'expBarFrame').setOrigin(0); 
+        expBarFrame.depth = 9;
+        expBarFrame.setScrollFactor(0);
 
 
         this.rainSound = this.sound.add('rain', {volume: 0.2}, {loop: true})

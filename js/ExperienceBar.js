@@ -5,7 +5,7 @@ export default class ExperienceBar extends Phaser.Scene {
         this.bar = new Phaser.GameObjects.Graphics(scene);
         this.bar.depth = 10;
         this.bar.setScrollFactor(0,0);
-        this.text = new Phaser.GameObjects.Text(scene, 139, 190, ``, { fontFamily: 'Courier', fontSize: '11px', fill: '#000', resolution: 2});
+        this.text = new Phaser.GameObjects.Text(scene, 290, 108, ``, { fontFamily: 'Courier', fontSize: '11px', fill: '#000', resolution: 2});
         this.text.depth = 11;
         this.text.setScrollFactor(0,0);
         this.x = x;
@@ -13,7 +13,7 @@ export default class ExperienceBar extends Phaser.Scene {
         this.experienceValue = experience;
         this.experienceDenominator = maxExperience;
         this.size = {
-            width: 77,
+            width: 200,
             height: 9
         }
         this.pixelPerExperience = this.size.width / this.experienceDenominator;
@@ -46,7 +46,7 @@ export default class ExperienceBar extends Phaser.Scene {
         this.bar.fillStyle(0xFFFFFF);
         this.bar.fillRoundedRect(x, y, width, height, 0);
 
-        this.bar.fillStyle(0xffd700);
+        this.bar.fillStyle(0xBF40BF);
     
         if(experienceWidth > 0){
             this.bar.fillRoundedRect(x, y, experienceWidth, height, 0);

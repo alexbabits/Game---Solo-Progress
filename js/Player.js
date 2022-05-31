@@ -9,15 +9,15 @@ export default class Player extends MatterEntity {
     constructor(data){
         let {scene, x , y, texture, frame} = data;
         //added in mana and maxMana for special attack.
-        super({...data, health: 10, maxHealth: 10, stamina: 100, maxStamina: 100, mana: 10, maxMana: 10, experience: 0, maxExperience: 10, drops:[], name:'player'});
+        super({...data, health: 20, maxHealth: 20, stamina: 100, maxStamina: 100, mana: 10, maxMana: 10, experience: 0, maxExperience: 50, drops:[], name:'player'});
         this.touching = [];
         this.inventory = new Inventory();
         //x and y position based on game configs and adjusted for zoom: EX: ((height - (height/zoom))/2. ((640 - (640/1.4))/2 = 91.43 becomes the new (0,0).
-        this.hp = new HealthBar(this.scene, 116, 117, this.health, this.maxHealth);
-        this.energy = new StaminaBar(this.scene, 235, 117, this.stamina, this.maxStamina);
-        this.magic = new ManaBar(this.scene, 116, 154, this.mana, this.maxMana);
+        this.hp = new HealthBar(this.scene, 112, 110, this.health, this.maxHealth);
+        this.energy = new StaminaBar(this.scene, 112, 138, this.stamina, this.maxStamina);
+        this.magic = new ManaBar(this.scene, 112, 124, this.mana, this.maxMana);
         //attempt to add in experience Bar
-        this.xp = new ExperienceBar(this.scene, 116, 192, this.experience, this.maxExperience);
+        this.xp = new ExperienceBar(this.scene, 210, 110, this.experience, this.maxExperience);
 
         this.attackFlag = false;
         this.critFlag = false;

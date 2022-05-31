@@ -104,11 +104,11 @@ export default class Player extends MatterEntity {
 
     experienceIncrement = () => {
         this.experience++;
-        if(this.experience >= this.maxExperience) {
+        /*if(this.experience >= this.maxExperience) {
             this.experience = this.maxExperience 
-        }
+        }*/
         this.xp.modifyXp(this.experience);
-        //console.log(`You should be gaining experience. Current experience: ${this.experience}, maxExperience: ${this.maxExperience}`); 
+        //console.log(`You should have gained some experience! Current experience: ${this.experience}, maxExperience: ${this.maxExperience}`); 
     }
 
     update(){
@@ -272,10 +272,10 @@ export default class Player extends MatterEntity {
             objectA:[playerSensor],
             callback: other => {
                 if(other.bodyB.isSensor) return;
-                if(this.flipX === false){
+                if(this.flipX === false && this.touching.includes(other.gameObjectB) === false){
                     this.touching.push(other.gameObjectB)
                 }
-                if(this.flipX === true){
+                if(this.flipX === true && this.touching.includes(other.gameObjectB) === true){
                     this.touching = this.touching.filter(gameObject => gameObject != other.gameObjectB);
                 }
                 //console.log(this.touching.length);         
@@ -310,10 +310,10 @@ export default class Player extends MatterEntity {
             objectA:[playerSensor],
             callback: other => {
                 if(other.bodyB.isSensor) return;
-                if(this.flipX === true){
+                if(this.flipX === true && this.touching.includes(other.gameObjectB) === false){
                     this.touching.push(other.gameObjectB)
                 }
-                if(this.flipX === false){
+                if(this.flipX === false && this.touching.includes(other.gameObjectB) === true){
                     this.touching = this.touching.filter(gameObject => gameObject != other.gameObjectB);
                 }
                 //console.log(this.touching.length);         

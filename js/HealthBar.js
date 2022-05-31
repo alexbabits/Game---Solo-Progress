@@ -49,7 +49,7 @@ export default class HealthBar extends Phaser.Scene {
         if(healthWidth <= this.size.width/4){
             this.bar.fillStyle(0xFF0000);
         } else {
-            this.bar.fillStyle(0x00FF00);
+            this.bar.fillStyle(0x73e600);
         }
     
         if(healthWidth > 0){

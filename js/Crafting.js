@@ -37,6 +37,7 @@ export default class Crafting {
                 matDetails.push({name:mat, frame:items[mat].frame, available});
                 lastMat = mat;
                 if(!available) canCraft = false;
+                //Or maybe put the 'can't play sound' here, since it's not available.
             });
             this.items.push({name:itemName, frame:items[itemName].frame, matDetails, canCraft});
         }

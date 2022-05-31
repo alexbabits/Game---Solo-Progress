@@ -255,16 +255,10 @@ export default class Player extends MatterEntity {
             this.attackFlag = false
         }
 
-        /*if(this.flipX === false){
-            heroTouchingTriggerRight(this.playerSensor.right);
-        } else {
-            return
-        }*/
-
     };
 
     heroTouchingTriggerRight(playerSensor){
-            this.scene.matterCollision.addOnCollideStart({
+        this.scene.matterCollision.addOnCollideStart({
             objectA: [playerSensor],
             callback: other => {
                 if(other.bodyB.isSensor) return;
@@ -274,14 +268,30 @@ export default class Player extends MatterEntity {
             context: this.scene, 
         });
 
-        this.scene.matterCollision.addOnCollideEnd({
+        this.scene.matterCollision.addOnCollideActive({
             objectA:[playerSensor],
-            callback: other => {  
+            callback: other => {
+                if(other.bodyB.isSensor) return;
+                if(this.flipX === false){
+                    this.touching.push(other.gameObjectB)
+                }
+                if(this.flipX === true){
                     this.touching = this.touching.filter(gameObject => gameObject != other.gameObjectB);
-                        console.log(this.touching.length, `no more ${other.gameObjectB.name}`);
+                }
+                //console.log(this.touching.length);         
                 },
             context: this.scene,
-        })
+        });
+
+        this.scene.matterCollision.addOnCollideEnd({
+            objectA:[playerSensor],
+            callback: other => {
+                if(other.bodyB.isSensor) return;
+                        this.touching = this.touching.filter(gameObject => gameObject != other.gameObjectB);
+                        console.log(this.touching.length);
+                },
+            context: this.scene,
+        });
     }
 
 
@@ -290,21 +300,36 @@ export default class Player extends MatterEntity {
             objectA: [playerSensor],
             callback: other => {
                 if(other.bodyB.isSensor) return;
-                this.touching.push(other.gameObjectB);
+                    this.touching.push(other.gameObjectB);
                     console.log(this.touching.length, other.gameObjectB.name);
                 },
             context: this.scene, 
         });
 
+        this.scene.matterCollision.addOnCollideActive({
+            objectA:[playerSensor],
+            callback: other => {
+                if(other.bodyB.isSensor) return;
+                if(this.flipX === true){
+                    this.touching.push(other.gameObjectB)
+                }
+                if(this.flipX === false){
+                    this.touching = this.touching.filter(gameObject => gameObject != other.gameObjectB);
+                }
+                //console.log(this.touching.length);         
+                },
+            context: this.scene,
+        });
+
         this.scene.matterCollision.addOnCollideEnd({
             objectA:[playerSensor],
             callback: other => {  
+                if(other.bodyB.isSensor) return;
                 this.touching = this.touching.filter(gameObject => gameObject != other.gameObjectB);
                     console.log(this.touching.length);
                 },
             context: this.scene,
         });
-
     };
 
         createPickupCollisions(playerCollider){

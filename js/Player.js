@@ -255,11 +255,11 @@ export default class Player extends MatterEntity {
             this.attackFlag = false
         }
 
-        if(this.flipX === false){
+        /*if(this.flipX === false){
             heroTouchingTriggerRight(this.playerSensor.right);
         } else {
             return
-        }
+        }*/
 
     };
 

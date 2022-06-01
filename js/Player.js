@@ -22,6 +22,8 @@ export default class Player extends MatterEntity {
         this.attackFlag = false;
         this.critFlag = false;
         this.walkingSwitch = false;
+        //could also have a freeze flag
+        this.freezeFlag = false;
 
         const {Body,Bodies} = Phaser.Physics.Matter.Matter;
         this.playerCollider = Bodies.rectangle(this.x, this.y, 22, 32, {chamfer: {radius: 10}, isSensor:false, label:'playerCollider'});
@@ -121,6 +123,19 @@ export default class Player extends MatterEntity {
         
         if(Phaser.Input.Keyboard.JustDown(this.inputKeys.ctrl)){
             this.walkingSwitch = !this.walkingSwitch
+        }
+
+                //can also try something like this:
+        //red of 0xFF0000 is 16711680 in different base.
+
+        /*if(this.tint === 16711680){
+            playerVelocity.x = 0;
+            playerVelocity.y = 0;
+        }*/
+
+        if(this.freezeFlag === true){
+            playerVelocity.x = 0;
+            playerVelocity.y = 0;
         }
 
         //running controls
@@ -253,15 +268,6 @@ export default class Player extends MatterEntity {
             };
 
         }
-
-        //can also try something like this:
-        //red of 0xFF0000 is 16711680 in different base.
-        if(this.tint === 16711680){
-            playerVelocity.x = 0;
-            playerVelocity.y = 0;
-        }
-
-        
 
         if(this.inputKeys.space.isDown === false) {
             this.attackFlag = false

@@ -45,11 +45,9 @@ export default class Enemy extends MatterEntity {
         }
         target.hit();
         target.setTint(0xff0000);
-        //Need him to initially freeze, and then after 200ms, resume ability to move.
-        target.activateFreezeFlag();
-        setTimeout(()=> target.clearTint(), 200);
-        //set another timeout here for the player, some sort of method to get him to start moving after being stopped for 200ms.
-        setTimeout(()=> target.removeFreezeFlag(), 200);
+        target.changeFreezeFlag();
+        setTimeout(()=> target.clearTint(), 350);
+        setTimeout(()=> target.changeFreezeFlag(), 350);
     };
 
     update(){

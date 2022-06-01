@@ -21,8 +21,6 @@ export default class MatterEntity extends Phaser.Physics.Matter.Sprite {
         this.tintable = tintable;
         this.givesXP = givesXP;
         this._position = new Phaser.Math.Vector2(this.x, this.y);
-        //might need to add this for velocity:
-        this.body.velocity = new Phaser.Math.Vector2(this.x, this.y);
 
         if(this.name) this.sound = this.scene.sound.add(this.name, {volume: .3});
         this.scene.add.existing(this);
@@ -77,22 +75,8 @@ export default class MatterEntity extends Phaser.Physics.Matter.Sprite {
         }
     };
 
-    //Attempt at stopMoving method to set velocity to zero.
-    stopMovement = () => {
-        this.body.velocity = 0;
-    }
-
-    //Attempt to allow the enemy or player to move again
-    resumeMovement = () => {
-        this.body.velocity = this.body.velocity;
-    }
-
-    activateFreezeFlag = () => {
-        this.freezeFlag = true;
-    }
-
-    removeFreezeFlag = () => {
-        this.freezeFlag = false;
+    changeFreezeFlag = () => {
+        this.freezeFlag = !this.freezeFlag;
     }
 
 };

@@ -22,7 +22,7 @@ export default class Player extends MatterEntity {
         this.attackFlag = false;
         this.critFlag = false;
         this.walkingSwitch = false;
-        //could also have a freeze flag
+        //Added freeze flag
         this.freezeFlag = false;
 
         const {Body,Bodies} = Phaser.Physics.Matter.Matter;
@@ -125,22 +125,13 @@ export default class Player extends MatterEntity {
             this.walkingSwitch = !this.walkingSwitch
         }
 
-                //can also try something like this:
-        //red of 0xFF0000 is 16711680 in different base.
-
-        /*if(this.tint === 16711680){
-            playerVelocity.x = 0;
-            playerVelocity.y = 0;
-        }*/
-
-        if(this.freezeFlag === true){
-            playerVelocity.x = 0;
-            playerVelocity.y = 0;
-        }
-
         //running controls
         if(this.walkingSwitch === false) {
-            if(this.inputKeys.left.isDown) {
+            //freeze flag needed to be here
+            if (this.freezeFlag === true){
+                playerVelocity.x = 0;
+                playerVelocity.y = 0;
+            } else if(this.inputKeys.left.isDown) {
                 this.flipX = true;
                 playerVelocity.x = -runningSpeed;
             } else if (this.inputKeys.right.isDown) {
@@ -150,12 +141,16 @@ export default class Player extends MatterEntity {
                 playerVelocity.y = -runningSpeed;
             } else if (this.inputKeys.down.isDown) {
                 playerVelocity.y = runningSpeed;
-            } 
+            }
         }
 
         //walking controls
         if(this.walkingSwitch === true){
-            if(this.inputKeys.left.isDown) {
+            //freeze flag needed to be here
+            if (this.freezeFlag === true){
+                playerVelocity.x = 0;
+                playerVelocity.y = 0;
+            } else if(this.inputKeys.left.isDown) {
                 this.flipX = true;
                 playerVelocity.x = -walkingSpeed;
             } else if (this.inputKeys.right.isDown) {

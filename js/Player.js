@@ -104,9 +104,9 @@ export default class Player extends MatterEntity {
 
     experienceIncrement = () => {
         this.experience++;
-        /*if(this.experience >= this.maxExperience) {
+        if(this.experience >= this.maxExperience) {
             this.experience = this.maxExperience 
-        }*/
+        }
         this.xp.modifyXp(this.experience);
         //console.log(`You should have gained some experience! Current experience: ${this.experience}, maxExperience: ${this.maxExperience}`); 
     }
@@ -119,7 +119,7 @@ export default class Player extends MatterEntity {
         let playerVelocity = new Phaser.Math.Vector2();
         
         
-        if(Phaser.Input.Keyboard.JustDown(this.inputKeys.shift)){
+        if(Phaser.Input.Keyboard.JustDown(this.inputKeys.ctrl)){
             this.walkingSwitch = !this.walkingSwitch
         }
 
@@ -192,7 +192,7 @@ export default class Player extends MatterEntity {
            } else if(this.sound.isPlaying === true){
                 this.anims.play('hero_damage', true);
             //had to add the special attack here, above the normal attack, and below the 'damage' and movement.
-           }  else if(this.inputKeys.space.isDown && this.inputKeys.ctrl.isDown && playerVelocity.x === 0 && playerVelocity.y === 0 && this.stamina >= 20 && this.mana >= 2) {
+           }  else if(this.inputKeys.space.isDown && this.inputKeys.shift.isDown && playerVelocity.x === 0 && playerVelocity.y === 0 && this.stamina >= 20 && this.mana >= 2) {
                 this.anims.play('hero_crit', true);
                 this.specialAttack();
                 if(this.RSDT){
@@ -359,7 +359,7 @@ export default class Player extends MatterEntity {
             if(this.anims.currentFrame.textureFrame === 'hero_attack_5'  && this.attackFlag === false && this.touching.length === 0) {
                 this.attackFlag = true;
                 this.hittingStaminaDecrement();
-            } else if (this.anims.currentFrame.textureFrame === 'hero_attack_6') {
+            } else if (this.anims.currentFrame.textureFrame !== 'hero_attack_5') {
                 this.attackFlag = false
             }
 
@@ -374,7 +374,7 @@ export default class Player extends MatterEntity {
                         gameObject.setTint(0xff0000);
                         setTimeout(()=> gameObject.clearTint(), 200);
                     };
-            } else if (this.anims.currentFrame.textureFrame === 'hero_attack_6') {
+            } else if (this.anims.currentFrame.textureFrame !== 'hero_attack_5') {
                 this.attackFlag = false
             };        
                 if(gameObject.dead) {
@@ -386,17 +386,14 @@ export default class Player extends MatterEntity {
                     }   
                 }
         });
-        //console.log(this.anims) to see what's going on with all things related to our animation state.
-        /*The only problem now: When the player goes to attack a resource after attacking one previously, the first hit doesn't register.
-        Has to do with holding space, going away from bush, then keeping holding space, and going to bush, first hit will not register.        
-        */   
+        //console.log(this.anims)
       };
       
       specialAttack(){
         if(this.anims.currentFrame.textureFrame === 'hero_crit_4'  && this.critFlag === false && this.touching.length === 0) {
             this.critFlag = true;
             this.specialAttackDecrement();
-        } else if (this.anims.currentFrame.textureFrame === 'hero_crit_5') {
+        } else if (this.anims.currentFrame.textureFrame !== 'hero_crit_4') {
             this.critFlag = false
         }
 
@@ -411,7 +408,7 @@ export default class Player extends MatterEntity {
                         gameObject.setTint(0xff0000);
                         setTimeout(()=> gameObject.clearTint(), 200);
                     };
-            } else if (this.anims.currentFrame.textureFrame === 'hero_crit_5') {
+            } else if (this.anims.currentFrame.textureFrame !== 'hero_crit_4') {
                 this.critFlag = false
             };        
                 if(gameObject.dead) {

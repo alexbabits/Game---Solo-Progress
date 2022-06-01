@@ -191,6 +191,9 @@ export default class Player extends MatterEntity {
             //Had to have it below movement and above attacking, so the anim stops when he moves. Still allows him to move while hit, but stops animation when he moves. Good for now.
            } else if(this.sound.isPlaying === true){
                 this.anims.play('hero_damage', true);
+                //tried this to stop him from moving, but because it's attached to sound playing, which is only an instant, doesn't work.
+                //playerVelocity.x = 0
+                //playerVelocity.y = 0
             //had to add the special attack here, above the normal attack, and below the 'damage' and movement.
            }  else if(this.inputKeys.space.isDown && this.inputKeys.shift.isDown && playerVelocity.x === 0 && playerVelocity.y === 0 && this.stamina >= 20 && this.mana >= 2) {
                 this.anims.play('hero_crit', true);
@@ -250,7 +253,16 @@ export default class Player extends MatterEntity {
             };
 
         }
+
+        //can also try something like this:
+        //red of 0xFF0000 is 16711680 in different base.
+        if(this.tint === 16711680){
+            playerVelocity.x = 0;
+            playerVelocity.y = 0;
+        }
+
         
+
         if(this.inputKeys.space.isDown === false) {
             this.attackFlag = false
         }

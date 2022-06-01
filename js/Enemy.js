@@ -45,8 +45,12 @@ export default class Enemy extends MatterEntity {
         }
         target.hit();
         target.setTint(0xff0000);
+        //think he might stop moving but game screen dies, guessing it can't get the properties of the player?
+        //Need him to initially freeze, and then after 200ms, resume ability to move.
+        //target.stopMovement();
         setTimeout(()=> target.clearTint(), 200);
-        //May need to clearInterval here if memory gets bad, similar to below?
+        //set another timeout here for the player, some sort of method to get him to start moving after being 'stopMoving' for 200ms.
+        //setTimeout(()=> target.resumeMovement(), 200);
     };
 
     update(){

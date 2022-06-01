@@ -75,5 +75,16 @@ export default class MatterEntity extends Phaser.Physics.Matter.Sprite {
         }
     };
 
+    //Attempt at stopMoving method to freeze shit if it gets hit or whatever
+    stopMovement = () => {
+        this.playerVelocity.x = 0;
+        this.playerVelocity.y = 0;
+    }
+
+    //Attempt to allow the enemy or player to move again
+    resumeMovement = () => {
+        this.body.velocity = this.body.velocity;
+    }
+
 };
 

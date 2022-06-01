@@ -76,5 +76,9 @@ export default class MatterEntity extends Phaser.Physics.Matter.Sprite {
         }
     };
 
+    changeFreezeFlag = () => {
+        this.freezeFlag = !this.freezeFlag;
+    }
+
 };
 

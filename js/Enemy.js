@@ -46,8 +46,9 @@ export default class Enemy extends MatterEntity {
         }
         target.hit();
         target.setTint(0xff0000);
-        setTimeout(()=> target.clearTint(), 200);
-        //May need to clearInterval here if memory gets bad, similar to below?
+        target.changeFreezeFlag();
+        setTimeout(()=> target.clearTint(), 350);
+        setTimeout(()=> target.changeFreezeFlag(), 350);
     };
 
     update(){

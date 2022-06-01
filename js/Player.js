@@ -22,6 +22,8 @@ export default class Player extends MatterEntity {
         this.attackFlag = false;
         this.critFlag = false;
         this.walkingSwitch = false;
+        //Added freeze flag
+        this.freezeFlag = false;
 
         const {Body,Bodies} = Phaser.Physics.Matter.Matter;
         this.playerCollider = Bodies.rectangle(this.x, this.y, 22, 32, {chamfer: {radius: 10}, isSensor:false, label:'playerCollider'});
@@ -116,7 +118,11 @@ export default class Player extends MatterEntity {
 
         //running controls
         if(this.walkingSwitch === false) {
-            if(this.inputKeys.left.isDown) {
+            //freeze flag needed to be here
+            if (this.freezeFlag === true){
+                playerVelocity.x = 0;
+                playerVelocity.y = 0;
+            } else if(this.inputKeys.left.isDown) {
                 this.flipX = true;
                 playerVelocity.x = -runningSpeed;
             } else if (this.inputKeys.right.isDown) {
@@ -126,12 +132,16 @@ export default class Player extends MatterEntity {
                 playerVelocity.y = -runningSpeed;
             } else if (this.inputKeys.down.isDown) {
                 playerVelocity.y = runningSpeed;
-            } 
+            }
         }
 
         //walking controls
         if(this.walkingSwitch === true){
-            if(this.inputKeys.left.isDown) {
+            //freeze flag needed to be here
+            if (this.freezeFlag === true){
+                playerVelocity.x = 0;
+                playerVelocity.y = 0;
+            } else if(this.inputKeys.left.isDown) {
                 this.flipX = true;
                 playerVelocity.x = -walkingSpeed;
             } else if (this.inputKeys.right.isDown) {
@@ -182,6 +192,9 @@ export default class Player extends MatterEntity {
             //Had to have it below movement and above attacking, so the anim stops when he moves. Still allows him to move while hit, but stops animation when he moves. Good for now.
            } else if(this.sound.isPlaying === true){
                 this.anims.play('hero_damage', true);
+                //tried this to stop him from moving, but because it's attached to sound playing, which is only an instant, doesn't work.
+                //playerVelocity.x = 0
+                //playerVelocity.y = 0
             //had to add the special attack here, above the normal attack, and below the 'damage' and movement.
            }  else if(this.inputKeys.space.isDown && this.inputKeys.shift.isDown && playerVelocity.x === 0 && playerVelocity.y === 0 && this.stamina >= 20 && this.mana >= 2) {
                 this.anims.play('hero_crit', true);
@@ -241,7 +254,7 @@ export default class Player extends MatterEntity {
             };
 
         }
-        
+
         if(this.inputKeys.space.isDown === false) {
             this.attackFlag = false
         }

@@ -45,13 +45,13 @@ export default class ManaBar extends Phaser.Scene {
 
         //white background bar
         this.bar.fillStyle(0xFFFFFF);
-        this.bar.fillRoundedRect(x, y, width, height, chamfer);
+        this.bar.fillRoundedRect(x, y, width, height, 0);
 
         //blue bar
         this.bar.fillStyle(0x0073e6);
 
         if(manaWidth > 0){
-            this.bar.fillRoundedRect(x, y, manaWidth, height, chamfer);
+            this.bar.fillRoundedRect(x, y, manaWidth, height, 0);
         }
 
     };

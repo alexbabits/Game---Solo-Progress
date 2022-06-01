@@ -44,7 +44,7 @@ export default class HealthBar extends Phaser.Scene {
         const healthWidth = (this.healthValue * this.pixelPerHealth);
         
         this.bar.fillStyle(0xFFFFFF);
-        this.bar.fillRoundedRect(x, y, width, height, chamfer);
+        this.bar.fillRoundedRect(x, y, width, height, 0);
 
         if(healthWidth <= this.size.width/4){
             this.bar.fillStyle(0xFF0000);
@@ -53,7 +53,7 @@ export default class HealthBar extends Phaser.Scene {
         }
     
         if(healthWidth > 0){
-            this.bar.fillRoundedRect(x, y, healthWidth, height, chamfer);
+            this.bar.fillRoundedRect(x, y, healthWidth, height, 0);
         }
 
     };

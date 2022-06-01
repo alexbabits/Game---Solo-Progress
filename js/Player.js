@@ -102,15 +102,6 @@ export default class Player extends MatterEntity {
         //console.log(`You should be doing special attack. Current Stamina: ${this.stamina}, maxStamina: ${this.maxStamina}, Current Mana: ${this.mana}, maxMana: ${this.maxMana},`); 
     }
 
-    experienceIncrement = () => {
-        this.experience++;
-        if(this.experience >= this.maxExperience) {
-            this.experience = this.maxExperience 
-        }
-        this.xp.modifyXp(this.experience);
-        //console.log(`You should have gained some experience! Current experience: ${this.experience}, maxExperience: ${this.maxExperience}`); 
-    }
-
     update(){
         if(this.dead) return;
 
@@ -382,7 +373,9 @@ export default class Player extends MatterEntity {
                     //increments experience when enemy dies.
                     //added in boolean if it gives xp. Later I could add in custom XP?
                     if(gameObject.givesXP === true){
-                        this.experienceIncrement();
+                        this.experience += gameObject.XP
+                        this.xp.modifyXp(this.experience);
+                        console.log(`You should have gained some experience! Current experience: ${this.experience}, maxExperience: ${this.maxExperience}`); 
                     }   
                 }
         });
@@ -416,7 +409,9 @@ export default class Player extends MatterEntity {
                     //increments experience when enemy dies.
                     //added in boolean if it gives xp. Later I could add in custom XP?
                     if(gameObject.givesXP === true){
-                        this.experienceIncrement();
+                        this.experience += gameObject.XP
+                        this.xp.modifyXp(this.experience);
+                        console.log(`You should have gained some experience! Current experience: ${this.experience}, maxExperience: ${this.maxExperience}`); 
                     }   
                 }
         });

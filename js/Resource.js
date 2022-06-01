@@ -19,7 +19,9 @@ export default class Resource extends MatterEntity {
         let depth = resource.properties.find(p => p.name== 'depth').value;
         let tintable = resource.properties.find(p => p.name== 'tintable').value;
         let givesXP = resource.properties.find(p => p.name== 'givesXP').value;
-        super({scene, x:resource.x, y:resource.y, texture: 'resources', frame:resource.type, drops, depth, health:5, maxHealth: 5, tintable, givesXP, name:resource.type});
+        let health = resource.properties.find(p => p.name== 'health').value;
+        let maxHealth = resource.properties.find(p => p.name== 'maxHealth').value;
+        super({scene, x:resource.x, y:resource.y, texture: 'resources', frame:resource.type, drops, depth, health, maxHealth, tintable, givesXP, name:resource.type});
         let yOrigin = resource.properties.find(p=>p.name =='yOrigin').value;
 
         this.y = this.y + this.height * (yOrigin - 0.5);

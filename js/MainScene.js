@@ -2,6 +2,7 @@ import Crafting from "./Crafting.js";
 import Enemy from "./Enemy.js";
 import Player from "./Player.js";
 import Resource from "./Resource.js";
+import Menu from "./Menu.js";
 
 export default class MainScene extends Phaser.Scene {
     constructor() {
@@ -13,6 +14,7 @@ export default class MainScene extends Phaser.Scene {
         Player.preload(this);
         Enemy.preload(this);
         Resource.preload(this);
+        Menu.preload(this);
 
         this.load.image('tiles', 'assets/images/RPG Nature Tileset.png');
         this.load.tilemapTiledJSON('map','assets/images/map.json');
@@ -25,17 +27,15 @@ export default class MainScene extends Phaser.Scene {
         this.load.audio('rain', 'assets/audio/rain.mp3');
         this.load.image('barFrame', 'assets/images/barFrame.png');
         this.load.image('expBarFrame', 'assets/images/expBarFrame.png');    
-        this.load.image('MenuBackground', 'assets/images/MenuBackground.png');    
-        this.load.image('OptionButton', 'assets/images/OptionButton.png'); 
-        this.load.image('ResumeButton', 'assets/images/ResumeButton.png'); 
-        this.load.image('SaveButton', 'assets/images/SaveButton.png'); 
-        this.load.audio('IntroSong', 'assets/audio/IntroSong.mp3');
-        this.load.atlas('loading_sprite', 'assets/images/loading_sprite.png', 'assets/images/loading_sprite_atlas.json');
-        this.load.animation('loading_sprite_anim', 'assets/images/loading_sprite_anim.json');
     };
 
     create(){
         this.player = new Player({scene:this, x:Phaser.Math.Between(300,400), y:Phaser.Math.Between(150, 350), texture:'hero', frame:'hero_idle_1'});
+
+        //attempt to create the Menu instance 
+        this.menu = new Menu({scene:this});
+        //Or this way
+        this.scene.launch('Menu', {mainScene:this});
 
         this.input.setDefaultCursor('url(assets/images/cursor.png), pointer')
 
@@ -57,70 +57,6 @@ export default class MainScene extends Phaser.Scene {
         expBarFrame.depth = 9;
         expBarFrame.setScrollFactor(0);
 
-        let MenuBackground = this.add.image(240, 240, 'MenuBackground').setOrigin(0); 
-        MenuBackground.depth = 1;
-        MenuBackground.setScrollFactor(0);
-
-        let ResumeButton = this.add.image(260, 260, 'ResumeButton').setOrigin(0); 
-        ResumeButton.depth = 2;
-        ResumeButton.setScrollFactor(0);
-
-        let OptionButton = this.add.image(260, 300, 'OptionButton').setOrigin(0); 
-        OptionButton.depth = 2;
-        OptionButton.setScrollFactor(0);
-
-        let SaveButton = this.add.image(260, 340, 'SaveButton').setOrigin(0); 
-        SaveButton.depth = 2;
-        SaveButton.setScrollFactor(0);
-
-        let hoverSprite = this.add.sprite(250,350, "loading_sprite")
-        hoverSprite.setScale(0.5);
-        hoverSprite.setVisible(false);
-        hoverSprite.setDepth(10);
-        hoverSprite.setScrollFactor(0);
-
-        SaveButton.setInteractive();
-        OptionButton.setInteractive();
-        ResumeButton.setInteractive();
-
-
-        SaveButton.on('pointerover',() => {
-            hoverSprite.setVisible(true);
-            hoverSprite.play('loading');
-            console.log(`hovering over save button`);
-        })
-        SaveButton.on('pointerout',() => {
-            hoverSprite.setVisible(false);
-            console.log(`not hovering over save button`);
-        })
-        SaveButton.on('pointerup',() => {
-            console.log(`Game Saved! (Not yet available)`);
-        })
-
-
-        ResumeButton.on('pointerover',() => {
-            console.log(`hovering over resume button`);
-        })
-        ResumeButton.on('pointerout',() => {
-            console.log(`not hovering over resume button`);
-        })
-        ResumeButton.on('pointerup',() => {
-            console.log(`Resumes Game. (Not yet available)`);
-        })
-
-
-        OptionButton.on('pointerover',() => {
-            console.log(`hovering over option button`);
-        })
-        OptionButton.on('pointerout',() => {
-            console.log(`not hovering over option button`);
-        })
-        OptionButton.on('pointerup',() => {
-            console.log(`Brings up options. (Not yet available)`);
-        })
-
-        this.sound.pauseOnBlur = true;
-        this.sound.play('IntroSong', {volume: 0.0}, {loop: true});
 
         this.rainSound = this.sound.add('rain', {volume: 0.2}, {loop: true})
         //try to base pan and volume off location of particle relative to the player.

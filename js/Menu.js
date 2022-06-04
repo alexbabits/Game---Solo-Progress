@@ -11,14 +11,14 @@ export default class Menu extends Phaser.Scene{
         scene.load.image('SaveButton', 'assets/images/SaveButton.png'); 
         scene.load.image('LoadButton', 'assets/images/LoadButton.png');  
         scene.load.image('QuitButton', 'assets/images/QuitButton.png');  
-        scene.load.audio('IntroSong', 'assets/audio/IntroSong.mp3');
+        scene.load.audio('MenuSong', 'assets/audio/MenuSong.mp3');
         scene.load.atlas('loading_sprite', 'assets/images/loading_sprite.png', 'assets/images/loading_sprite_atlas.json');
         scene.load.animation('loading_sprite_anim', 'assets/images/loading_sprite_anim.json');
     }
 
     create(){
 
-        this.menuSong = this.sound.add('IntroSong', {volume: 0.2}, {loop: true});
+        this.menuSong = this.sound.add('MenuSong', {volume: 0.2}, {loop: true});
         this.menuSong.play();
 
         let MenuBackground = this.add.image(240, 240, 'MenuBackground').setOrigin(0); 
@@ -83,11 +83,13 @@ export default class Menu extends Phaser.Scene{
 
 
         SaveButton.on('pointerover',() => {
+            SaveButton.setTint(0x999999);
             hoverSprite.setVisible(true);
             hoverSprite.play('loading');
             console.log(`hovering over save button`);
         })
         SaveButton.on('pointerout',() => {
+            SaveButton.setTint(0xFFFFFF);
             hoverSprite.setVisible(false);
             console.log(`not hovering over save button`);
         })
@@ -96,12 +98,14 @@ export default class Menu extends Phaser.Scene{
         })
 
         LoadButton.on('pointerover',() => {
+            LoadButton.setTint(0x999999);
             hoverSprite2.setVisible(true);
             hoverSprite2.play('loading');
             console.log(`hovering over Load button`);
         })
         LoadButton.on('pointerout',() => {
             hoverSprite2.setVisible(false);
+            LoadButton.setTint(0xFFFFFF);
             console.log(`not hovering over load button`);
         })
         LoadButton.on('pointerup',() => {
@@ -109,28 +113,31 @@ export default class Menu extends Phaser.Scene{
         })
 
         QuitButton.on('pointerover',() => {
+            QuitButton.setTint(0x999999);
             hoverSprite3.setVisible(true);
             hoverSprite3.play('loading');
             console.log(`hovering over Quit button`);
         })
         QuitButton.on('pointerout',() => {
             hoverSprite3.setVisible(false);
+            QuitButton.setTint(0xFFFFFF);
             console.log(`not hovering over quit button`);
         })
         QuitButton.on('pointerup',() => {
-            this.scene.stop('Menu');
             this.scene.start('StartScene');
             console.log(`Quitting the Game. (Not yet available)`);
         })
 
 
         ResumeButton.on('pointerover',() => {
+            ResumeButton.setTint(0x999999);
             hoverSprite4.setVisible(true);
             hoverSprite4.play('loading');
             console.log(`hovering over resume button`);
         })
         ResumeButton.on('pointerout',() => {
             hoverSprite4.setVisible(false);
+            ResumeButton.setTint(0xFFFFFF);
             console.log(`not hovering over resume button`);
         })
         ResumeButton.on('pointerup',() => {
@@ -142,16 +149,17 @@ export default class Menu extends Phaser.Scene{
 
 
         OptionButton.on('pointerover',() => {
+            OptionButton.setTint(0x999999);
             hoverSprite5.setVisible(true);
             hoverSprite5.play('loading');
             console.log(`hovering over option button`);
         })
         OptionButton.on('pointerout',() => {
             hoverSprite5.setVisible(false);
+            OptionButton.setTint(0xFFFFFF);
             console.log(`not hovering over option button`);
         })
         OptionButton.on('pointerup',() => {
-            this.scene.stop('Menu');
             this.scene.start('ControlsScene');
             console.log(`Brings up options. (Not yet available)`);
         })

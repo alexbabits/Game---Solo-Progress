@@ -13,6 +13,8 @@ export default class ControlsScene extends Phaser.Scene {
             this.scene.stop('ControlsScene')
             this.scene.start('MainScene')
         })
+
+        screen.depth = 100;
     };
 
 };

@@ -40,6 +40,7 @@ export default class MainScene extends Phaser.Scene {
                 this.scene.stop('Menu')
             } else {
                 this.scene.launch('Menu', {mainScene:this});
+                this.scene.pause("MainScene");
             }
         });
 
@@ -48,11 +49,9 @@ export default class MainScene extends Phaser.Scene {
                 this.scene.stop('Menu')
             } else {
                 this.scene.launch('Menu', {mainScene:this});
+                this.scene.pause("MainScene");
             }
         });
-
-        //this.scene.launch('Menu', {mainScene:this});
-
         
         this.scene.launch('InventoryScene', {mainScene:this});
 

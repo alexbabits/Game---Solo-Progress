@@ -33,7 +33,7 @@ export default class Menu extends Phaser.Scene{
         SaveButton.setScrollFactor(0);
 
         let hoverSprite = this.add.sprite(250,350, "loading_sprite")
-        hoverSprite.setScale(0.5);
+        hoverSprite.setScale(.75);
         hoverSprite.setVisible(false);
         hoverSprite.setDepth(20);
         hoverSprite.setScrollFactor(0);
@@ -78,8 +78,8 @@ export default class Menu extends Phaser.Scene{
             console.log(`Brings up options. (Not yet available)`);
         })
 
-        this.sound.pauseOnBlur = true;
-        this.sound.play('IntroSong', {volume: 0.0}, {loop: true});
+        //this.sound.pauseOnBlur = true;
+        //this.sound.play('IntroSong', {volume: 0.2}, {loop: true});
     }
 
 }

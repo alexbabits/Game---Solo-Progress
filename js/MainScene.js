@@ -2,6 +2,7 @@ import Crafting from "./Crafting.js";
 import Enemy from "./Enemy.js";
 import Player from "./Player.js";
 import Resource from "./Resource.js";
+//import menu scene
 import Menu from "./Menu.js";
 
 export default class MainScene extends Phaser.Scene {
@@ -14,6 +15,7 @@ export default class MainScene extends Phaser.Scene {
         Player.preload(this);
         Enemy.preload(this);
         Resource.preload(this);
+        //preload menu scene
         Menu.preload(this);
 
         this.load.image('tiles', 'assets/images/RPG Nature Tileset.png');
@@ -32,10 +34,37 @@ export default class MainScene extends Phaser.Scene {
     create(){
         this.player = new Player({scene:this, x:Phaser.Math.Between(300,400), y:Phaser.Math.Between(150, 350), texture:'hero', frame:'hero_idle_1'});
 
-        //attempt to create the Menu instance 
-        this.menu = new Menu({scene:this});
-        //Or this way
-        this.scene.launch('Menu', {mainScene:this});
+        //launch menu scene.
+        this.input.keyboard.on('keydown-ESC', () => {
+            if(this.scene.isActive("Menu")){
+                this.scene.stop('Menu')
+            } else {
+                this.scene.launch('Menu', {mainScene:this});
+            }
+        });
+
+        this.input.keyboard.on('keydown-ENTER', () => {
+            if(this.scene.isActive("Menu")){
+                this.scene.stop('Menu')
+            } else {
+                this.scene.launch('Menu', {mainScene:this});
+            }
+        });
+
+        //this.scene.launch('Menu', {mainScene:this});
+
+        
+        this.scene.launch('InventoryScene', {mainScene:this});
+
+        this.crafting = new Crafting({ mainScene:this});
+
+        this.input.keyboard.on('keydown-C', () => {
+            if(this.scene.isActive("CraftingScene")){
+                this.scene.stop('CraftingScene')
+            } else {
+                this.scene.launch('CraftingScene', {mainScene:this});
+            }
+        });
 
         this.input.setDefaultCursor('url(assets/images/cursor.png), pointer')
 
@@ -141,15 +170,6 @@ export default class MainScene extends Phaser.Scene {
         camera.setLerp(0.1,0.1);
         camera.setBounds(0,2,this.game.config.width,this.game.config.height);
 
-        this.scene.launch('InventoryScene', {mainScene:this});
-        this.crafting = new Crafting({ mainScene:this});
-        this.input.keyboard.on('keydown-C', () => {
-            if(this.scene.isActive("CraftingScene")){
-                this.scene.stop('CraftingScene')
-            } else {
-                this.scene.launch('CraftingScene', {mainScene:this});
-            }
-        });
 
         this.player.inputKeys = this.input.keyboard.addKeys({
             up: Phaser.Input.Keyboard.KeyCodes.W,

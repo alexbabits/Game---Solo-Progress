@@ -11,7 +11,7 @@ const config = {
   backgroundColor: '#70491d',
   type: Phaser.AUTO,
   parent: 'configs',
-  scene:[StartScene, ControlsScene, MainScene, InventoryScene, CraftingScene, Menu],
+  scene:[StartScene, MainScene, InventoryScene, CraftingScene, Menu, ControlsScene],
   scale: {
     zoom:1.4,
   },

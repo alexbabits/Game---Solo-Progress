@@ -11,7 +11,15 @@ export default class ControlsScene extends Phaser.Scene {
         const screen = this.add.image(0, 0, 'controls').setOrigin(0);
         this.input.keyboard.on('keydown', () => {
             this.scene.stop('ControlsScene')
-            this.scene.start('MainScene')
+            this.scene.start('Menu')
+        })
+
+        screen.setInteractive();
+
+        screen.on('pointerup',() => {
+            this.scene.stop('ControlsScene')
+            this.scene.start('Menu')
+            console.log(`Brings up options. (Not yet available)`);
         })
 
         screen.depth = 100;

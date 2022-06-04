@@ -8,7 +8,7 @@ export default class StartScene extends Phaser.Scene {
     };
 
     create() {
-        const screen = this.add.image(0, 0, 'userLogin').setOrigin(0);
+        const screen = this.add.image(0, 0, 'userLogin').setOrigin(0).setScale(0.5);
         this.input.keyboard.on('keydown', () => {
             this.scene.stop('StartScene')
             this.scene.start('MainScene')

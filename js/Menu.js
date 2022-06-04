@@ -19,7 +19,7 @@ export default class Menu extends Phaser.Scene{
 
     create(){
 
-        this.menuSong = this.sound.add('MenuSong', {volume: 0.2}, {loop: true});
+        this.menuSong = this.sound.add('MenuSong', {volume: 0.05}, {loop: true});
         this.menuSong.play();
 
         let controls = this.add.image(0, 0, 'controls').setOrigin(0);
@@ -133,7 +133,9 @@ export default class Menu extends Phaser.Scene{
             console.log(`not hovering over quit button`);
         })
         QuitButton.on('pointerup',() => {
-            //this.scene.start('StartScene');
+            this.scene.stop('Menu');
+            this.scene.stop('MainScene');
+            this.scene.start('StartScene');
             console.log(`Quitting the Game. (Not yet available)`);
         })
 
@@ -170,12 +172,13 @@ export default class Menu extends Phaser.Scene{
         })
         OptionButton.on('pointerup',() => {
             this.scene.start('ControlsScene');
-            this.menuSong.stop();
+            this.scene.pause('Menu');
+            this.menuSong.pause();
             console.log(`Brings up options. (Not yet available)`);
         })
 
         //keeps sound playing when clicked off browser. Probably need something like this for the storm interval timer, to pause it, otherwise it's always ticking.
-        this.sound.pauseOnBlur = true;
+        this.sound.pauseOnBlur = false;
         
     }
 

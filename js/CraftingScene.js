@@ -31,6 +31,20 @@ export default class CraftingScene extends UIBaseScene {
             }
         }
 
+        /*
+        this.input.on("pointerover", () => {
+            //deleted the wheel stuff and instead just did this for pointerover.
+            this.inventory.selected = this.hoverIndex;
+            this.updateSelected();
+        });
+        */
+
+        /*
+        for (let index = 0; index < this.maxColumns * this.rows; index++) {
+            this.inventorySlots[index].tint = this.inventory.selected === index ? 0xffff00 : 0xffffff;
+        }
+        */
+
     destroyCraftingSlot(craftingSlot) {
         craftingSlot.matItems.forEach(m => m.destroy());
         craftingSlot.item.destroy();

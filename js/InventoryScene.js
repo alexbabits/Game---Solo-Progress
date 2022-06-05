@@ -4,7 +4,7 @@ import UIBaseScene from "./UIBaseScene.js";
 export default class InventoryScene extends UIBaseScene {
     constructor(){
         super("InventoryScene");
-        this.rows = 1;
+        this.rows = 0;
         this.gridSpacing = 4;
         this.inventorySlots = [];
     }
@@ -69,7 +69,7 @@ export default class InventoryScene extends UIBaseScene {
             this.updateSelected();
         });
         this.input.keyboard.on("keydown-I", ()=> {
-            this.rows = this.rows === 1 ? this.maxRows : 1;
+            this.rows = this.rows === 0 ? this.maxRows : 0;
             this.refresh();
         });
         this.input.setTopOnly(false);
@@ -91,19 +91,20 @@ export default class InventoryScene extends UIBaseScene {
         
         //double clicking:
         let lastTime = 0;
+        if("The pointer is hovering over the slot index which contained the pickaxe the whole time during both clicks"){
+            this.input.on("pointerdown", () => {
+                let clickDelay = this.time.now - lastTime;
+                lastTime = this.time.now;
+                if(clickDelay < 250) {
+                        this.inventory.removeItem('pickaxe'); //(removeItem() decrements quantity, deletes item from inventory if zero quantity, and broadcasts this). Does work atm.
+                        this.health -= 5; //(remove 5 health from player to check functionality). Does not work atm. Gives 'NaN'.
+                        //play potion drinking sound
+                        console.log(this.health);
+                     
+                }  
+            });
+        }
 
-        this.input.on("pointerdown", () => {
-        let clickDelay = this.time.now - lastTime;
-        lastTime = this.time.now;
-        if(clickDelay < 250) {
-            if("The pointer was hovering over the slot which contained the pickaxe the whole time during both clicks"){
-                this.inventory.removeItem('pickaxe'); //(removeItem() decrements quantity, deletes item from inventory if zero quantity, and broadcasts this). Does work atm.
-                this.health -= 5; //(remove 5 health from player to check functionality). Does not work atm. Gives 'NaN'.
-                //play potion drinking sound
-                console.log(this.health);
-            }  
-        }   
-    });
 
 
         this.refresh();

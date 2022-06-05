@@ -45,12 +45,7 @@ export default class StaminaBar extends Phaser.Scene {
         
         this.bar.fillStyle(0xFFFFFF);
         this.bar.fillRoundedRect(x, y, width, height, 0);
-
-
         this.bar.fillStyle(0xe6e600);
-
-
-        //almost fixed graphics for now, think it has to do with stamina going above max or below min.
 
         if(this.staminaValue > 0){
             this.bar.fillRoundedRect(x, y, staminaWidth, height, 0);

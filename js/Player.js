@@ -8,7 +8,6 @@ import ExperienceBar from "./ExperienceBar.js"
 export default class Player extends MatterEntity {
     constructor(data){
         let {scene, x , y, texture, frame} = data;
-        //added in mana and maxMana for special attack.
         super({...data, health: 20, maxHealth: 20, stamina: 100, maxStamina: 100, mana: 10, maxMana: 10, experience: 0, maxExperience: 50, drops:[], name:'player'});
         this.touching = [];
         this.inventory = new Inventory();
@@ -16,13 +15,11 @@ export default class Player extends MatterEntity {
         this.hp = new HealthBar(this.scene, 112, 110, this.health, this.maxHealth);
         this.energy = new StaminaBar(this.scene, 112, 138, this.stamina, this.maxStamina);
         this.magic = new ManaBar(this.scene, 112, 124, this.mana, this.maxMana);
-        //attempt to add in experience Bar
         this.xp = new ExperienceBar(this.scene, 210, 110, this.experience, this.maxExperience);
 
         this.attackFlag = false;
         this.critFlag = false;
         this.walkingSwitch = false;
-        //Added freeze flag
         this.freezeFlag = false;
 
         const {Body,Bodies} = Phaser.Physics.Matter.Matter;
@@ -118,7 +115,6 @@ export default class Player extends MatterEntity {
 
         //running controls
         if(this.walkingSwitch === false) {
-            //freeze flag needed to be here
             if (this.freezeFlag === true){
                 playerVelocity.x = 0;
                 playerVelocity.y = 0;
@@ -137,7 +133,6 @@ export default class Player extends MatterEntity {
 
         //walking controls
         if(this.walkingSwitch === true){
-            //freeze flag needed to be here
             if (this.freezeFlag === true){
                 playerVelocity.x = 0;
                 playerVelocity.y = 0;
@@ -160,7 +155,7 @@ export default class Player extends MatterEntity {
 
              if (Math.abs(playerVelocity.x) === runningSpeed || Math.abs(playerVelocity.y) === runningSpeed) {
                 this.anims.play('hero_run', true);
-                //successfully forces the player to walk.
+
                 if(this.stamina <= 0) this.walkingSwitch = true;
 
                 if(this.RSDT == null){
@@ -192,9 +187,6 @@ export default class Player extends MatterEntity {
             //Had to have it below movement and above attacking, so the anim stops when he moves. Still allows him to move while hit, but stops animation when he moves. Good for now.
            } else if(this.sound.isPlaying === true){
                 this.anims.play('hero_damage', true);
-                //tried this to stop him from moving, but because it's attached to sound playing, which is only an instant, doesn't work.
-                //playerVelocity.x = 0
-                //playerVelocity.y = 0
             //had to add the special attack here, above the normal attack, and below the 'damage' and movement.
            }  else if(this.inputKeys.space.isDown && this.inputKeys.shift.isDown && playerVelocity.x === 0 && playerVelocity.y === 0 && this.stamina >= 20 && this.mana >= 2) {
                 this.anims.play('hero_crit', true);
@@ -244,7 +236,6 @@ export default class Player extends MatterEntity {
             if(this.ISIT == null){
                 this.ISIT = setInterval(this.idleStaminaIncrement, 200);
             }; 
-            //created mana idle regen interval
             if(this.MIT == null){
                 this.MIT = setInterval(this.manaIncrement, 2000);
             }; 
@@ -359,7 +350,6 @@ export default class Player extends MatterEntity {
     };
         
          whackStuff(){
-            //Makes it so if you swing while nothing in touching array, it still decrements stamina.
             if(this.anims.currentFrame.textureFrame === 'hero_attack_5'  && this.attackFlag === false && this.touching.length === 0) {
                 this.attackFlag = true;
                 this.hittingStaminaDecrement();
@@ -372,7 +362,6 @@ export default class Player extends MatterEntity {
                 if (this.anims.currentFrame.textureFrame === 'hero_attack_5'  && this.attackFlag === false) {
                     this.attackFlag = true;
                     gameObject.hit();
-                    //decrements stamina on each 'hit' perfectly.
                     this.hittingStaminaDecrement();
                     if(gameObject.tintable === true){
                         gameObject.setTint(0xff0000);
@@ -383,8 +372,6 @@ export default class Player extends MatterEntity {
             };        
                 if(gameObject.dead) {
                     gameObject.destroy();
-                    //increments experience when enemy dies.
-                    //added in boolean if it gives xp. Later I could add in custom XP?
                     if(gameObject.givesXP === true){
                         this.experience += gameObject.XP
                         this.xp.modifyXp(this.experience);
@@ -408,7 +395,6 @@ export default class Player extends MatterEntity {
                 if (this.anims.currentFrame.textureFrame === 'hero_crit_4'  && this.critFlag === false) {
                     this.critFlag = true;
                     gameObject.specialHit();
-                    //attempt to decrement mana and stamina when using special attack.
                     this.specialAttackDecrement();
                     if(gameObject.tintable === true){
                         gameObject.setTint(0xff0000);
@@ -419,8 +405,6 @@ export default class Player extends MatterEntity {
             };        
                 if(gameObject.dead) {
                     gameObject.destroy();
-                    //increments experience when enemy dies.
-                    //added in boolean if it gives xp. Later I could add in custom XP?
                     if(gameObject.givesXP === true){
                         this.experience += gameObject.XP
                         this.xp.modifyXp(this.experience);

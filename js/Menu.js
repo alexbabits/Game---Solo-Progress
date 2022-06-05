@@ -5,7 +5,6 @@ export default class Menu extends Phaser.Scene{
     }
 
     static preload(scene){
-        scene.load.image('controls', 'assets/images/controls.png');
         scene.load.image('MenuBackground', 'assets/images/MenuBackground.png');    
         scene.load.image('OptionButton', 'assets/images/OptionButton.png'); 
         scene.load.image('ResumeButton', 'assets/images/ResumeButton.png'); 
@@ -21,14 +20,6 @@ export default class Menu extends Phaser.Scene{
 
         this.menuSong = this.sound.add('MenuSong', {volume: 0.05}, {loop: true});
         this.menuSong.play();
-
-        let controls = this.add.image(0, 0, 'controls').setOrigin(0);
-
-        controls.depth = 3;
-        controls.setScrollFactor(0);
-        controls.setInteractive();
-        controls.setVisible(false);
-
 
         let MenuBackground = this.add.image(240, 240, 'MenuBackground').setOrigin(0); 
         MenuBackground.depth = 1;
@@ -177,7 +168,7 @@ export default class Menu extends Phaser.Scene{
             console.log(`Brings up options. (Not yet available)`);
         })
 
-        //keeps sound playing when clicked off browser. Probably need something like this for the storm interval timer, to pause it, otherwise it's always ticking.
+        //keeps sound playing when clicked off browser when false. Probably need something like this for the storm interval timer, to pause it, otherwise it's always ticking.
         this.sound.pauseOnBlur = false;
         
     }

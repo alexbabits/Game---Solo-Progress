@@ -13,7 +13,7 @@ export default class ControlsScene extends Phaser.Scene {
             this.scene.stop('ControlsScene')
             this.scene.start('Menu')
         })
-
+        
         screen.setInteractive();
 
         screen.on('pointerup',() => {
@@ -21,7 +21,6 @@ export default class ControlsScene extends Phaser.Scene {
             this.scene.start('Menu')
             console.log(`Brings up options. (Not yet available)`);
         })
-
         screen.depth = 100;
     };
 

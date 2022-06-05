@@ -2,7 +2,6 @@ import Crafting from "./Crafting.js";
 import Enemy from "./Enemy.js";
 import Player from "./Player.js";
 import Resource from "./Resource.js";
-//import menu scene
 import Menu from "./Menu.js";
 
 export default class MainScene extends Phaser.Scene {
@@ -15,7 +14,6 @@ export default class MainScene extends Phaser.Scene {
         Player.preload(this);
         Enemy.preload(this);
         Resource.preload(this);
-        //preload menu scene
         Menu.preload(this);
 
         this.load.image('tiles', 'assets/images/RPG Nature Tileset.png');
@@ -34,7 +32,6 @@ export default class MainScene extends Phaser.Scene {
     create(){
         this.player = new Player({scene:this, x:Phaser.Math.Between(300,400), y:Phaser.Math.Between(150, 350), texture:'hero', frame:'hero_idle_1'});
 
-        //launch menu scene.
         this.input.keyboard.on('keydown-ESC', () => {
             if(this.scene.isActive("Menu")){
                 this.scene.stop('Menu')
@@ -120,7 +117,6 @@ export default class MainScene extends Phaser.Scene {
             on: false
         });
 
-        //set everything here with methods.
         this.lightningEmitter.onParticleEmit(() => {
             this.lightningSound.play()
             this.lightningEmitter.setLifespan(Phaser.Math.Between(10, 150))
@@ -147,7 +143,6 @@ export default class MainScene extends Phaser.Scene {
         });
             this.lightningStrikes = 0;
             
-        
             const stormStart = () => {
                 if(this.rainEmitter.on === false && this.lightningEmitter.on === false){
                     this.rainEmitter.start()

@@ -36,6 +36,7 @@ export default class InventoryScene extends UIBaseScene {
             inventorySlot.setInteractive();
 
             inventorySlot.on("pointerover", pointer => {
+                //you could tint the inventory slot here I think.
                 console.log(`pointerover: ${index}`);
                 this.hoverIndex = index;
             });

@@ -45,7 +45,6 @@ export default class ExperienceBar extends Phaser.Scene {
         
         this.bar.fillStyle(0xFFFFFF);
         this.bar.fillRoundedRect(x, y, width, height, 0);
-        //   BF40BF
         this.bar.fillStyle(0x7300e6);
     
         if(experienceWidth > 0){

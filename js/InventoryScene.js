@@ -56,15 +56,16 @@ export default class InventoryScene extends UIBaseScene {
     };
 
     updateSelected() {
-        for (let index = 0; index < this.maxColumns; index++) {
+        //had to multiply by this.rows to tint them all, instead of just the first row like before.
+        for (let index = 0; index < this.maxColumns * this.rows; index++) {
             this.inventorySlots[index].tint = this.inventory.selected === index ? 0xffff00 : 0xffffff;
         }
     };
 
     create() {
-        this.input.on("wheel", (pointer, gameObject, deltaX, deltaY, deltaZ) => {
-            if(this.scene.isActive('CraftingScene')) return;
-            this.inventory.selected = Math.max(0, this.inventory.selected + (deltaY > 0 ? 1 : -1)) % this.maxColumns;
+        this.input.on("pointerover", () => {
+            //deleted the wheel stuff and instead just did this for pointerover.
+            this.inventory.selected = this.hoverIndex;
             this.updateSelected();
         });
         this.input.keyboard.on("keydown-I", ()=> {
@@ -86,6 +87,25 @@ export default class InventoryScene extends UIBaseScene {
             this.inventory.moveItem(this.startIndex, this.hoverIndex);
             this.refresh();
         });
+
+        
+        //double clicking:
+        let lastTime = 0;
+
+        this.input.on("pointerdown", () => {
+        let clickDelay = this.time.now - lastTime;
+        lastTime = this.time.now;
+        if(clickDelay < 250) {
+            if("The pointer was hovering over the slot which contained the pickaxe the whole time during both clicks"){
+                this.inventory.removeItem('pickaxe'); //(removeItem() decrements quantity, deletes item from inventory if zero quantity, and broadcasts this). Does work atm.
+                this.health -= 5; //(remove 5 health from player to check functionality). Does not work atm. Gives 'NaN'.
+                //play potion drinking sound
+                console.log(this.health);
+            }  
+        }   
+    });
+
+
         this.refresh();
     };
 

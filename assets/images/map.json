@@ -38,6 +38,21 @@
                          "value":"[228,228]"
                         }, 
                         {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"health",
+                         "type":"int",
+                         "value":2
+                        }, 
+                        {
+                         "name":"maxHealth",
+                         "type":"int",
+                         "value":2
+                        }, 
+                        {
                          "name":"tintable",
                          "type":"bool",
                          "value":false
@@ -69,6 +84,21 @@
                          "name":"drops",
                          "type":"string",
                          "value":"[273,273]"
+                        }, 
+                        {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"health",
+                         "type":"int",
+                         "value":4
+                        }, 
+                        {
+                         "name":"maxHealth",
+                         "type":"int",
+                         "value":4
                         }, 
                         {
                          "name":"tintable",
@@ -104,6 +134,21 @@
                          "value":"[272,272]"
                         }, 
                         {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"health",
+                         "type":"int",
+                         "value":5
+                        }, 
+                        {
+                         "name":"maxHealth",
+                         "type":"int",
+                         "value":5
+                        }, 
+                        {
                          "name":"tintable",
                          "type":"bool",
                          "value":false
@@ -135,6 +180,21 @@
                          "name":"drops",
                          "type":"string",
                          "value":"[228,228]"
+                        }, 
+                        {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"health",
+                         "type":"int",
+                         "value":2
+                        }, 
+                        {
+                         "name":"maxHealth",
+                         "type":"int",
+                         "value":2
                         }, 
                         {
                          "name":"tintable",
@@ -170,6 +230,21 @@
                          "value":"[228,228]"
                         }, 
                         {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"health",
+                         "type":"int",
+                         "value":2
+                        }, 
+                        {
+                         "name":"maxHealth",
+                         "type":"int",
+                         "value":2
+                        }, 
+                        {
                          "name":"tintable",
                          "type":"bool",
                          "value":false
@@ -201,6 +276,21 @@
                          "name":"drops",
                          "type":"string",
                          "value":"[273,273]"
+                        }, 
+                        {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"health",
+                         "type":"int",
+                         "value":4
+                        }, 
+                        {
+                         "name":"maxHealth",
+                         "type":"int",
+                         "value":4
                         }, 
                         {
                          "name":"tintable",
@@ -236,6 +326,21 @@
                          "value":"[273,273]"
                         }, 
                         {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"health",
+                         "type":"int",
+                         "value":4
+                        }, 
+                        {
+                         "name":"maxHealth",
+                         "type":"int",
+                         "value":4
+                        }, 
+                        {
                          "name":"tintable",
                          "type":"bool",
                          "value":false
@@ -267,6 +372,21 @@
                          "name":"drops",
                          "type":"string",
                          "value":"[273,273]"
+                        }, 
+                        {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"health",
+                         "type":"int",
+                         "value":4
+                        }, 
+                        {
+                         "name":"maxHealth",
+                         "type":"int",
+                         "value":4
                         }, 
                         {
                          "name":"tintable",
@@ -302,6 +422,21 @@
                          "value":"[272,272]"
                         }, 
                         {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"health",
+                         "type":"int",
+                         "value":5
+                        }, 
+                        {
+                         "name":"maxHealth",
+                         "type":"int",
+                         "value":5
+                        }, 
+                        {
                          "name":"tintable",
                          "type":"bool",
                          "value":false
@@ -333,6 +468,21 @@
                          "name":"drops",
                          "type":"string",
                          "value":"[272,272]"
+                        }, 
+                        {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"health",
+                         "type":"int",
+                         "value":5
+                        }, 
+                        {
+                         "name":"maxHealth",
+                         "type":"int",
+                         "value":5
                         }, 
                         {
                          "name":"tintable",
@@ -368,6 +518,21 @@
                          "value":"[272,272]"
                         }, 
                         {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"health",
+                         "type":"int",
+                         "value":5
+                        }, 
+                        {
+                         "name":"maxHealth",
+                         "type":"int",
+                         "value":5
+                        }, 
+                        {
                          "name":"tintable",
                          "type":"bool",
                          "value":false
@@ -399,6 +564,21 @@
                          "name":"drops",
                          "type":"string",
                          "value":"[272,272]"
+                        }, 
+                        {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"health",
+                         "type":"int",
+                         "value":5
+                        }, 
+                        {
+                         "name":"maxHealth",
+                         "type":"int",
+                         "value":5
                         }, 
                         {
                          "name":"tintable",
@@ -434,6 +614,21 @@
                          "value":"[228,228]"
                         }, 
                         {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"health",
+                         "type":"int",
+                         "value":2
+                        }, 
+                        {
+                         "name":"maxHealth",
+                         "type":"int",
+                         "value":2
+                        }, 
+                        {
                          "name":"tintable",
                          "type":"bool",
                          "value":false
@@ -467,6 +662,21 @@
                          "value":"[228,228]"
                         }, 
                         {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"health",
+                         "type":"int",
+                         "value":2
+                        }, 
+                        {
+                         "name":"maxHealth",
+                         "type":"int",
+                         "value":2
+                        }, 
+                        {
                          "name":"tintable",
                          "type":"bool",
                          "value":false
@@ -498,6 +708,21 @@
                          "name":"drops",
                          "type":"string",
                          "value":"[228,228]"
+                        }, 
+                        {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"health",
+                         "type":"int",
+                         "value":2
+                        }, 
+                        {
+                         "name":"maxHealth",
+                         "type":"int",
+                         "value":2
                         }, 
                         {
                          "name":"tintable",
@@ -562,6 +787,11 @@
                  "name":"bear",
                  "properties":[
                         {
+                         "name":"XP",
+                         "type":"int",
+                         "value":10
+                        }, 
+                        {
                          "name":"collides",
                          "type":"bool",
                          "value":true
@@ -572,7 +802,17 @@
                          "value":"[241,280]"
                         }, 
                         {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"health",
+                         "type":"int",
+                         "value":10
+                        }, 
+                        {
+                         "name":"maxHealth",
                          "type":"int",
                          "value":10
                         }, 
@@ -595,6 +835,11 @@
                  "name":"ent",
                  "properties":[
                         {
+                         "name":"XP",
+                         "type":"int",
+                         "value":7
+                        }, 
+                        {
                          "name":"collides",
                          "type":"bool",
                          "value":true
@@ -605,9 +850,19 @@
                          "value":"[272,272]"
                         }, 
                         {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"health",
                          "type":"int",
-                         "value":5
+                         "value":7
+                        }, 
+                        {
+                         "name":"maxHealth",
+                         "type":"int",
+                         "value":7
                         }, 
                         {
                          "name":"tintable",
@@ -628,6 +883,11 @@
                  "name":"wolf",
                  "properties":[
                         {
+                         "name":"XP",
+                         "type":"int",
+                         "value":5
+                        }, 
+                        {
                          "name":"collides",
                          "type":"bool",
                          "value":true
@@ -638,7 +898,17 @@
                          "value":"[241]"
                         }, 
                         {
+                         "name":"givesXP",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"health",
+                         "type":"int",
+                         "value":5
+                        }, 
+                        {
+                         "name":"maxHealth",
                          "type":"int",
                          "value":5
                         }, 
@@ -661,7 +931,7 @@
          "y":0
         }],
  "nextlayerid":10,
- "nextobjectid":71,
+ "nextobjectid":72,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.8.4",

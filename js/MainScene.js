@@ -2,6 +2,7 @@ import Crafting from "./Crafting.js";
 import Enemy from "./Enemy.js";
 import Player from "./Player.js";
 import Resource from "./Resource.js";
+import Menu from "./Menu.js";
 
 export default class MainScene extends Phaser.Scene {
     constructor() {
@@ -13,6 +14,7 @@ export default class MainScene extends Phaser.Scene {
         Player.preload(this);
         Enemy.preload(this);
         Resource.preload(this);
+        Menu.preload(this);
 
         this.load.image('tiles', 'assets/images/RPG Nature Tileset.png');
         this.load.tilemapTiledJSON('map','assets/images/map.json');
@@ -20,14 +22,46 @@ export default class MainScene extends Phaser.Scene {
         this.load.animation('enemies_anims', 'assets/images/enemies_anims.json');
         this.load.image('rain', 'assets/images/rain.png');
         this.load.image('cursor', 'assets/images/cursor.png');
-        this.load.image('lightning', 'assets/images/lightning.png');
+        this.load.atlas('lightning', 'assets/images/lightning.png', 'assets/images/lightning_atlas.json');
         this.load.audio('lightning', 'assets/audio/lightning.mp3');
         this.load.audio('rain', 'assets/audio/rain.mp3');
-        this.load.image('Healthbarframe', 'assets/images/Healthbarframe.png');
-                
+        this.load.image('barFrame', 'assets/images/barFrame.png');
+        this.load.image('expBarFrame', 'assets/images/expBarFrame.png');    
     };
 
     create(){
+        this.player = new Player({scene:this, x:Phaser.Math.Between(300,400), y:Phaser.Math.Between(150, 350), texture:'hero', frame:'hero_idle_1'});
+
+        this.input.keyboard.on('keydown-ESC', () => {
+            if(this.scene.isActive("Menu")){
+                this.scene.stop('Menu')
+            } else {
+                this.scene.launch('Menu', {mainScene:this});
+                this.scene.pause("MainScene");
+            }
+        });
+
+        this.input.keyboard.on('keydown-ENTER', () => {
+            if(this.scene.isActive("Menu")){
+                this.scene.stop('Menu')
+            } else {
+                this.scene.launch('Menu', {mainScene:this});
+                this.scene.pause("MainScene");
+            }
+        });
+        
+        this.scene.launch('InventoryScene', {mainScene:this});
+
+        this.crafting = new Crafting({ mainScene:this});
+
+        this.input.keyboard.on('keydown-C', () => {
+            if(this.scene.isActive("CraftingScene")){
+                this.scene.stop('CraftingScene')
+            } else {
+                this.scene.launch('CraftingScene', {mainScene:this});
+            }
+        });
+
         this.input.setDefaultCursor('url(assets/images/cursor.png), pointer')
 
         const map = this.make.tilemap({key: 'map'});
@@ -40,16 +74,21 @@ export default class MainScene extends Phaser.Scene {
         this.map.getObjectLayer('Resources').objects.forEach(resource =>  new Resource({scene:this, resource}));
         this.map.getObjectLayer('Enemies').objects.forEach(enemy =>  this.enemies.push(new Enemy({scene:this, enemy})));
 
-        const Healthbarframelogo = this.add.image(110, 102, 'Healthbarframe').setOrigin(0); 
-        Healthbarframelogo.depth = 9;
-        Healthbarframelogo.setScale(.3);
-        Healthbarframelogo.setScrollFactor(0);
-        
-        this.rainSound = this.sound.add('rain', {volume: 0.2})
-        this.lightningSound = this.sound.add('lightning', {volume: 0.2})
+        const barFrame = this.add.image(100, 100, 'barFrame').setOrigin(0); 
+        barFrame.depth = 9;
+        barFrame.setScrollFactor(0);
 
-        this.particles = this.add.particles('rain');
-        this.emitter = this.particles.createEmitter({
+        const expBarFrame = this.add.image(205, 100, 'expBarFrame').setOrigin(0); 
+        expBarFrame.depth = 9;
+        expBarFrame.setScrollFactor(0);
+
+
+        this.rainSound = this.sound.add('rain', {volume: 0.2}, {loop: true})
+        //try to base pan and volume off location of particle relative to the player.
+        this.lightningSound = this.sound.add('lightning', {volume: 0.2}, {pan: 0})
+
+        this.rainParticles = this.add.particles('rain');
+        this.rainEmitter = this.rainParticles.createEmitter({
             x: { min:0, max: 800},
             y: 0,
             lifespan: 5000,
@@ -60,49 +99,71 @@ export default class MainScene extends Phaser.Scene {
             maxParticles: 0,
             frequency: 0, 
             blendMode: 0,
-            on: true
-        });         
+            on: false
+        });   
 
-        //added rainsound, plays 24/7 for now.
-        this.rainSound.play()
-
-        this.particles2 = this.add.particles('lightning');
-        this.emitter2 = this.particles2.createEmitter({
-            x: { min:0, max: 640},
-            y: 0,
-            lifespan: 100,
-            speedY: {min: 0, max: 0},
-            speedX: {min: 0, max: 0},
-            scale: 2,
+        this.lightningParticles = this.add.particles('lightning');
+        this.lightningEmitter = this.lightningParticles.createEmitter({
+            frame: [ 'lightning1', 'lightning2'],
+            x: { min:0, max: this.game.config.width},
+            y: { min:-this.game.config.height/1.5, max: this.game.config.height*1.5},
+            lifespan: 75,
+            scaleX: 1,
+            scaleY: 1,
+            alpha: {start: 1, end: 0},
             quantity: 1,
-            maxParticles: 0,
-            frequency: Phaser.Math.Between(6000,30000), //or you could do Math.Max((6000,(Math.random()*30000)))
-            blendMode: 0
+            frequency: 60000,
+            blendMode: 0,
+            on: false
         });
 
-        function lightningSound() {
+        this.lightningEmitter.onParticleEmit(() => {
             this.lightningSound.play()
-          }
+            this.lightningEmitter.setLifespan(Phaser.Math.Between(10, 150))
+            this.lightningEmitter.setScaleX(Phaser.Math.Between(1, 1.2))
+            this.lightningEmitter.setScaleY(Phaser.Math.Between(1, 2))
+            this.lightningEmitter.setQuantity(Phaser.Math.Between(1, 5))
+            this.lightningEmitter.setFrequency(Phaser.Math.Between(6000, 20000))
+            this.lightningStrikes++
+            //set scene tint brighter due to lightning strike this.setTint = Bright
+            console.log(`number of lightning strikes this storm: ${this.lightningStrikes}`)
+            if(this.lightningStrikes >= Phaser.Math.Between(10, 20)){
+                this.player.clearTint()
+                this.enemies.forEach(enemy => enemy.clearTint())
+                this.rainEmitter.stop()
+                this.lightningEmitter.stop()
+                this.rainSound.stop()
+                this.lightningStrikes = 0
+                //set scene tint back to normal because the storm stopped: this.setTint = Normal
+                console.log(`rain turned on?: ${this.rainEmitter.on}`)   
+                console.log(`lightning turned on?: ${this.lightningEmitter.on}`)   
+                console.log(`The weather should be calm.`)   
+                console.log(`number of lightning strikes should be reset to zero: ${this.lightningStrikes}`)
+            }
+        });
+            this.lightningStrikes = 0;
+            
+            const stormStart = () => {
+                if(this.rainEmitter.on === false && this.lightningEmitter.on === false){
+                    this.rainEmitter.start()
+                    this.lightningEmitter.start()
+                    this.rainSound.play()  
+                    this.player.setTint(0xa0a0a0)
+                    this.enemies.forEach(enemy => enemy.setTint(0xa0a0a0))
+                    console.log(`rain turned on?: ${this.rainEmitter.on}`)   
+                    console.log(`lightning turned on?: ${this.lightningEmitter.on}`)   
+                    console.log(`A storm should be raging.`)   
+                }
+            }       
+            setInterval(stormStart, Phaser.Math.Between(30000,60000));
+            
 
-        this.emitter2.onParticleEmit(lightningSound, this);
-        
-        this.player = new Player({scene:this, x:Phaser.Math.Between(150,400), y:Phaser.Math.Between(150, 350), texture:'hero', frame:'hero_idle_1'});
         let camera = this.cameras.main;
         camera.zoom = 1.4;
         camera.startFollow(this.player);
         camera.setLerp(0.1,0.1);
         camera.setBounds(0,2,this.game.config.width,this.game.config.height);
 
-        this.scene.launch('InventoryScene', {mainScene:this});
-        this.crafting = new Crafting({ mainScene:this});
-
-        this.input.keyboard.on('keydown-C', () => {
-            if(this.scene.isActive("CraftingScene")){
-                this.scene.stop('CraftingScene')
-            } else {
-                this.scene.launch('CraftingScene', {mainScene:this});
-            }
-        });
 
         this.player.inputKeys = this.input.keyboard.addKeys({
             up: Phaser.Input.Keyboard.KeyCodes.W,
@@ -111,6 +172,8 @@ export default class MainScene extends Phaser.Scene {
             right: Phaser.Input.Keyboard.KeyCodes.D,
             space: Phaser.Input.Keyboard.KeyCodes.SPACE,
             shift: Phaser.Input.Keyboard.KeyCodes.SHIFT,
+            ctrl: Phaser.Input.Keyboard.KeyCodes.CTRL,
+            esc: Phaser.Input.Keyboard.KeyCodes.ESC,
         });
 
     };

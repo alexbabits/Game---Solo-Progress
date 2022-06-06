@@ -18,6 +18,7 @@ export default class Crafting {
         if(currentItem.canCraft) {
             new DropItem({ name:currentItem.name, scene:this.mainScene, x:this.player.x + 32, y:this.player.y, frame:currentItem.frame});
             currentItem.matDetails.forEach(matDetail => this.inventory.removeItem(matDetail.name));
+          //this.craftingSound.play();
         }
     }
 
@@ -40,6 +41,7 @@ export default class Crafting {
                 matDetails.push({name:mat, frame:items[mat].frame, available});
                 lastMat = mat;
                 if(!available) canCraft = false;
+                //Or maybe put the 'can't play sound' here, since it's not available.
             });
             this.items.push({name:itemName, frame:items[itemName].frame, matDetails, canCraft});
         }

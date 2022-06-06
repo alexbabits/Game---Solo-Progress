@@ -15,12 +15,15 @@ export default class Enemy extends MatterEntity {
         let {scene, enemy} = data;
         let drops = JSON.parse(enemy.properties.find(p => p.name== 'drops').value);
         let health = enemy.properties.find(p => p.name== 'health').value;
+        let maxHealth = enemy.properties.find(p => p.name== 'maxHealth').value;
         let tintable = enemy.properties.find(p => p.name== 'tintable').value;
-        super({scene, x:enemy.x, y:enemy.y, texture:'enemies', frame:`${enemy.name}_idle_1`, drops, health, tintable, name:enemy.name});
+        let givesXP = enemy.properties.find(p => p.name== 'givesXP').value;
+        let XP = enemy.properties.find(p => p.name== 'XP').value;
+        super({scene, x:enemy.x, y:enemy.y, texture:'enemies', frame:`${enemy.name}_idle_1`, drops, health, maxHealth, tintable, givesXP, XP, name:enemy.name});
 
         const {Body,Bodies} = Phaser.Physics.Matter.Matter;
-        let enemyCollider = Bodies.circle(this.x,this.y,12,{isSensor:false,label:'enemyCollider'});
-        let enemySensor = Bodies.circle(this.x,this.y,80, {isSensor:true, label:'enemySensor'});
+        let enemyCollider = Bodies.circle(this.x, this.y, 12, {isSensor:false,label:'enemyCollider'});
+        let enemySensor = Bodies.circle(this.x, this.y, 80, {isSensor:true, label:'enemySensor'});
         const compoundBody = Body.create({
             parts:[enemyCollider,enemySensor],
             frictionAir: 0.35,
@@ -36,12 +39,6 @@ export default class Enemy extends MatterEntity {
         });
     };   
 
-
-    setBackToNormalColor(target){
-        target.setTint(0xffffff);
-    };
-
-
     attack = (target) => {
         if(target.dead || this.dead) {
             clearInterval(this.attackTimer);
@@ -49,7 +46,9 @@ export default class Enemy extends MatterEntity {
         }
         target.hit();
         target.setTint(0xff0000);
-        setTimeout(()=> this.setBackToNormalColor(target), 200);
+        target.changeFreezeFlag();
+        setTimeout(()=> target.clearTint(), 350);
+        setTimeout(()=> target.changeFreezeFlag(), 350);
     };
 
     update(){

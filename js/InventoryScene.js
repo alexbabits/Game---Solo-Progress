@@ -15,6 +15,8 @@ export default class InventoryScene extends UIBaseScene {
         this.inventory = mainScene.player.inventory;
         this.maxColumns = this.inventory.maxColumns;
         this.maxRows = this.inventory.maxRows;
+        //attempt to get player health involved here.
+        this.player = mainScene.player;
         this.inventory.subscribe(() => this.refresh());
     };
 
@@ -52,22 +54,27 @@ export default class InventoryScene extends UIBaseScene {
             };
             this.inventorySlots.push(inventorySlot);
         };
-        this.updateSelected();
+        this.tintSelectedSlot();
     };
 
-    updateSelected() {
-        //had to multiply by this.rows to tint them all, instead of just the first row like before.
+    tintSelectedSlot() {
         for (let index = 0; index < this.maxColumns * this.rows; index++) {
             this.inventorySlots[index].tint = this.inventory.selected === index ? 0xffff00 : 0xffffff;
+            //console.log(this.inventory.selected)
         }
     };
 
     create() {
         this.input.on("pointerover", () => {
-            //deleted the wheel stuff and instead just did this for pointerover.
             this.inventory.selected = this.hoverIndex;
-            this.updateSelected();
+            this.tintSelectedSlot();
         });
+        
+        this.input.on("pointerout", () => {
+            this.inventory.selected = null;
+            this.tintSelectedSlot();
+        });
+        
         this.input.keyboard.on("keydown-I", ()=> {
             this.rows = this.rows === 0 ? this.maxRows : 0;
             this.refresh();
@@ -91,21 +98,13 @@ export default class InventoryScene extends UIBaseScene {
         
         //double clicking:
         let lastTime = 0;
-        if("The pointer is hovering over the slot index which contained the pickaxe the whole time during both clicks"){
             this.input.on("pointerdown", () => {
                 let clickDelay = this.time.now - lastTime;
                 lastTime = this.time.now;
-                if(clickDelay < 250) {
-                        this.inventory.removeItem('pickaxe'); //(removeItem() decrements quantity, deletes item from inventory if zero quantity, and broadcasts this). Does work atm.
-                        this.health -= 5; //(remove 5 health from player to check functionality). Does not work atm. Gives 'NaN'.
-                        //play potion drinking sound
-                        console.log(this.health);
-                     
+                if(clickDelay < 300) {
+                    this.inventory.useHealthPotion();
                 }  
             });
-        }
-
-
 
         this.refresh();
     };

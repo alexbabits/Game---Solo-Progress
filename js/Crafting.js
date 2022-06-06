@@ -12,10 +12,10 @@ export default class Crafting {
     }
 
     craft(){
-        let item = this.items[this.selected];
-        if(item.canCraft) {
-            new DropItem({ name:item.name, scene:this.mainScene, x:this.player.x + 32, y:this.player.y, frame:item.frame});
-            item.matDetails.forEach(matDetail => this.inventory.removeItem(matDetail.name));
+        let currentItem = this.items[this.selected];
+        if(currentItem.canCraft) {
+            new DropItem({ name:currentItem.name, scene:this.mainScene, x:this.player.x + 32, y:this.player.y, frame:currentItem.frame});
+            currentItem.matDetails.forEach(matDetail => this.inventory.removeItem(matDetail.name));
         }
     }
 

@@ -14,37 +14,6 @@ export default class CraftingScene extends UIBaseScene {
         this.crafting.inventory.subscribe( () => this.updateCraftableSlots() );
     }
 
-    create() {
-        this.updateCraftableSlots();
-        this.input.on("wheel",(pointer, gameObjects, deltaX, deltaY, deltaZ) => {
-            this.crafting.selected = Math.max(0, this.crafting.selected+ (deltaY > 0 ? 1 : -1)) % this.crafting.items.length;
-            this.updateSelected();
-        });
-        this.input.keyboard.on('keydown-E', () => {
-            this.crafting.craft();
-        });
-    }
-
-        updateSelected(){
-            for (let index = 0; index < this.crafting.items.length; index++){
-                this.craftingSlots[index].tint = this.crafting.selected === index ? 0xffff00 : 0xffffff;
-            }
-        }
-
-        /*
-        this.input.on("pointerover", () => {
-            //deleted the wheel stuff and instead just did this for pointerover.
-            this.inventory.selected = this.hoverIndex;
-            this.updateSelected();
-        });
-        */
-
-        /*
-        for (let index = 0; index < this.maxColumns * this.rows; index++) {
-            this.inventorySlots[index].tint = this.inventory.selected === index ? 0xffff00 : 0xffffff;
-        }
-        */
-
     destroyCraftingSlot(craftingSlot) {
         craftingSlot.matItems.forEach(m => m.destroy());
         craftingSlot.item.destroy();
@@ -60,6 +29,14 @@ export default class CraftingScene extends UIBaseScene {
             let y = this.game.config.height - this.tileSize + this.margin - (index * this.tileSize) ;
 
             this.craftingSlots[index] = this.add.sprite(x,y,"items",11);
+            //added set interactive:
+            this.craftingSlots[index].setInteractive();
+            //Add this for the hover over index:
+            this.craftingSlots[index].on("pointerover", pointer => {
+                this.hoverIndex = index;
+                //console.log(this.hoverIndex);
+            });
+
             this.craftingSlots[index].item = this.add.sprite(x, y, "items", craftableItem.frame);
             this.craftingSlots[index].item.tint = craftableItem.canCraft ? 0xffffff : 0x555555;
             this.craftingSlots[index].matItems = [];
@@ -73,8 +50,38 @@ export default class CraftingScene extends UIBaseScene {
 
             }
             
-        }
+        } 
 
+    }
+
+    tintSelectedSlot(){
+        for (let index = 0; index < this.crafting.items.length; index++){
+            this.craftingSlots[index].tint = this.crafting.selected === index ? 0xffff00 : 0xffffff;
+        }
+    }
+
+    create() {
+        this.updateCraftableSlots();
+        this.input.on("pointerover", () => {
+            this.crafting.selected = this.hoverIndex;
+            this.tintSelectedSlot();
+        });
+        /*
+        //for some reason this bugs it out:
+        this.input.on("pointerout", () => {
+            this.crafting.selected = null;
+            this.tintSelectedSlot();
+        });
+        */
+        /*
+        this.input.on("pointerup", () => {
+            this.crafting.craft();
+        });
+        */
+
+        this.input.keyboard.on('keydown-E', () => {
+            this.crafting.craft();
+        });
     }
 
 };

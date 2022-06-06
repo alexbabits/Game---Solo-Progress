@@ -66,20 +66,6 @@ export default class Inventory {
         return Object.values(this.items).filter(i => i.name === itemName).map(i => i.quantity).reduce((accumulater, currentValue) => accumulater + currentValue, 0);
     };
 
-    get selectedItem() {
-    //remember, `this.items` refers to the items in our inventory, not all global game items possible found in items.js.
-        return this.items[this.selected];
-    };
-
-    /*
-    getItemFrame has no use now, but could be used in the future for equipping items and getting their sprite.
-    //pass it in the item, does a look up in items, looks up the name and returns the frame.
-    //This 'items' is ALL the items found in items.js
-    //If using this method, will need to import items.js!
-    getItemFrame(item) {
-        return items[item.name].frame;
-    }
-    */
     useHealthPotion(){
         let currentItem = this.items[this.selected];
         if(currentItem == null) return;
@@ -91,5 +77,22 @@ export default class Inventory {
         }
         //this.broadcast();
     }
+
+    /*
+    get selectedItem() {
+        return this.items[this.selected];
+    };
+    //May be useful in the future if I need to get a selected item into say, the player.js.
+    //remember, `this.items` refers to the items in our inventory, not all global game items possible found in items.js.
+    */
+
+    /*
+    getItemFrame(item) {
+        return items[item.name].frame;
+    }
+    //getItemFrame has no use now, but could be used in the future for equipping items and getting their sprite.
+    //pass it in the item, does a look up in items, looks up the name and returns the frame. This 'items' is ALL the items found in items.js
+    //Will need to import items.js into this file!
+    */
 
 };

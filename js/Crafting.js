@@ -13,6 +13,8 @@ export default class Crafting {
 
     craft(){
         let currentItem = this.items[this.selected];
+        //needed this null check here.
+        if(currentItem == null) return;
         if(currentItem.canCraft) {
             new DropItem({ name:currentItem.name, scene:this.mainScene, x:this.player.x + 32, y:this.player.y, frame:currentItem.frame});
             currentItem.matDetails.forEach(matDetail => this.inventory.removeItem(matDetail.name));

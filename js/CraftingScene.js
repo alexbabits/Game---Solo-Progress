@@ -47,11 +47,8 @@ export default class CraftingScene extends UIBaseScene {
             this.craftingSlots[index].matItems[matIndex] = this.add.sprite(x + this.tileSize + matIndex * this.tileSize * scale, y, "items", matItem.frame);
             this.craftingSlots[index].matItems[matIndex].setScale(scale);
             this.craftingSlots[index].matItems[matIndex].tint = matItem.available ? 0xffffff : 0x555555;
-
             }
-            
         } 
-
     }
 
     tintSelectedSlot(){
@@ -66,19 +63,13 @@ export default class CraftingScene extends UIBaseScene {
             this.crafting.selected = this.hoverIndex;
             this.tintSelectedSlot();
         });
-        /*
-        //for some reason this bugs it out:
         this.input.on("pointerout", () => {
             this.crafting.selected = null;
             this.tintSelectedSlot();
         });
-        */
-        /*
         this.input.on("pointerup", () => {
             this.crafting.craft();
         });
-        */
-
         this.input.keyboard.on('keydown-E', () => {
             this.crafting.craft();
         });

@@ -12,16 +12,20 @@ export default class Crafting {
     }
 
     craft(){
-        let item = this.items[this.selected];
-        if(item.canCraft) {
-            new DropItem({ name:item.name, scene:this.mainScene, x:this.player.x + 32, y:this.player.y, frame:item.frame});
-            item.matDetails.forEach(matDetail => this.inventory.removeItem(matDetail.name));
-            //this.craftingSound.play();
+        let currentItem = this.items[this.selected];
+        //needed this null check here.
+        if(currentItem == null) return;
+        if(currentItem.canCraft) {
+            new DropItem({ name:currentItem.name, scene:this.mainScene, x:this.player.x + 32, y:this.player.y, frame:currentItem.frame});
+            currentItem.matDetails.forEach(matDetail => this.inventory.removeItem(matDetail.name));
+          //this.craftingSound.play();
         }
     }
 
     updateItems(){
         this.items = [];
+        //set it to null anytime the crafting scene made/updated itself.
+        this.selected = null;
         let craftables = Object.keys(items).filter(i => items[i].mats);
 
         for (let index = 0; index < craftables.length; index++){

@@ -53,7 +53,19 @@ export default class Player extends MatterEntity {
         this.setTexture('items', 0 );
         this.setOrigin(0.5);
     }
-
+  
+    useHealthPotion(){
+        let currentItem = this.inventory.items[this.inventory.selected];
+        if(currentItem == null) return;
+        if(currentItem.name === 'health_potion'){
+            this.inventory.removeItem('health_potion');
+            this.health++;
+            console.log(this.health);
+            this.hp.modifyhp(this.health);  
+            //play sound
+        }
+    }
+   
     runningStaminaDecrement = () => {
         this.stamina--;
         this.energy.modifyStamina(this.stamina);

@@ -23,6 +23,8 @@ export default class Crafting {
 
     updateItems(){
         this.items = [];
+        //set it to null anytime the crafting scene made/updated itself.
+        this.selected = null;
         let craftables = Object.keys(items).filter(i => items[i].mats);
 
         for (let index = 0; index < craftables.length; index++){

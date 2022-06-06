@@ -27,6 +27,8 @@ export default class InventoryScene extends UIBaseScene {
     }
 
     refresh() {
+        //set it to null anytime the inventory scene refreshed.
+        this.inventory.selected = null;
         this.inventorySlots.forEach( slots => this.destroyInventorySlot(slots));
         this.inventorySlots = [];
         for (let index = 0; index < this.maxColumns * this.rows; index++) {

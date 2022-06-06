@@ -49,18 +49,6 @@ export default class Player extends MatterEntity {
             //play sound
         }
     }
-    /*
-    create(){
-        let lastTime = 0;
-            this.input.on("pointerdown", () => {
-                let clickDelay = this.time.now - lastTime;
-                lastTime = this.time.now;
-                if(clickDelay < 300) {
-                    this.useHealthPotion();
-                }  
-            });
-    }
-    */
    
     update(){
         if(this.dead) return;

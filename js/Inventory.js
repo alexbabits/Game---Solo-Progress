@@ -13,15 +13,7 @@ export default class Inventory {
         this.addItem({name: "wood", quantity: 1});
         this.addItem({name: "health_potion", quantity: 3});
     };
-
-    /*
-    init(data){
-        let { mainScene } = data;
-        this.mainScene = mainScene;
-        this.player = mainScene.player;
-    };
-    */
-   
+    
     subscribe(fn) {
         this.observers.push(fn);
     }
@@ -73,27 +65,5 @@ export default class Inventory {
     getItemQuantity(itemName) {
         return Object.values(this.items).filter(i => i.name === itemName).map(i => i.quantity).reduce((accumulater, currentValue) => accumulater + currentValue, 0);
     };
-
-    /*
-    useHealthPotion(){
-        let currentItem = this.items[this.selected];
-        if(currentItem == null) return;
-        if(currentItem.name === 'health_potion'){
-            this.removeItem('health_potion');
-            this.player.health++;
-            console.log(this.player.health);
-            this.player.hp.modifyhp(this.player.health);  
-            //play sound
-        }
-    }
-    */
-    /*
-    getItemFrame(item) {
-        return items[item.name].frame;
-    }
-    //getItemFrame has no use now, but could be used in the future for equipping items and getting their sprite.
-    //pass it in the item, does a look up in items, looks up the name and returns the frame. This 'items' is ALL the items found in items.js
-    //Will need to import items.js into this file!
-    */
 
 };

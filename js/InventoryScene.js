@@ -60,7 +60,6 @@ export default class InventoryScene extends UIBaseScene {
     tintSelectedSlot() {
         for (let index = 0; index < this.maxColumns * this.rows; index++) {
             this.inventorySlots[index].tint = this.inventory.selected === index ? 0xffff00 : 0xffffff;
-            //console.log(this.inventory.selected)
         }
     };
 
@@ -94,18 +93,16 @@ export default class InventoryScene extends UIBaseScene {
             this.inventory.moveItem(this.startIndex, this.hoverIndex);
             this.refresh();
         });
-
         
-        //double clicking:
         let lastTime = 0;
             this.input.on("pointerdown", () => {
                 let clickDelay = this.time.now - lastTime;
                 lastTime = this.time.now;
                 if(clickDelay < 300) {
-                    this.inventory.useHealthPotion();
+                    this.player.useHealthPotion();
                 }  
             });
-
+            
         this.refresh();
     };
 

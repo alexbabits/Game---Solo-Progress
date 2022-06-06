@@ -27,6 +27,9 @@ export default class HealthBar extends Phaser.Scene {
     modifyhp(amount) {
         if(amount <= 0) {
             this.healthValue = 0;
+        //makes it so bar doesn't draw above max health.
+        } else if(amount >= this.healthDenominator){
+            this.healthValue = this.healthDenominator
         } else {
             this.healthValue = amount;
         }

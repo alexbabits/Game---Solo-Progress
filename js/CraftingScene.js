@@ -58,7 +58,7 @@ export default class CraftingScene extends UIBaseScene {
     }
 
     create() {
-      //this.craftingSound = this.sound.add('craftingsound', {volume: 0.3})
+        this.craftingSound = this.sound.add('craftingsound', {volume: 0.3})
         this.updateCraftableSlots();
         this.input.on("pointerover", () => {
             this.crafting.selected = this.hoverIndex;
@@ -70,10 +70,11 @@ export default class CraftingScene extends UIBaseScene {
         });
         this.input.on("pointerup", () => {
             this.crafting.craft();
+            //this.craftingSound.play();
         });
         this.input.keyboard.on('keydown-E', () => {
             this.crafting.craft();
-          //this.craftingSound.play();
+            this.craftingSound.play();
         });
     }
 

@@ -82,6 +82,10 @@ export default class MainScene extends Phaser.Scene {
         expBarFrame.depth = 9;
         expBarFrame.setScrollFactor(0);
 
+        const PlayerLevelFrame = this.add.image(423, 108, 'expBarFrame').setOrigin(0).setScale(0.5); 
+        PlayerLevelFrame.depth = 9;
+        PlayerLevelFrame.setScrollFactor(0);
+
 
         this.rainSound = this.sound.add('rain', {volume: 0.2}, {loop: true})
         //try to base pan and volume off location of particle relative to the player.

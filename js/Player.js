@@ -8,7 +8,7 @@ import ExperienceBar from "./ExperienceBar.js"
 export default class Player extends MatterEntity {
     constructor(data){
         let {scene, x , y, texture, frame} = data;
-        super({...data, health: 20, maxHealth: 20, stamina: 100, maxStamina: 100, mana: 10, maxMana: 10, experience: 0, maxExperience: 6, level: 1, drops:[], name:'player'});
+        super({...data, health: 20, maxHealth: 20, stamina: 100, maxStamina: 100, mana: 10, maxMana: 10, experience: 0, maxExperience: 10, level: 1, drops:[], name:'player'});
         this.touching = [];
         this.inventory = new Inventory();
         //x and y position based on game configs and adjusted for zoom: EX: ((height - (height/zoom))/2. ((640 - (640/1.4))/2 = 91.43 becomes the new (0,0).
@@ -17,8 +17,8 @@ export default class Player extends MatterEntity {
         this.magic = new ManaBar(this.scene, 112, 124, this.mana, this.maxMana);
         this.xp = new ExperienceBar(this.scene, 210, 110, this.experience, this.maxExperience);
         //adding text:
-        this.text = new Phaser.GameObjects.Text(scene, 430, 110, ``, { fontFamily: 'Courier', fontSize: '11px', fill: '#000', resolution: 2});
-        this.text.depth = 1000;
+        this.text = new Phaser.GameObjects.Text(scene, 430, 110, ``, { fontFamily: 'Courier', fontSize: '11px', fill: '#FFFFF0', resolution: 2});
+        this.text.depth = 20;
         this.text.setScrollFactor(0,0);
         scene.add.existing(this.text);
 
@@ -122,7 +122,7 @@ export default class Player extends MatterEntity {
     levelUP = () => {
         if(this.experience >= this.maxExperience) {
             this.experience = 0
-            this.maxExperience += 5;           
+            this.maxExperience *= 1.5;           
             this.level++
             this.xp.modifyXp(this.experience, this.maxExperience);
             //play level up sound
@@ -133,7 +133,8 @@ export default class Player extends MatterEntity {
     update(){
         if(this.dead) return;
 
-        this.text.setText(`PLAYER LEVEL: ${this.level}`);
+        this.text.setText(`PLAYER LEVEL:${this.level}`);
+
         this.levelUP();
 
         const runningSpeed = 4;

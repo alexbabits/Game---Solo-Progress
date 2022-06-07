@@ -5,8 +5,6 @@ export default class CraftingScene extends UIBaseScene {
         super("CraftingScene");
         this.craftingSlots = [];
         this.uiScale = 1.0;
-        //created the instance of Crafting inside the CraftingScene constructor.
-        this.craftingInstance = new Crafting(this);
     }
 
     init(data){
@@ -14,11 +12,6 @@ export default class CraftingScene extends UIBaseScene {
         this.mainScene = mainScene;
         this.crafting = mainScene.crafting;
         this.crafting.inventory.subscribe( () => this.updateCraftableSlots() );
-    }
-
-    //made the preload
-    preload(){
-        this.load.audio('crafting', 'assets/audio/crafting.mp3');
     }
 
     destroyCraftingSlot(craftingSlot) {
@@ -65,9 +58,6 @@ export default class CraftingScene extends UIBaseScene {
     }
 
     create() {
-        //create the sound
-        this.craftingSound = this.sound.add('crafting');
-
         this.updateCraftableSlots();
         this.input.on("pointerover", () => {
             this.crafting.selected = this.hoverIndex;
@@ -83,11 +73,6 @@ export default class CraftingScene extends UIBaseScene {
         this.input.keyboard.on('keydown-E', () => {
             this.crafting.craft();
         });
-    }
-
-    //method to play the sound
-    playCraftingSound = () => {
-        this.craftingSound.play()
     }
 
 };

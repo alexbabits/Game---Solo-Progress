@@ -9,7 +9,6 @@ export default class DropItem extends Phaser.Physics.Matter.Sprite {
         this.setFrictionAir(1);
         this.setScale(0.5);
         this.sound = this.scene.sound.add('pickup', {volume: 0.3});
-        //this.craftingsound = this.scene.sound.add('craftingsound', {volume: 0.3}); 
         this.name = data.name
     };
 
@@ -17,12 +16,6 @@ export default class DropItem extends Phaser.Physics.Matter.Sprite {
         this.destroy();
         this.sound.play();
         return true;
-    };
-
-    /*
-    playCraftingSound = () => {
-        this.craftingsound.play();
-    };
-    */
+    };  
     
 };

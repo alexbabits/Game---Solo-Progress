@@ -25,7 +25,7 @@ export default class ExperienceBar extends Phaser.Scene {
     };
 
     modifyXp(amount) {
-        if(amount <= 0) {
+        if(amount <= 0 || amount >= this.experienceDenominator) {
             this.experienceValue = 0;
         } else {
             this.experienceValue = amount;

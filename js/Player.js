@@ -8,7 +8,7 @@ import ExperienceBar from "./ExperienceBar.js"
 export default class Player extends MatterEntity {
     constructor(data){
         let {scene, x , y, texture, frame} = data;
-        super({...data, health: 20, maxHealth: 20, stamina: 100, maxStamina: 100, mana: 10, maxMana: 10, experience: 0, maxExperience: 50, drops:[], name:'player'});
+        super({...data, health: 20, maxHealth: 20, stamina: 100, maxStamina: 100, mana: 10, maxMana: 10, experience: 0, maxExperience: 6, level: 1, drops:[], name:'player'});
         this.touching = [];
         this.inventory = new Inventory();
         //x and y position based on game configs and adjusted for zoom: EX: ((height - (height/zoom))/2. ((640 - (640/1.4))/2 = 91.43 becomes the new (0,0).
@@ -115,6 +115,16 @@ export default class Player extends MatterEntity {
 
     update(){
         if(this.dead) return;
+        
+        if(this.experience >= this.maxExperience){
+            this.maxExperience += 5
+            this.experience = 0
+            this.level++
+            this.xp.modifyXp(this.maxExperience);
+            console.log(`Current level: ${this.level}`);
+            console.log(`Total Experience to next level: ${this.maxExperience}`);
+            console.log(`Current Experience this level: ${this.experience}`);
+        }
 
         const runningSpeed = 4;
         const walkingSpeed = 2;

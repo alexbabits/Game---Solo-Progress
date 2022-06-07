@@ -8,7 +8,7 @@ import ExperienceBar from "./ExperienceBar.js"
 export default class Player extends MatterEntity {
     constructor(data){
         let {scene, x , y, texture, frame} = data;
-        super({...data, health: 2, maxHealth: 20, stamina: 100, maxStamina: 100, mana: 10, maxMana: 10, experience: 0, maxExperience: 50, drops:[], name:'player'});
+        super({...data, health: 2, maxHealth: 20, stamina: 100, maxStamina: 100, mana: 10, maxMana: 10, experience: 0, maxExperience: 10, level: 1, drops:[], name:'player'});
         this.touching = [];
         this.inventory = new Inventory();
         //x and y position based on game configs and adjusted for zoom: EX: ((height - (height/zoom))/2. ((640 - (640/1.4))/2 = 91.43 becomes the new (0,0).
@@ -16,6 +16,11 @@ export default class Player extends MatterEntity {
         this.energy = new StaminaBar(this.scene, 112, 138, this.stamina, this.maxStamina);
         this.magic = new ManaBar(this.scene, 112, 124, this.mana, this.maxMana);
         this.xp = new ExperienceBar(this.scene, 210, 110, this.experience, this.maxExperience);
+        //adding text:
+        this.text = new Phaser.GameObjects.Text(scene, 430, 110, ``, { fontFamily: 'Courier', fontSize: '11px', fill: '#FFFFF0', resolution: 2});
+        this.text.depth = 20;
+        this.text.setScrollFactor(0,0);
+        scene.add.existing(this.text);
 
         this.attackFlag = false;
         this.critFlag = false;
@@ -119,8 +124,24 @@ export default class Player extends MatterEntity {
         //console.log(`You should be doing special attack. Current Stamina: ${this.stamina}, maxStamina: ${this.maxStamina}, Current Mana: ${this.mana}, maxMana: ${this.maxMana},`); 
     }
 
+    
+    levelUP = () => {
+        if(this.experience >= this.maxExperience) {
+            this.experience = 0
+            this.maxExperience *= 1.5;           
+            this.level++
+            this.xp.modifyXp(this.experience, this.maxExperience);
+            //play level up sound
+            console.log(`level: ${this.level}, Current Experience: ${this.experience}, maxExperience: ${this.maxExperience}`);
+        }
+    }
+
     update(){
         if(this.dead) return;
+
+        this.text.setText(`PLAYER LEVEL:${this.level}`);
+
+        this.levelUP();
 
         const runningSpeed = 4;
         const walkingSpeed = 2;
@@ -392,7 +413,7 @@ export default class Player extends MatterEntity {
                     gameObject.destroy();
                     if(gameObject.givesXP === true){
                         this.experience += gameObject.XP
-                        this.xp.modifyXp(this.experience);
+                        this.xp.modifyXp(this.experience, this.maxExperience);
                         console.log(`You should have gained some experience! Current experience: ${this.experience}, maxExperience: ${this.maxExperience}`); 
                     }   
                 }
@@ -425,7 +446,7 @@ export default class Player extends MatterEntity {
                     gameObject.destroy();
                     if(gameObject.givesXP === true){
                         this.experience += gameObject.XP
-                        this.xp.modifyXp(this.experience);
+                        this.xp.modifyXp(this.experience, this.maxExperience);
                         console.log(`You should have gained some experience! Current experience: ${this.experience}, maxExperience: ${this.maxExperience}`); 
                     }   
                 }

@@ -100,8 +100,10 @@ export default class InventoryScene extends UIBaseScene {
             this.input.on("pointerdown", () => {
                 let clickDelay = this.time.now - lastTime;
                 lastTime = this.time.now;
-                if(clickDelay < 300) {
+                if(clickDelay < 300 && this.player.healthPotionUsable === true) {
                     this.player.useHealthPotion();
+                    this.player.healthPotionSwitch();
+                    setTimeout(()=> this.player.healthPotionSwitch(), 2000);
                 }  
             });
             

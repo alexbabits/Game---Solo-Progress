@@ -8,7 +8,7 @@ import ExperienceBar from "./ExperienceBar.js"
 export default class Player extends MatterEntity {
     constructor(data){
         let {scene, x , y, texture, frame} = data;
-        super({...data, health: 20, maxHealth: 20, stamina: 100, maxStamina: 100, mana: 10, maxMana: 10, experience: 0, maxExperience: 10, level: 1, drops:[], name:'player'});
+        super({...data, health: 2, maxHealth: 20, stamina: 100, maxStamina: 100, mana: 10, maxMana: 10, experience: 0, maxExperience: 10, level: 1, drops:[], name:'player'});
         this.touching = [];
         this.inventory = new Inventory();
         //x and y position based on game configs and adjusted for zoom: EX: ((height - (height/zoom))/2. ((640 - (640/1.4))/2 = 91.43 becomes the new (0,0).
@@ -26,6 +26,7 @@ export default class Player extends MatterEntity {
         this.critFlag = false;
         this.walkingSwitch = false;
         this.freezeFlag = false;
+        this.healthPotionUsable = true;
 
         const {Body,Bodies} = Phaser.Physics.Matter.Matter;
         this.playerCollider = Bodies.rectangle(this.x, this.y, 22, 32, {chamfer: {radius: 10}, isSensor:false, label:'playerCollider'});
@@ -58,15 +59,20 @@ export default class Player extends MatterEntity {
         this.setTexture('items', 0 );
         this.setOrigin(0.5);
     }
+
+    healthPotionSwitch = () => {
+        this.healthPotionUsable = !this.healthPotionUsable;
+    }
   
     useHealthPotion(){
         let currentItem = this.inventory.items[this.inventory.selected];
         if(currentItem == null) return;
-        if(currentItem.name === 'health_potion'){
+        if(currentItem.name === 'health_potion' && this.health < this.maxHealth){
             this.inventory.removeItem('health_potion');
-            this.health++;
-            console.log(this.health);
+            this.health += 5;
+            if(this.health >= this.maxHealth) this.health = this.maxHealth;
             this.hp.modifyhp(this.health);  
+            console.log(`current player health after potion use: ${this.health}`);
             //play sound
         }
     }
@@ -407,7 +413,6 @@ export default class Player extends MatterEntity {
                     gameObject.destroy();
                     if(gameObject.givesXP === true){
                         this.experience += gameObject.XP
-                        //this.levelUP();
                         this.xp.modifyXp(this.experience, this.maxExperience);
                         console.log(`You should have gained some experience! Current experience: ${this.experience}, maxExperience: ${this.maxExperience}`); 
                     }   
@@ -441,8 +446,6 @@ export default class Player extends MatterEntity {
                     gameObject.destroy();
                     if(gameObject.givesXP === true){
                         this.experience += gameObject.XP
-                        //maybe here?
-                        //this.levelUP();
                         this.xp.modifyXp(this.experience, this.maxExperience);
                         console.log(`You should have gained some experience! Current experience: ${this.experience}, maxExperience: ${this.maxExperience}`); 
                     }   

@@ -24,11 +24,17 @@ export default class ExperienceBar extends Phaser.Scene {
         this.draw(x, y);
     };
 
-    modifyXp(amount) {
-        if(amount <= 0 || amount >= this.experienceDenominator) {
+    modifyXp(currentAmount, maxAmount) {
+        if(currentAmount <= 0) {
             this.experienceValue = 0;
         } else {
-            this.experienceValue = amount;
+            this.experienceValue = currentAmount;
+        }
+
+        if(currentAmount >= maxAmount){
+            this.experienceDenominator = this.experienceDenominator += 5
+        } else {
+            this.experienceDenominator = maxAmount;
         }
         this.draw(this.x, this.y);
 
@@ -47,7 +53,7 @@ export default class ExperienceBar extends Phaser.Scene {
         this.bar.fillRoundedRect(x, y, width, height, 0);
         this.bar.fillStyle(0x7300e6);
     
-        if(experienceWidth > 0){
+        if(experienceWidth >= 0){
             this.bar.fillRoundedRect(x, y, experienceWidth, height, 0);
         }
 

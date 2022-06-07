@@ -113,18 +113,23 @@ export default class Player extends MatterEntity {
         //console.log(`You should be doing special attack. Current Stamina: ${this.stamina}, maxStamina: ${this.maxStamina}, Current Mana: ${this.mana}, maxMana: ${this.maxMana},`); 
     }
 
+    
+    levelUP = () => {
+        if(this.experience >= this.maxExperience) {
+            this.experience = 0
+            this.maxExperience += 5;           
+            this.level++
+            this.xp.modifyXp(this.experience, this.maxExperience);
+            //play level up sound
+            console.log(`level: ${this.level}, Current Experience: ${this.experience}, maxExperience: ${this.maxExperience}`);
+        }
+    }
+    
+
     update(){
         if(this.dead) return;
-        
-        if(this.experience >= this.maxExperience){
-            this.maxExperience += 5
-            this.experience = 0
-            this.level++
-            this.xp.modifyXp(this.maxExperience);
-            console.log(`Current level: ${this.level}`);
-            console.log(`Total Experience to next level: ${this.maxExperience}`);
-            console.log(`Current Experience this level: ${this.experience}`);
-        }
+
+        this.levelUP();
 
         const runningSpeed = 4;
         const walkingSpeed = 2;
@@ -396,7 +401,8 @@ export default class Player extends MatterEntity {
                     gameObject.destroy();
                     if(gameObject.givesXP === true){
                         this.experience += gameObject.XP
-                        this.xp.modifyXp(this.experience);
+                        //this.levelUP();
+                        this.xp.modifyXp(this.experience, this.maxExperience);
                         console.log(`You should have gained some experience! Current experience: ${this.experience}, maxExperience: ${this.maxExperience}`); 
                     }   
                 }
@@ -429,7 +435,9 @@ export default class Player extends MatterEntity {
                     gameObject.destroy();
                     if(gameObject.givesXP === true){
                         this.experience += gameObject.XP
-                        this.xp.modifyXp(this.experience);
+                        //maybe here?
+                        //this.levelUP();
+                        this.xp.modifyXp(this.experience, this.maxExperience);
                         console.log(`You should have gained some experience! Current experience: ${this.experience}, maxExperience: ${this.maxExperience}`); 
                     }   
                 }

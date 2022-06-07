@@ -16,6 +16,11 @@ export default class Player extends MatterEntity {
         this.energy = new StaminaBar(this.scene, 112, 138, this.stamina, this.maxStamina);
         this.magic = new ManaBar(this.scene, 112, 124, this.mana, this.maxMana);
         this.xp = new ExperienceBar(this.scene, 210, 110, this.experience, this.maxExperience);
+        //adding text:
+        this.text = new Phaser.GameObjects.Text(scene, 430, 110, ``, { fontFamily: 'Courier', fontSize: '11px', fill: '#000', resolution: 2});
+        this.text.depth = 1000;
+        this.text.setScrollFactor(0,0);
+        scene.add.existing(this.text);
 
         this.attackFlag = false;
         this.critFlag = false;
@@ -124,11 +129,11 @@ export default class Player extends MatterEntity {
             console.log(`level: ${this.level}, Current Experience: ${this.experience}, maxExperience: ${this.maxExperience}`);
         }
     }
-    
 
     update(){
         if(this.dead) return;
 
+        this.text.setText(`PLAYER LEVEL: ${this.level}`);
         this.levelUP();
 
         const runningSpeed = 4;

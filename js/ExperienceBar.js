@@ -16,7 +16,6 @@ export default class ExperienceBar extends Phaser.Scene {
             width: 200,
             height: 9
         }
-        this.pixelPerExperience = this.size.width / this.experienceDenominator;
 
         scene.add.existing(this.bar);
         scene.add.existing(this.text);
@@ -47,12 +46,12 @@ export default class ExperienceBar extends Phaser.Scene {
 
         const { width, height } = this.size;
         const chamfer = 4;
-        const experienceWidth = (this.experienceValue * this.pixelPerExperience);
+        const experienceWidth = (this.experienceValue * (this.size.width/this.experienceDenominator));
         
         this.bar.fillStyle(0xFFFFFF);
         this.bar.fillRoundedRect(x, y, width, height, 0);
+
         this.bar.fillStyle(0x7300e6);
-    
         if(experienceWidth >= 0){
             this.bar.fillRoundedRect(x, y, experienceWidth, height, 0);
         }

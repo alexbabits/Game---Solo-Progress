@@ -40,7 +40,6 @@ export default class Enemy extends MatterEntity {
             frictionAir: 0.35,
         });
         this.setExistingBody(compoundBody);
-        this.setFixedRotation();
         this.setScale(0.75);
 
         this.scene.matterCollision.addOnCollideStart({
@@ -64,7 +63,7 @@ export default class Enemy extends MatterEntity {
 
     update(){
         if(this.dead) return;
-        
+        this.setFixedRotation();
         if(this.attacking){
             let direction = this.attacking.position.subtract(this.position);
             if(direction.length() > (24*this.attackDistAdj)){

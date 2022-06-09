@@ -19,16 +19,23 @@ export default class Resource extends MatterEntity {
         let givesXP = resource.properties.find(p => p.name== 'givesXP').value;
         let health = resource.properties.find(p => p.name== 'health').value;
         let maxHealth = resource.properties.find(p => p.name== 'maxHealth').value;
-        super({scene, x:resource.x, y:resource.y, texture: 'resources', frame:resource.type, drops, depth, health, maxHealth, tintable, givesXP, name:resource.type});
-        let yOrigin = resource.properties.find(p=>p.name =='yOrigin').value;
 
+        let yOrigin = resource.properties.find(p=>p.name =='yOrigin').value;
+        let xOrigin = resource.properties.find(p=>p.name =='xOrigin').value;
+        let WidthAdj = resource.properties.find(p=>p.name =='WidthAdj').value;
+        let HeightAdj = resource.properties.find(p=>p.name =='HeightAdj').value;
+        let ChamTL = resource.properties.find(p=>p.name =='ChamTL').value;
+        let ChamTR = resource.properties.find(p=>p.name =='ChamTR').value;
+
+        super({scene, x:resource.x, y:resource.y, texture: 'resources', frame:resource.type, drops, depth, health, maxHealth, tintable, givesXP, name:resource.type});
         this.y = this.y + this.height * (yOrigin - 0.5);
+        this.x = this.x + this.width * (xOrigin - 0.5);
 
         const {Bodies} = Phaser.Physics.Matter.Matter;
-        let circleCollider = Bodies.circle(this.x, this.y, 12, {isSensor:false, label:'circleCollider'});
+        let circleCollider = Bodies.rectangle(this.x, this.y, WidthAdj*14, HeightAdj*21, {chamfer: { radius: [ChamTL*6, ChamTR*6, 6, 6] }, isSensor:false, label:'circleCollider'});
 
         this.setExistingBody(circleCollider);
-        this.setOrigin(0.5, yOrigin);
+        this.setOrigin(xOrigin, yOrigin);
         this.setStatic(true);
     }
 

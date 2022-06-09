@@ -1197,6 +1197,11 @@
                          "value":10
                         }, 
                         {
+                         "name":"attackDistAdj",
+                         "type":"float",
+                         "value":1.583
+                        }, 
+                        {
                          "name":"collides",
                          "type":"bool",
                          "value":true
@@ -1275,6 +1280,11 @@
                          "value":7
                         }, 
                         {
+                         "name":"attackDistAdj",
+                         "type":"float",
+                         "value":1
+                        }, 
+                        {
                          "name":"collides",
                          "type":"bool",
                          "value":true
@@ -1351,6 +1361,11 @@
                          "name":"XP",
                          "type":"int",
                          "value":5
+                        }, 
+                        {
+                         "name":"attackDistAdj",
+                         "type":"float",
+                         "value":1.333
                         }, 
                         {
                          "name":"collides",

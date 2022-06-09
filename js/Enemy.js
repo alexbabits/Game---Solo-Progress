@@ -26,14 +26,13 @@ export default class Enemy extends MatterEntity {
         let ChamTR = enemy.properties.find(p=>p.name =='ChamTR').value;
         let ChamBR = enemy.properties.find(p=>p.name =='ChamBR').value;
         let ChamBL = enemy.properties.find(p=>p.name =='ChamBL').value;
+        let attackDistAdj = enemy.properties.find(p=>p.name =='attackDistAdj').value;
 
         super({scene, x:enemy.x, y:enemy.y, texture:'enemies', frame:`${enemy.name}_idle_1`, drops, health, maxHealth, tintable, givesXP, XP, name:enemy.name});
+        this.attackDistAdj = attackDistAdj;
 
         const {Body,Bodies} = Phaser.Physics.Matter.Matter;
-
         let enemyCollider = Bodies.rectangle(this.x, this.y, WidthAdj*22, HeightAdj*34, {chamfer: { radius: [ChamTL*10, ChamTR*10, ChamBR*12, ChamBL*6] }, isSensor:false,label:'enemyCollider'});
-
-
 
         let enemySensor = Bodies.circle(this.x, this.y, 80, {isSensor:true, label:'enemySensor'});
         const compoundBody = Body.create({
@@ -65,10 +64,10 @@ export default class Enemy extends MatterEntity {
 
     update(){
         if(this.dead) return;
-
+        
         if(this.attacking){
             let direction = this.attacking.position.subtract(this.position);
-            if(direction.length() > 24){
+            if(direction.length() > (24*this.attackDistAdj)){
                 let v = direction.normalize();
                 this.setVelocityX(direction.x);
                 this.setVelocityY(direction.y);

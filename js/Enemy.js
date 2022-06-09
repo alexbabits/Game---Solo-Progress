@@ -19,10 +19,22 @@ export default class Enemy extends MatterEntity {
         let tintable = enemy.properties.find(p => p.name== 'tintable').value;
         let givesXP = enemy.properties.find(p => p.name== 'givesXP').value;
         let XP = enemy.properties.find(p => p.name== 'XP').value;
+
+        let WidthAdj = enemy.properties.find(p=>p.name =='WidthAdj').value;
+        let HeightAdj = enemy.properties.find(p=>p.name =='HeightAdj').value;
+        let ChamTL = enemy.properties.find(p=>p.name =='ChamTL').value;
+        let ChamTR = enemy.properties.find(p=>p.name =='ChamTR').value;
+        let ChamBR = enemy.properties.find(p=>p.name =='ChamBR').value;
+        let ChamBL = enemy.properties.find(p=>p.name =='ChamBL').value;
+
         super({scene, x:enemy.x, y:enemy.y, texture:'enemies', frame:`${enemy.name}_idle_1`, drops, health, maxHealth, tintable, givesXP, XP, name:enemy.name});
 
         const {Body,Bodies} = Phaser.Physics.Matter.Matter;
-        let enemyCollider = Bodies.circle(this.x, this.y, 12, {isSensor:false,label:'enemyCollider'});
+
+        let enemyCollider = Bodies.rectangle(this.x, this.y, WidthAdj*22, HeightAdj*34, {chamfer: { radius: [ChamTL*10, ChamTR*10, ChamBR*12, ChamBL*6] }, isSensor:false,label:'enemyCollider'});
+
+
+
         let enemySensor = Bodies.circle(this.x, this.y, 80, {isSensor:true, label:'enemySensor'});
         const compoundBody = Body.create({
             parts:[enemyCollider,enemySensor],
@@ -56,7 +68,7 @@ export default class Enemy extends MatterEntity {
 
         if(this.attacking){
             let direction = this.attacking.position.subtract(this.position);
-            if(direction.length()>24){
+            if(direction.length() > 24){
                 let v = direction.normalize();
                 this.setVelocityX(direction.x);
                 this.setVelocityY(direction.y);

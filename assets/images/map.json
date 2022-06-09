@@ -1162,6 +1162,36 @@
                  "name":"bear",
                  "properties":[
                         {
+                         "name":"ChamBL",
+                         "type":"float",
+                         "value":1
+                        }, 
+                        {
+                         "name":"ChamBR",
+                         "type":"float",
+                         "value":1
+                        }, 
+                        {
+                         "name":"ChamTL",
+                         "type":"float",
+                         "value":2.8
+                        }, 
+                        {
+                         "name":"ChamTR",
+                         "type":"float",
+                         "value":2
+                        }, 
+                        {
+                         "name":"HeightAdj",
+                         "type":"float",
+                         "value":1.294
+                        }, 
+                        {
+                         "name":"WidthAdj",
+                         "type":"float",
+                         "value":2.727
+                        }, 
+                        {
                          "name":"XP",
                          "type":"int",
                          "value":10
@@ -1210,6 +1240,36 @@
                  "name":"ent",
                  "properties":[
                         {
+                         "name":"ChamBL",
+                         "type":"float",
+                         "value":2
+                        }, 
+                        {
+                         "name":"ChamBR",
+                         "type":"float",
+                         "value":1
+                        }, 
+                        {
+                         "name":"ChamTL",
+                         "type":"float",
+                         "value":1
+                        }, 
+                        {
+                         "name":"ChamTR",
+                         "type":"float",
+                         "value":1
+                        }, 
+                        {
+                         "name":"HeightAdj",
+                         "type":"float",
+                         "value":1.647
+                        }, 
+                        {
+                         "name":"WidthAdj",
+                         "type":"float",
+                         "value":1
+                        }, 
+                        {
                          "name":"XP",
                          "type":"int",
                          "value":7
@@ -1257,6 +1317,36 @@
                  "id":70,
                  "name":"wolf",
                  "properties":[
+                        {
+                         "name":"ChamBL",
+                         "type":"float",
+                         "value":2.667
+                        }, 
+                        {
+                         "name":"ChamBR",
+                         "type":"float",
+                         "value":1.333
+                        }, 
+                        {
+                         "name":"ChamTL",
+                         "type":"float",
+                         "value":1.6
+                        }, 
+                        {
+                         "name":"ChamTR",
+                         "type":"float",
+                         "value":1.6
+                        }, 
+                        {
+                         "name":"HeightAdj",
+                         "type":"float",
+                         "value":1
+                        }, 
+                        {
+                         "name":"WidthAdj",
+                         "type":"float",
+                         "value":2.273
+                        }, 
                         {
                          "name":"XP",
                          "type":"int",

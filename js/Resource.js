@@ -32,9 +32,9 @@ export default class Resource extends MatterEntity {
         this.x = this.x + this.width * (xOrigin - 0.5);
 
         const {Bodies} = Phaser.Physics.Matter.Matter;
-        let circleCollider = Bodies.rectangle(this.x, this.y, WidthAdj*14, HeightAdj*21, {chamfer: { radius: [ChamTL*6, ChamTR*6, 6, 6] }, isSensor:false, label:'circleCollider'});
+        let customCollider = Bodies.rectangle(this.x, this.y, WidthAdj*14, HeightAdj*21, {chamfer: { radius: [ChamTL*6, ChamTR*6, 6, 6] }, isSensor:false, label:'customCollider'});
 
-        this.setExistingBody(circleCollider);
+        this.setExistingBody(customCollider);
         this.setOrigin(xOrigin, yOrigin);
         this.setStatic(true);
     }

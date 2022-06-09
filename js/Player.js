@@ -8,7 +8,7 @@ import ExperienceBar from "./ExperienceBar.js"
 export default class Player extends MatterEntity {
     constructor(data){
         let {scene, x , y, texture, frame} = data;
-        super({...data, health: 2, maxHealth: 20, stamina: 100, maxStamina: 100, mana: 10, maxMana: 10, experience: 0, maxExperience: 10, level: 1, drops:[], name:'player'});
+        super({...data, health: 1000, maxHealth: 1000, stamina: 100, maxStamina: 100, mana: 10, maxMana: 10, experience: 0, maxExperience: 10, level: 1, drops:[], name:'player'});
         this.touching = [];
         this.inventory = new Inventory();
         //x and y position based on game configs and adjusted for zoom: EX: ((height - (height/zoom))/2. ((640 - (640/1.4))/2 = 91.43 becomes the new (0,0).

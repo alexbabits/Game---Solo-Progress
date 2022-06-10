@@ -10,9 +10,18 @@ export default class Enemy extends MatterEntity {
         scene.load.audio('ent', 'assets/audio/ent.mp3');
     };
 
+    /*
+    //attempt to bring in mainscene with the init method so I can invoke the mainscene function.
+    init(data2){
+        let { mainScene } = data2;
+        this.mainScene = mainScene;
+    }
+    */
+
     constructor(data){
 
         let {scene, enemy} = data;
+        //let {mainscene} = data;
         let drops = JSON.parse(enemy.properties.find(p => p.name== 'drops').value);
         let health = enemy.properties.find(p => p.name== 'health').value;
         let maxHealth = enemy.properties.find(p => p.name== 'maxHealth').value;
@@ -47,7 +56,15 @@ export default class Enemy extends MatterEntity {
             callback: other => {if(other.gameObjectB && other.gameObjectB.name == 'player') this.attacking = other.gameObjectB;},
             context:this.scene,
         });
-    };   
+    };  
+
+/*
+//If I can create enemies on death here in the Enemy class, then I'm all set.
+    onDeath = () => {
+        this.mainScene.respawnAllEnemies();
+        setTimeout(()=> this.mainScene.respawnAllEnemies(), 1000);
+    }
+*/
 
     attack = (target) => {
         if(target.dead || this.dead) {

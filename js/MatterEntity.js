@@ -69,6 +69,7 @@ export default class MatterEntity extends Phaser.Physics.Matter.Sprite {
         console.log(`Special Attack on: ${this.name} Health: ${this.health}`);
 
         if(this.dead){
+            //If I find a way to create enemies inside the onDeath method in Enemy.js, then I'm all set.
             this.onDeath();
             this.drops.forEach(drop => {
                 const name = Object.keys(items).find(item => items[item].frame == drop);

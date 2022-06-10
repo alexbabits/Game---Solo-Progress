@@ -74,12 +74,17 @@ export default class MainScene extends Phaser.Scene {
         this.map.getObjectLayer('Resources').objects.forEach(resource =>  new Resource({scene:this, resource}));
 
         this.map.getObjectLayer('Enemies').objects.forEach(enemy =>  this.enemies.push(new Enemy({scene:this, enemy})));
+    
+        const respawnAllEnemies = () => {
+            if("enemy dies"){
+                 this.map.getObjectLayer('Enemies').objects.forEach(enemy =>  this.enemies.push(new Enemy({scene:this, enemy})));
+             }
+         }      
+         setTimeout(respawnAllEnemies, 1000); 
+        //If I can say that the enemy died here, then I'm all set.
+        //Tried this.enemy.dead, enemy.dead, this.dead, this.scene.enemy.dead none worked.  
 
-        const spawnAllEnemies = () => {
-            this.map.getObjectLayer('Enemies').objects.forEach(enemy =>  this.enemies.push(new Enemy({scene:this, enemy})));
-        }       
-        setTimeout(spawnAllEnemies, 1000);
-        
+
 
 
 

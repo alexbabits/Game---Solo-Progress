@@ -411,6 +411,7 @@ export default class Player extends MatterEntity {
             };        
                 if(gameObject.dead) {
                     gameObject.destroy();
+                    //something like this gameObject.respawnAllEnemies(); or 'new Enemy({})'
                     if(gameObject.givesXP === true){
                         this.experience += gameObject.XP
                         this.xp.modifyXp(this.experience, this.maxExperience);

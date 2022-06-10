@@ -72,7 +72,16 @@ export default class MainScene extends Phaser.Scene {
         this.matter.world.convertTilemapLayer(background);
     
         this.map.getObjectLayer('Resources').objects.forEach(resource =>  new Resource({scene:this, resource}));
+
         this.map.getObjectLayer('Enemies').objects.forEach(enemy =>  this.enemies.push(new Enemy({scene:this, enemy})));
+
+        const spawnAllEnemies = () => {
+            this.map.getObjectLayer('Enemies').objects.forEach(enemy =>  this.enemies.push(new Enemy({scene:this, enemy})));
+        }       
+        setTimeout(spawnAllEnemies, 1000);
+        
+
+
 
         const barFrame = this.add.image(100, 100, 'barFrame').setOrigin(0); 
         barFrame.depth = 9;

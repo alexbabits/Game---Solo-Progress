@@ -146,9 +146,7 @@ export default class Menu extends Phaser.Scene{
             this.scene.resume('MainScene');
             this.scene.stop('Menu');
             this.menuSong.stop();
-            console.log(`Resumes Game. (Not yet available)`);
         })
-
 
         OptionButton.on('pointerover',() => {
             OptionButton.setTint(0x999999);
@@ -165,7 +163,6 @@ export default class Menu extends Phaser.Scene{
             this.scene.start('ControlsScene');
             this.scene.pause('Menu');
             this.menuSong.pause();
-            console.log(`Brings up options. (Not yet available)`);
         })
 
         //keeps sound playing when clicked off browser when false. Probably need something like this for the storm interval timer, to pause it, otherwise it's always ticking.

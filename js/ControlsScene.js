@@ -19,7 +19,6 @@ export default class ControlsScene extends Phaser.Scene {
         screen.on('pointerup',() => {
             this.scene.stop('ControlsScene')
             this.scene.start('Menu')
-            console.log(`Brings up options. (Not yet available)`);
         })
         screen.depth = 100;
     };

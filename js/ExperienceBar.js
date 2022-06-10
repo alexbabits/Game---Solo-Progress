@@ -31,7 +31,7 @@ export default class ExperienceBar extends Phaser.Scene {
         }
 
         if(currentAmount >= maxAmount){
-            this.experienceDenominator = this.experienceDenominator += 5
+            this.experienceDenominator = this.experienceDenominator *= 1.5
         } else {
             this.experienceDenominator = maxAmount;
         }

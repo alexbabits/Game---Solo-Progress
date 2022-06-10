@@ -76,17 +76,27 @@ export default class MainScene extends Phaser.Scene {
         this.map.getObjectLayer('Enemies').objects.forEach(enemy =>  this.enemies.push(new Enemy({scene:this, enemy})));
     
         const respawnAllEnemies = () => {
-            if("enemy dies"){
+        //If I can say that the enemy died here, then I'm all set.
+        //Tried this.enemy.dead, enemy.dead, this.dead, this.scene.enemy.dead none worked.  
+            if("enemy is dead"){
                  this.map.getObjectLayer('Enemies').objects.forEach(enemy =>  this.enemies.push(new Enemy({scene:this, enemy})));
              }
          }      
          setTimeout(respawnAllEnemies, 1000); 
-        //If I can say that the enemy died here, then I'm all set.
-        //Tried this.enemy.dead, enemy.dead, this.dead, this.scene.enemy.dead none worked.  
+
+         //If you can get this to change from false to true inside create, that's good. Then work on it with all elements in enemies array, then specific enemy in enemies array.
+         console.log(`is the player dead? ${this.player.dead}`);
 
 
-
-
+         /* //or something like this
+                 const respawnAllEnemies = () => {
+                 this.map.getObjectLayer('Enemies').objects.forEach(enemy => {
+                    if(enemy.dead){
+                        this.enemies.push(new Enemy({scene:this, enemy}))
+                    }
+                });
+        }   
+        */
 
         const barFrame = this.add.image(100, 100, 'barFrame').setOrigin(0); 
         barFrame.depth = 9;
@@ -199,6 +209,28 @@ export default class MainScene extends Phaser.Scene {
     update(){
         this.enemies.forEach(enemy => enemy.update());
         this.player.update();
+
+        /*
+        This works, when player dies, 60 enemies spawn per second. 
+        const respawnAllEnemies = () => {
+            if(this.player.dead){
+                 this.map.getObjectLayer('Enemies').objects.forEach(enemy =>  this.enemies.push(new Enemy({scene:this, enemy})));
+             }
+         }      
+         setTimeout(respawnAllEnemies(), 1000); 
+         */
+
+
+         /*
+         Now, how do I get the enemy property? something like that? 
+         const respawnAllEnemies = () => {
+            if(this.enemies.enemy.dead){
+                 this.map.getObjectLayer('Enemies').objects.forEach(enemy =>  this.enemies.push(new Enemy({scene:this, enemy})));
+             }
+         }      
+         setTimeout(respawnAllEnemies(), 1000); 
+        */
+
     };
 
 };

@@ -76,29 +76,39 @@ export default class MainScene extends Phaser.Scene {
         this.map.getObjectLayer('Resources').objects.forEach(resource =>  new Resource({scene:this, resource}));
 
         this.map.getObjectLayer('Enemies').objects.forEach(enemy =>  this.enemies.push(new Enemy({scene:this, enemy})));
-
+        //console.log(this.enemies);
         const respawnAllEnemies = () => {
-        //If I can say that the enemy died here, then I'm all set.
-        //Tried this.enemy.dead, enemy.dead, this.dead, this.scene.enemy.dead none worked.  
+ 
             if("enemy is dead"){
                  this.map.getObjectLayer('Enemies').objects.forEach(enemy =>  this.enemies.push(new Enemy({scene:this, enemy})));
              }
-         }      
+         }     
          setTimeout(respawnAllEnemies, 1000); 
-
+        //If I can say that the enemy died here, then I'm all set.
+        //Tried this.enemy.dead, enemy.dead, this.dead, this.scene.enemy.dead none worked.  
+/*
          //If you can get this to change from false to true inside create, that's good. Then work on it with all elements in enemies array, then specific enemy in enemies array.
-         console.log(`is the player dead? ${this.player.dead}`);
-
-
-         /* //or something like this
+         //console.log(`is the player dead? ${this.player.dead}`);
+         for (let enemyIndex = 0; enemyIndex < this.enemies.length; enemyIndex++){
+            console.log(this.enemies[enemyIndex]); //This successfully shows each enemy in the array.
+            console.log(this.enemies.find(enemy => enemy.dead === false)); //successfully finds all enemies where the dead property is false!
+         };
+*/
+         /*
+          //or something like this
                  const respawnAllEnemies = () => {
                  this.map.getObjectLayer('Enemies').objects.forEach(enemy => {
                     if(enemy.dead){
                         this.enemies.push(new Enemy({scene:this, enemy}))
                     }
                 });
-        }   
-        */
+            }   
+            */
+           this.enemies.forEach(enemy => {
+            if(enemy.name === 'bear' && enemy.dead === true){
+                this.map.getObjectLayer('Enemies').objects.forEach(enemy =>  this.enemies.push(new Enemy({scene:this, enemy})));
+            }
+           })
 
         const barFrame = this.add.image(100, 100, 'barFrame').setOrigin(0); 
         barFrame.depth = 9;
@@ -209,9 +219,10 @@ export default class MainScene extends Phaser.Scene {
     };  
 
     update(){
-        this.enemies.forEach(enemy => enemy.update());
+        this.enemies.forEach(enemy => enemy.update())
         this.player.update();
-        
+        //console.log(this.enemies.find(enemy => enemy.dead === true));
+        /*
         //Allows for spawn of 1 enemy set when player dies. 
         console.log(`is the player dead yet? ${this.player.dead}. Respawn trigger default to false: ${this.respawnTrigger}`);
         if(this.player.dead === true && this.respawnTrigger === false){
@@ -220,6 +231,8 @@ export default class MainScene extends Phaser.Scene {
             this.respawnTrigger = true
             console.log(`respawn Trigger status (should have returned to true after one tick): ${this.respawnTrigger}`)
         }
+        */
+       
         /*
         This works, when player dies, 60 enemies spawn per second. 
         const respawnAllEnemies = () => {

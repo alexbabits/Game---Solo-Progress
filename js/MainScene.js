@@ -26,7 +26,9 @@ export default class MainScene extends Phaser.Scene {
         this.load.audio('lightning', 'assets/audio/lightning.mp3');
         this.load.audio('rain', 'assets/audio/rain.mp3');
         this.load.image('barFrame', 'assets/images/barFrame.png');
-        this.load.image('expBarFrame', 'assets/images/expBarFrame.png');    
+        this.load.image('expBarFrame', 'assets/images/expBarFrame.png');  
+        
+        this.respawnTrigger = false;
     };
 
     create(){
@@ -74,7 +76,7 @@ export default class MainScene extends Phaser.Scene {
         this.map.getObjectLayer('Resources').objects.forEach(resource =>  new Resource({scene:this, resource}));
 
         this.map.getObjectLayer('Enemies').objects.forEach(enemy =>  this.enemies.push(new Enemy({scene:this, enemy})));
-    
+
         const respawnAllEnemies = () => {
         //If I can say that the enemy died here, then I'm all set.
         //Tried this.enemy.dead, enemy.dead, this.dead, this.scene.enemy.dead none worked.  
@@ -204,12 +206,20 @@ export default class MainScene extends Phaser.Scene {
             esc: Phaser.Input.Keyboard.KeyCodes.ESC,
         });
 
-    };
+    };  
 
     update(){
         this.enemies.forEach(enemy => enemy.update());
         this.player.update();
-
+        
+        //Allows for spawn of 1 enemy set when player dies. 
+        console.log(`is the player dead yet? ${this.player.dead}. Respawn trigger default to false: ${this.respawnTrigger}`);
+        if(this.player.dead === true && this.respawnTrigger === false){
+            console.log(`respawn Trigger status (should be false here for one tick): ${this.respawnTrigger}`)
+            this.map.getObjectLayer('Enemies').objects.forEach(enemy =>  this.enemies.push(new Enemy({scene:this, enemy})));
+            this.respawnTrigger = true
+            console.log(`respawn Trigger status (should have returned to true after one tick): ${this.respawnTrigger}`)
+        }
         /*
         This works, when player dies, 60 enemies spawn per second. 
         const respawnAllEnemies = () => {

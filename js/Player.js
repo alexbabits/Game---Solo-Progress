@@ -55,9 +55,9 @@ export default class Player extends MatterEntity {
     }
 
     onDeath = () => {
-        this.anims.stop();
-        this.setTexture('items', 0 );
-        this.setOrigin(0.5);
+        this.anims.play('hero_death');
+        this.anims.stopAfterRepeat(0);
+        //this.scene.pause("MainScene");
     }
 
     healthPotionSwitch = () => {

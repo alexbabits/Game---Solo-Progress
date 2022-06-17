@@ -76,7 +76,7 @@ export default class MainScene extends Phaser.Scene {
         this.map.getObjectLayer('Resources').objects.forEach(resource =>  new Resource({scene:this, resource}));
         this.map.getObjectLayer('Enemies').objects.forEach(enemy =>  this.enemies.push(new Enemy({scene:this, enemy})));
 
-        setTimeout( () => this.functionCreateEnemies(), 2000)
+        setTimeout( () => this.respawnAllEnemies(), 2000)
         
 
         const barFrame = this.add.image(100, 100, 'barFrame').setOrigin(0); 
@@ -187,7 +187,7 @@ export default class MainScene extends Phaser.Scene {
 
     };  
 
-    functionCreateEnemies = () => {
+    respawnAllEnemies = () => {
         this.enemies.forEach(enemy => {
             console.log(`name: ${enemy.name}. dead? ${enemy.dead}`)
             if(enemy.name === 'wolf' && enemy.dead === false){

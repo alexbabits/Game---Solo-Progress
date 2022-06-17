@@ -2,6 +2,7 @@ import Crafting from "./Crafting.js";
 import Enemy from "./Enemy.js";
 import Player from "./Player.js";
 import Resource from "./Resource.js";
+import LoadingBar from "./LoadingBar.js";
 import Menu from "./Menu.js";
 
 export default class MainScene extends Phaser.Scene {
@@ -11,6 +12,7 @@ export default class MainScene extends Phaser.Scene {
     };
 
     preload() {
+        LoadingBar.preload(this);
         Player.preload(this);
         Enemy.preload(this);
         Resource.preload(this);
@@ -25,6 +27,7 @@ export default class MainScene extends Phaser.Scene {
         this.load.atlas('lightning', 'assets/images/lightning.png', 'assets/images/lightning_atlas.json');
         this.load.audio('lightning', 'assets/audio/lightning.mp3');
         this.load.audio('rain', 'assets/audio/rain.mp3');
+        this.load.image('Healthbarframe', 'assets/images/Healthbarframe.png');
         this.load.image('barFrame', 'assets/images/barFrame.png');
         this.load.image('expBarFrame', 'assets/images/expBarFrame.png');    
     };

@@ -26,9 +26,6 @@ export default class MainScene extends Phaser.Scene {
         this.load.audio('lightning', 'assets/audio/lightning.mp3');
         this.load.audio('rain', 'assets/audio/rain.mp3');
         this.load.image('Healthbarframe', 'assets/images/Healthbarframe.png');
-        for (let i = 0; i < 1000; i++) {
-            this.load.image('Healthbarframe'+i, 'assets/images/Healthbarframe.png');
-                }   
 
         //adding graphics so they can be rectangles in the future.
         let progressBar = this.add.graphics();

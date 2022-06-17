@@ -26,6 +26,9 @@ export default class MainScene extends Phaser.Scene {
         this.load.audio('lightning', 'assets/audio/lightning.mp3');
         this.load.audio('rain', 'assets/audio/rain.mp3');
         this.load.image('Healthbarframe', 'assets/images/Healthbarframe.png');
+        for (let i = 0; i < 1000; i++) {
+            this.load.image('Healthbarframe'+i, 'assets/images/Healthbarframe.png');
+                }   
 
         //adding graphics so they can be rectangles in the future.
         let progressBar = this.add.graphics();
@@ -88,17 +91,10 @@ export default class MainScene extends Phaser.Scene {
             percentText.destroy();
             assetText.destroy();
         });
-
-        //Just iterating the image 500 times to take time to load so loading bar has a purpose. zenvalogo doesn't exist but it doesn't matter it seems.
-        this.load.image('logo', 'zenvalogo.png');
-        for (let i = 0; i < 10; i++) {
-            this.load.image('logo'+i, 'zenvalogo.png');
-                }   
+  
     };
 
     create(){
-        //logo for loading bar that doesn't exist yet.
-        let logo = this.add.image(400, 300, 'logo');
         this.input.setDefaultCursor('url(assets/images/cursor.png), pointer')
 
         const map = this.make.tilemap({key: 'map'});

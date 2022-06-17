@@ -4,7 +4,7 @@ import UIBaseScene from "./UIBaseScene.js";
 export default class InventoryScene extends UIBaseScene {
     constructor(){
         super("InventoryScene");
-        this.rows = 1;
+        this.rows = 0;
         this.gridSpacing = 4;
         this.inventorySlots = [];
     }
@@ -15,6 +15,8 @@ export default class InventoryScene extends UIBaseScene {
         this.inventory = mainScene.player.inventory;
         this.maxColumns = this.inventory.maxColumns;
         this.maxRows = this.inventory.maxRows;
+        //attempt to get player health involved here.
+        this.player = mainScene.player;
         this.inventory.subscribe(() => this.refresh());
     };
 
@@ -25,6 +27,8 @@ export default class InventoryScene extends UIBaseScene {
     }
 
     refresh() {
+        //set it to null anytime the inventory scene refreshed.
+        this.inventory.selected = null;
         this.inventorySlots.forEach( slots => this.destroyInventorySlot(slots));
         this.inventorySlots = [];
         for (let index = 0; index < this.maxColumns * this.rows; index++) {
@@ -52,23 +56,28 @@ export default class InventoryScene extends UIBaseScene {
             };
             this.inventorySlots.push(inventorySlot);
         };
-        this.updateSelected();
+        this.tintSelectedSlot();
     };
 
-    updateSelected() {
-        for (let index = 0; index < this.maxColumns; index++) {
+    tintSelectedSlot() {
+        for (let index = 0; index < this.maxColumns * this.rows; index++) {
             this.inventorySlots[index].tint = this.inventory.selected === index ? 0xffff00 : 0xffffff;
         }
     };
 
     create() {
-        this.input.on("wheel", (pointer, gameObject, deltaX, deltaY, deltaZ) => {
-            if(this.scene.isActive('CraftingScene')) return;
-            this.inventory.selected = Math.max(0, this.inventory.selected + (deltaY > 0 ? 1 : -1)) % this.maxColumns;
-            this.updateSelected();
+        this.input.on("pointerover", () => {
+            this.inventory.selected = this.hoverIndex;
+            this.tintSelectedSlot();
         });
+        
+        this.input.on("pointerout", () => {
+            this.inventory.selected = null;
+            this.tintSelectedSlot();
+        });
+        
         this.input.keyboard.on("keydown-I", ()=> {
-            this.rows = this.rows === 1 ? this.maxRows : 1;
+            this.rows = this.rows === 0 ? this.maxRows : 0;
             this.refresh();
         });
         this.input.setTopOnly(false);
@@ -86,6 +95,18 @@ export default class InventoryScene extends UIBaseScene {
             this.inventory.moveItem(this.startIndex, this.hoverIndex);
             this.refresh();
         });
+        
+        let lastTime = 0;
+            this.input.on("pointerdown", () => {
+                let clickDelay = this.time.now - lastTime;
+                lastTime = this.time.now;
+                if(clickDelay < 300 && this.player.healthPotionUsable === true) {
+                    this.player.useHealthPotion();
+                    this.player.healthPotionSwitch();
+                    setTimeout(()=> this.player.healthPotionSwitch(), 2000);
+                }  
+            });
+            
         this.refresh();
     };
 

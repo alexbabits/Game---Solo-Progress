@@ -11,8 +11,9 @@ export default class Inventory {
 
         this.addItem({name: "pickaxe", quantity: 1});
         this.addItem({name: "wood", quantity: 1});
+        this.addItem({name: "health_potion", quantity: 3});
     };
-
+    
     subscribe(fn) {
         this.observers.push(fn);
     }

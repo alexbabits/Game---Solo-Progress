@@ -3,6 +3,7 @@ import Enemy from "./Enemy.js";
 import Player from "./Player.js";
 //import LoadingBar from "./LoadingBar.js";
 import Resource from "./Resource.js";
+import LoadingBar from "./LoadingBar.js";
 
 export default class MainScene extends Phaser.Scene {
     constructor() {
@@ -14,8 +15,8 @@ export default class MainScene extends Phaser.Scene {
         Player.preload(this);
         Enemy.preload(this);
         Resource.preload(this);
-        //Loads in the LoadingBar
-        //LoadingBar.preload(this);
+        LoadingBar.preload(this);
+
         this.load.image('tiles', 'assets/images/RPG Nature Tileset.png');
         this.load.tilemapTiledJSON('map','assets/images/map.json');
         this.load.atlas('enemies', 'assets/images/enemies.png', 'assets/images/enemies_atlas.json');
@@ -26,69 +27,6 @@ export default class MainScene extends Phaser.Scene {
         this.load.audio('lightning', 'assets/audio/lightning.mp3');
         this.load.audio('rain', 'assets/audio/rain.mp3');
         this.load.image('Healthbarframe', 'assets/images/Healthbarframe.png');
-
-        //adding graphics so they can be rectangles in the future.
-        let progressBar = this.add.graphics();
-        let progressBox = this.add.graphics();
-        progressBox.fillStyle(0xffff00, .2);
-        //position x,y and width height
-        progressBox.fillRect(170,295,300,50);
-
-        let width = this.game.config.width;
-        let height = this.game.config.height;
-
-        let loadingText = this.make.text({
-            x: width / 2 + 5,
-            y: height / 2 - 70,
-            text: 'Loading',
-            style: {
-                font: '48px monospace',
-                fill: '#cbdbfc'
-            }
-        });
-        loadingText.setOrigin(0.5, 0.5);
-
-        let percentText = this.make.text({
-            x: width / 2,
-            y: height / 2,
-            text: '0%',
-            style: {
-                font: '24px monospace',
-                fill: '#000000'
-            }
-        });
-        percentText.setOrigin(0.5, 0.5);
-
-        let assetText = this.make.text({
-            x: width / 2,
-            y: height / 2 + 50,
-            text: '',
-            style: {
-                font: '18px monospace',
-                fill: '#cbdbfc'
-            }
-        });
-        assetText.setOrigin(0.5, 0.5);
-
-        this.load.on('progress', function (value) {
-            percentText.setText(parseInt(value * 100) + '%');
-            progressBar.clear();
-            progressBar.fillStyle(0xffff00, 1);
-            progressBar.fillRect(170, 295, 300 * value, 50);
-        });
-
-        this.load.on('fileprogress', function (file) {
-            assetText.setText('Loading asset: ' + file.key);
-        });
-
-        this.load.on('complete', function () {
-            progressBar.destroy();
-            progressBox.destroy();
-            loadingText.destroy();
-            percentText.destroy();
-            assetText.destroy();
-        });
-  
     };
 
     create(){
